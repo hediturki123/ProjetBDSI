@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS LesCommandesPrix;
 DROP TABLE IF EXISTS LesClients;
 DROP TABLE IF EXISTS LesCommandes;
 DROP TABLE IF EXISTS LesAdresses;
@@ -19,26 +20,25 @@ CREATE TABLE LesClients (
 	mdp varchar2(80) not null ,
 	numeroRue number(3) not null,
 	nomRue varchar2(80) not null,
-	ville varchar2(30)not null,
+	ville varchar2(30) not null,
 	cp number(5) not null,
 	pays varchar2(30) not null,
 	constraint PriC1 primary key (mail)
 );
 
-CREATE TABLE LesCodesPromos(
+CREATE TABLE LesCodesPromos (
 	mail varchar2(80),
 	code varchar2(10),
 	estUtilise boolean,
-	constraint priCP1 primary key (code),--generé random
+	constraint priCP1 primary key (code),-- Genéré de manière procédurale.
 	constraint frClientCP foreign key (mail) references LesClients(mail)
 );
 
-CREATE TABLE LesCommandes(
+CREATE TABLE LesCommandes (
 	idCommande number(3) AUTO_INCREMENT not null,
 	mail varchar2(80) not null,
 	dateCommande DATE not null,
 	estLivreChezClient boolean not null,
-	prixTotal number(5) not null,
 	status varchar2(20) not null,
 	code varchar(10) not null,
 	constraint priCO1 primary key (id),
@@ -48,7 +48,7 @@ CREATE TABLE LesCommandes(
 
 );
 
-CREATE TABLE LesAdresses(
+CREATE TABLE LesAdresses (
 	mailClient varchar(80) not null,
 	numeroRue number(4) not null,
 	nomRue varchar2(80) not null,
@@ -59,14 +59,14 @@ CREATE TABLE LesAdresses(
 	constraint frClientAdresse foreign key (mailClient) references LesClients(mail)
 );
 
-CREATE TABLE LesProduits(
+CREATE TABLE LesProduits (
 	reference varchar(20),
 	prix float(3),
 	stock number(3),
 	constraint PriP1 primary key (reference)
 );
 
-CREATE TABLE LesFichiers(
+CREATE TABLE LesFichiers (
 	chemin varchar2(80),
 	mailProprio varchar2(80),
 	infoPVD varchar2(30),
@@ -77,16 +77,18 @@ CREATE TABLE LesFichiers(
 	constraint frFichierClient foreign key (mailProprio) references LesClients(mail)	
 );
 
-CREATE TABLE LesImpressions(
+CREATE TABLE LesImpressions (
 	idImpression number(3),
-	type varchar2(30),
-	titre varchar2(30) null,--ne doit pas être nul si c'est un album
-	constraint PriIM1 primary key (chemin),
+	reference varchar2(20) not null,
+	type varchar2(30) not null,
+	titre varchar2(30) null,-- Ne doit pas être nul si c'est un album.
+	constraint priImpr1 primary key (chemin),
+	constraint frRefImpr1 foreign key (reference) references LesProduits(reference),
 	constraint ckType check type in ('tirage','cadre','album','calendrier')
 
 );
 
-CREATE TABLE LesPages(
+CREATE TABLE LesPages (
 	idPage number(3) AUTO_INCREMENT,
 	idImpression number(3),
 	miseEnForme varchar2(20),
@@ -94,7 +96,7 @@ CREATE TABLE LesPages(
 	constraint frImprPage1 foreign key (idImpression) references LesImpressions(idImpression)
 );
 
-CREATE TABLE LesPhotos(
+CREATE TABLE LesPhotos (
 	idPhoto number(3) AUTO_INCREMENT,
 	chemin varchar2(80) not null,
 	constraint priPho1 primary key (idPhoto),
@@ -102,7 +104,7 @@ CREATE TABLE LesPhotos(
 );
 
 
-CREATE TABLE LesPhotosParPages(
+CREATE TABLE LesPhotosParPages (
 	idPhoto number(3),
 	idPage number(3),
 	constraint priPhotoParPage primary key (idPhoto,idPage),
@@ -110,16 +112,16 @@ CREATE TABLE LesPhotosParPages(
 	constraint frPPPLesPhotos foreign key (idPhoto) references LesPhotos(idPhoto)
 );
 
-CREATE TABLE LesArticles(
+CREATE TABLE LesArticles (
 	idCommande number(3),
 	idImpression number(3),
 	quantite number(3),
 	constraint priArticle1 primary key (idCommande,idImpression),
 	constraint frImprArticle foreign key (idImpression) references LesImpressions(idImpression),
 	constraint frImprCommande foreign key (idCommande) references LesCommandes(idCommande)
-
 );
-CREATE TABLE LesPhotoTirees(
+
+CREATE TABLE LesPhotoTirees (
 	idPhoto number(3),
 	nbPhotoTirees number(3),
 	constraint priPT1 primary key (idPhoto),
@@ -127,10 +129,18 @@ CREATE TABLE LesPhotoTirees(
 	constraint ckNbTirees check nbPhotoTirees >=1 
 );
 
-CREATE TABLE LesPhotoAlbums(
+CREATE TABLE LesPhotoAlbums (
 	idPhoto number(3),
 	titre varchar (80),
 	constraint priPPA1 primary key (idPhoto),
 	constraint frPPALesPhoto foreign key (idPhoto) references LesPhotos(idPhoto)
 );
 
+CREATE VIEW LesCommandesPrix AS
+	SELECT A.idCommande, sum(P.prix * A.quantite) * (CASE WHEN C.code IS NULL THEN 1 ELSE 0.95) AS prixTotal
+	FROM LesCommandes C
+	NATURAL JOIN LesArticles A
+	NATURAL JOIN LesImpressions I
+	NATURAL JOIN LesProduits P
+	GROUP BY A.idCommande
+;
