@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS LesPhotos;
 DROP TABLE IF EXISTS LesPhotoTirees;
 DROP TABLE IF EXISTS LesPhotoAlbums;
 DROP TABLE IF EXISTS LesPhotosParPages;
-DROP TABLE IF EXISTS LesPages 
+DROP TABLE IF EXISTS LesPages;
 
 CREATE TABLE LesClients (
 	mail varchar2(80),
@@ -23,7 +23,7 @@ CREATE TABLE LesClients (
 	cp number(5),
 	pays varchar2(30),
 	constraint PriC1 primary key (mail)
-);;
+);
 
 CREATE TABLE LesCodePromos(
 	mail varchar2(80),
