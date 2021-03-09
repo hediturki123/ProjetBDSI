@@ -14,65 +14,67 @@ DROP TABLE IF EXISTS LesPages;
 
 CREATE TABLE LesClients (
 	mail varchar2(80),
-	nom varchar2(30),
-	prenom varchar2(30),
-	mdp varchar2(80),
-	numeroRue number(3),
-	nomRue varchar2(80),
-	ville varchar2(30),
-	cp number(5),
-	pays varchar2(30),
+	nom varchar2(30) not null,
+	prenom varchar2(30) not null,
+	mdp varchar2(80) not null ,
+	numeroRue number(3) not null,
+	nomRue varchar2(80) not null,
+	ville varchar2(30)not null,
+	cp number(5) not null,
+	pays varchar2(30) not null,
 	constraint PriC1 primary key (mail)
 );
 
-CREATE TABLE LesCodePromos(
+CREATE TABLE LesCodesPromos(
 	mail varchar2(80),
 	code varchar2(10),
-	utilise boolean,
-	idCommande number(3) null,
-	constraint priCP1 primary key (mail,code),
-	constraint frClientCP foreign key (mail) references LesClients(mail),
-	constraint frCommande foreign key (idCommande) references LesCommandes(idCommande) 
+	estUtilise boolean,
+	constraint priCP1 primary key (code),--generé random
+	constraint frClientCP foreign key (mail) references LesClients(mail)
 );
 
 CREATE TABLE LesCommandes(
-	idCommande number(3) AUTO_INCREMENT,
-	mail varchar2(80),
-	dateCommande DATE,
-	estLivreChezClient boolean,
-	prixTotal number(5),
-	status varchar2(20),
+	idCommande number(3) AUTO_INCREMENT not null,
+	mail varchar2(80) not null,
+	dateCommande DATE not null,
+	estLivreChezClient boolean not null,
+	prixTotal number(5) not null,
+	status varchar2(20) not null,
+	code varchar(10) not null,
 	constraint priCO1 primary key (id),
 	constraint frClientCom foreign key (mail) references LesClients(mail),
+	constraint frCodeProm foreign key (code) references LesCodePromos(code),
 	constraint ckStat check status in ('enCours','preteEnvoi','envoyee')
 
 );
 
 CREATE TABLE LesAdresses(
-	numeroRue number(3),
-	nomRue varchar2(80),
-	ville varchar2(30),
-	cp number(5),
-	pays varchar2(30),
-	constraint priA primary key (numeroRue,nomRue,ville,cp,pays)
+	mailClient varchar(80) not null,
+	numeroRue number(4) not null,
+	nomRue varchar2(80) not null,
+	ville varchar2(30) not null,
+	cp number(5) not null,
+	pays varchar2(30) not null,
+	constraint priA primary key (numeroRue,nomRue,ville,cp,pays),
+	constraint frClientAdresse foreign key (mailClient) references LesClients(mail)
 );
 
 CREATE TABLE LesProduits(
 	reference varchar(20),
-	prix float(2),
+	prix float(3),
 	stock number(3),
 	constraint PriP1 primary key (reference)
 );
 
 CREATE TABLE LesFichiers(
 	chemin varchar2(80),
-	mail varchar2(80),
+	mailProprio varchar2(80),
 	infoPVD varchar2(30),
 	resolution integer,
-	partage boolean,
+	estPartage boolean,
 	dateUpload Date,
 	constraint PriF1 primary key (chemin),
-	constraint frFichierClient foreign key (mail) references LesClients(mail)	
+	constraint frFichierClient foreign key (mailProprio) references LesClients(mail)	
 );
 
 CREATE TABLE LesImpressions(
