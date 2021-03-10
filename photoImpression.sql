@@ -131,7 +131,7 @@ CREATE TABLE LesPhotosTirees (
 
 CREATE TABLE LesPhotosAlbums (
 	idPhoto number(3),
-	titre varchar (80),
+	texteDescriptif varchar (80),
 	constraint priPPA1 primary key (idPhoto),
 	constraint frPPALesPhoto foreign key (idPhoto) references LesPhotos(idPhoto)
 );
