@@ -29,7 +29,7 @@ CREATE TABLE LesClients (
 
 CREATE TABLE LesCodesPromo (
 	mail varchar2(80),
-	code varchar2(10),
+	code varchar2(10)--attention si de maniere procedural ,
 	estUtilise number(1),
 	constraint priCP1 primary key (code),-- Genéré de manière procédurale.
 	constraint frClientCP foreign key (mail) references LesClients(mail)
