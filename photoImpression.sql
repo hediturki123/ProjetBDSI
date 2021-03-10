@@ -27,7 +27,7 @@ CREATE TABLE LesClients (
 	constraint PriC1 primary key (mail)
 );
 
-CREATE TABLE LesCodesPromos (
+CREATE TABLE LesCodesPromo (
 	mail varchar2(80),
 	code varchar2(10),
 	estUtilise number(1),
@@ -48,7 +48,7 @@ CREATE TABLE LesCommandes (
 	constraint ckStat check (status in ('enCours','preteEnvoi','envoyee'))
 );
 
-CREATE TABLE LesAdresses (
+CREATE TABLE LesAdressesDeLivraison (
 	mailClient varchar(80) not null,
 	numeroRue number(4) not null,
 	nomRue varchar2(80) not null,
@@ -66,7 +66,7 @@ CREATE TABLE LesProduits (
 	constraint PriP1 primary key (reference)
 );
 
-CREATE TABLE LesFichiers (
+CREATE TABLE LesFichiersImage (
 	chemin varchar2(80),
 	mailProprio varchar2(80),
 	infoPVD varchar2(30),
@@ -88,7 +88,7 @@ CREATE TABLE LesImpressions (
 );
 
 CREATE TABLE LesPages (
-	idPage number(3),-- AUTO_INCREMENT,
+	idPage number(3),-- AUTO_INCREMENT
 	idImpression number(3),
 	miseEnForme varchar2(20),
 	constraint priPa1 primary key (idPage),
@@ -96,7 +96,7 @@ CREATE TABLE LesPages (
 );
 
 CREATE TABLE LesPhotos (
-	idPhoto number(3) ,--AUTO_INCREMENT,
+	idPhoto number(3) ,--AUTO_INCREMENT
 	chemin varchar2(80) not null,
 	constraint priPho1 primary key (idPhoto),
 	constraint frPhoFichier foreign key (chemin) references LesFichiers(chemin)
@@ -137,8 +137,8 @@ CREATE TABLE LesPhotosAlbums (
 );
 
 CREATE VIEW LesCommandesPrix AS
-	SELECT idCommande, sum(prix * quantite * CASE WHEN code IS NULL THEN 1 ELSE 0.95 END ) AS prixTotal
-	FROM LesCommandes C
+	SELECT idCommande, sum(prix * quantite * CASE WHEN code IS NULL THEN 1 ELSE 0.95 END) AS prixTotal
+	FROM LesCommandes
 	NATURAL JOIN LesArticles 
 	NATURAL JOIN LesImpressions
 	NATURAL JOIN LesProduits
