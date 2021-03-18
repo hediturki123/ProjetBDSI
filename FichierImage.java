@@ -14,7 +14,7 @@ public class FichierImage extends DAO<FichierImage> {
 	}
 
 	@Override
-	public FichierImage read(int id) {
+	public FichierImage read(Object id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

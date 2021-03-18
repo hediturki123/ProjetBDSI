@@ -14,7 +14,7 @@ public class Impression extends DAO<Impression>{
 	}
 
 	@Override
-	public Impression read(int id) {
+	public Impression read(Object id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

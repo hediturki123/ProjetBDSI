@@ -14,7 +14,7 @@ public class Photo extends DAO<Photo> {
 	}
 
 	@Override
-	public Photo read(int id) {
+	public Photo read(Object id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

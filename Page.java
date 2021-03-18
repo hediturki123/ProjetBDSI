@@ -14,7 +14,7 @@ public class Page extends DAO<Page> {
 	}
 
 	@Override
-	public Page read(int id) {
+	public Page read(Object id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

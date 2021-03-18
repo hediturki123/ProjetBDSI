@@ -14,7 +14,7 @@ public class CodePromo extends DAO<CodePromo> {
 	}
 
 	@Override
-	public CodePromo read(int id) {
+	public CodePromo read(Object  id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

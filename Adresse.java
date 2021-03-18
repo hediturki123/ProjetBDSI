@@ -14,7 +14,7 @@ public class Adresse extends DAO<Adresse>{
 	}
 
 	@Override
-	public Adresse read(int id) {
+	public Adresse read(Object id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

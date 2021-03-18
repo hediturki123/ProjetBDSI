@@ -14,7 +14,7 @@ public class Commande extends DAO<Commande> {
 	}
 
 	@Override
-	public Commande read(int id) {
+	public Commande read(Object id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

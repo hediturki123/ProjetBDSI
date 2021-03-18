@@ -14,7 +14,7 @@ public class Article extends DAO<Article> {
 	}
 
 	@Override
-	public Article read(int id) {
+	public Article read(Object id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
