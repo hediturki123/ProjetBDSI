@@ -2,14 +2,14 @@ DROP TABLE LesPhotosTirees;
 DROP TABLE LesPhotosAlbums;
 DROP TABLE LesPhotosParPages;
 DROP TABLE LesPhotos;
-DROP TABLE LesFichiers;
+DROP TABLE LesFichiersImage;
 DROP TABLE LesArticles;
 DROP TABLE LesPages;
 DROP TABLE LesImpressions;
 DROP TABLE LesProduits;
 DROP TABLE LesCommandes;
-DROP TABLE LesAdresses;
-DROP TABLE LesCodesPromos;
+DROP TABLE LESADRESSESDELIVRAISON;
+DROP TABLE LesCodesPromo;
 DROP VIEW LesCommandesPrix;
 DROP TABLE LesClients;
 
@@ -29,7 +29,7 @@ CREATE TABLE LesClients (
 
 CREATE TABLE LesCodesPromo (
 	mail varchar2(80),
-	code varchar2(10)--attention si de maniere procedural ,
+	code varchar2(10),--attention si de maniere procedural ,
 	estUtilise number(1),
 	constraint priCP1 primary key (code),-- Genéré de manière procédurale.
 	constraint frClientCP foreign key (mail) references LesClients(mail)
@@ -44,7 +44,7 @@ CREATE TABLE LesCommandes (
 	code varchar2(10) not null,
 	constraint priCO1 primary key (idCommande),
 	constraint frClientCom foreign key (mail) references LesClients(mail),
-	constraint frCodeProm foreign key (code) references LesCodesPromos(code),
+	constraint frCodeProm foreign key (code) references LesCodesPromo(code),
 	constraint ckStat check (status in ('enCours','preteEnvoi','envoyee'))
 );
 
@@ -99,7 +99,7 @@ CREATE TABLE LesPhotos (
 	idPhoto number(3) ,--AUTO_INCREMENT
 	chemin varchar2(80) not null,
 	constraint priPho1 primary key (idPhoto),
-	constraint frPhoFichier foreign key (chemin) references LesFichiers(chemin)
+	constraint frPhoFichier foreign key (chemin) references LESFICHIERSIMAGE(chemin)
 );
 
 
