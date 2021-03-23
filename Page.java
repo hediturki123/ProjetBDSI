@@ -2,9 +2,15 @@ import java.sql.Connection;
 
 public class Page extends DAO<Page> {
 
-	public Page(Connection conn) {
-		// TODO Auto-generated constructor stub
+	private int idPage;
+	private String idImpression;
+	private String miseEnForme;
+	
+	public Page(Connection conn, int idPage, String idImpression, String miseEnForme) {
 		super(conn);
+		this.idPage = idPage;
+		this.idImpression = idImpression;
+		this.miseEnForme = miseEnForme;
 	}
 
 	@Override
@@ -37,4 +43,34 @@ public class Page extends DAO<Page> {
 		return false;
 	}
 
+	public static void InterfacePage() {
+		System.out.println("Vous allez ici créer une page");
+	}
+
+	
+	/***** getters and setters *****/
+	
+	protected int getIdPage() {
+		return idPage;
+	}
+
+	protected void setIdPage(int idPage) {
+		this.idPage = idPage;
+	}
+
+	protected String getIdImpression() {
+		return idImpression;
+	}
+
+	protected void setIdImpression(String idImpression) {
+		this.idImpression = idImpression;
+	}
+
+	protected String getMiseEnForme() {
+		return miseEnForme;
+	}
+
+	protected void setMiseEnForme(String miseEnForme) {
+		this.miseEnForme = miseEnForme;
+	}
 }

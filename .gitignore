@@ -1,3 +1,4 @@
+/*.class
 /DatabaseAccessProperties.class
 /LectureClavier.class
 /.project
@@ -21,4 +22,7 @@
 /PhotoTirage.class
 /Article.class
 /BD.properties
-/*.class
+/squellete_appli.class
+/InterfacePhoto.class
+/InterfaceImpression.class
+
