@@ -1,9 +1,9 @@
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 
 public class Client extends DAO<Client> {
 	private String mail;
@@ -38,14 +38,13 @@ public class Client extends DAO<Client> {
 		}else{
 			this.creationCompte();
 		}
-	
 	}
 	public void connexion(){
 		System.out.println("veuillez entrez votre adresse mail");
 		String mailConnexion=LectureClavier.lireChaine();
-		System.out.println("veuillez entrez votre adresse mail");
+		System.out.println("veuillez entrez votre mot de passe");
 		String mdpconnexion=LectureClavier.lireChaine();
-		String [] args = {mailConnexion,mdpconnexion};
+		String [] args={mailConnexion,mdpconnexion};
 		Client c;
 		while(( c = this.read(args))==null){
 			System.out.println("mot de passe/ identifiant incorrect");
@@ -53,13 +52,37 @@ public class Client extends DAO<Client> {
 			mailConnexion=LectureClavier.lireChaine();
 			System.out.println("veuillez entrez votre adresse mail");
 			mdpconnexion=LectureClavier.lireChaine();
+			args[0]=mailConnexion;
+			args[1]=mdpconnexion;
 		}
 		if(c!=null){
 			this.setAll(c.mail, c.nom, c.prenom,c.mdp, c.numeroRue, c.nomRue, c.ville, c.cp, c.pays);
 		}
-		
+		this.Menu();
 	}
-	
+
+	public void Menu(){
+		System.out.println("1. Afficher mes informations  \n2. Impression \n3. \n4. \n 5. Se deconnecter");
+		int choix=LectureClavier.lireEntier("?");
+		while(choix!=5){
+			switch (choix){
+				case 1:System.out.println(this.mail);
+				System.out.println(this.nom);
+				System.out.println(this.numeroRue);
+				System.out.println(this.nomRue);
+				System.out.println(this.ville);
+				System.out.println(this.cp);
+					break;
+				case 2:break;
+				case 3:break;
+				case 4:break;
+				default:System.out.println("Veuilllez choisir entre 1,2,3,4,5 ! ");
+						choix=LectureClavier.lireEntier("Alors ?");
+			}
+		}
+		System.out.println("Merci de votre visite !");
+
+	}	
 	public void creationCompte(){
 		System.out.println("veuillez entrez votre adresse mail");
 		String mail=LectureClavier.lireChaine();
@@ -128,14 +151,17 @@ public class Client extends DAO<Client> {
 		// TODO Auto-generated method 
 		try {
 			String [] args=(String[]) obj;
+			Client c;
 			PreparedStatement requete_selection=this.connect.prepareStatement(
 					"SELECT * from LesClients where mail=? and mdp=?");
 			requete_selection.setString(1,args[0]); // icic l'obj sera l'adresse mail
 			requete_selection.setString(2,args[1]);
 			ResultSet resultat=requete_selection.executeQuery();
-			resultat.first();
-			requete_selection.close();
-			return new Client
+			if(!resultat.next()){
+				c=null;
+			} //ici last renvoie false si il n'y a aucune row selectionner
+			else{
+			 c= new Client
 			(this.connect,
 			resultat.getString("mail"),
 			resultat.getString("nom"),
@@ -146,7 +172,9 @@ public class Client extends DAO<Client> {
 			resultat.getString("ville"),
 			resultat.getInt("cp"),
 			resultat.getString("pays"));
-			
+			}
+			requete_selection.close();
+			return c;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
