@@ -138,10 +138,10 @@ public class Impression extends DAO<Impression>{
 	public boolean delete(Impression obj) {
 		try {
 			PreparedStatement requete_delete = this.connect.prepareStatement(
-					"DELETE FROM `LesImpressions` WHERE idImpressions=?"
+					"DELETE FROM LesImpressions WHERE idImpression=?"
 					+ "AND reference=?"
 					+ "AND type=?"
-					+ "AND titre?");
+					+ "AND titre=?");
 			requete_delete.setInt(1, obj.getIdImpression());
 			requete_delete.setString(2, obj.getReference());
 			requete_delete.setString(3, obj.getType());
