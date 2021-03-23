@@ -7,9 +7,9 @@ public abstract class DAO<T> {
 		this.connect=conn;
 	}
 	
-	public static abstract boolean create(T obj);
-	public static abstract T read (Object obj);
-	public static abstract T[] readAll ();
-	public static abstract boolean update (T obj);
-	public static abstract boolean delete(T obj);
+	public abstract boolean create(T obj);
+	public abstract T read (Object obj);
+	public abstract T[] readAll ();
+	public abstract boolean update (T obj);
+	public abstract boolean delete(T obj);
 }

@@ -2,6 +2,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Impression extends DAO<Impression>{
 
@@ -18,17 +19,70 @@ public class Impression extends DAO<Impression>{
 		this.titre = titre;
 	}
 
+	public void interfaceImpression() {
+		System.out.println("Quel type d'impression voulez-vous créer?");
+		System.out.println("1. Tirage\n2. Album\n3. Calendrier\n4. Cadre");
+		int choix = LectureClavier.lireEntier("1, 2, 3 ou 4?");
+		while(choix!= 1 && choix!= 2 && choix!= 3 && choix!= 4) {
+			System.out.println("Vous devez choisir un nombre entre 1 et 4.");
+			choix = LectureClavier.lireEntier("1, 2, 3 ou 4?");
+		}
+		switch(choix) {
+		case 1:
+			setType("tirage");
+			createTirage();
+			break;
+		case 2:
+			setType("album");
+			createAlbum();
+			break;
+		case 3:
+			setType("calendrier");
+			createCalendrier();
+			break;
+		case 4:
+			setType("cadre");
+			createCadre();
+			break;
+		default:
+			setType("tirage");
+			createTirage();
+			break;
+		}
+	}
+	
+	private void createCadre() {
+		System.out.println("Vous allez ici créer votre cadre.");
+		//Page.InterfacePage();
+	}
+
+	private void createCalendrier() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void createAlbum() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void createTirage() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	@Override
 	public boolean create(Impression obj) {
 		try {
 			PreparedStatement requete_imp = this.connect.prepareStatement(
 					"INSERT INTO LesImpressions VALUES (?,?,?,?)");
-			requete_imp.setInt(1, idImpression);
-			requete_imp.setString(2, reference);
-			requete_imp.setString(3, type);
-			requete_imp.setString(4, titre);
-			
-			return requete_imp.execute();
+			requete_imp.setInt(1, obj.getIdImpression());
+			requete_imp.setString(2, obj.getReference());
+			requete_imp.setString(3, obj.getType());
+			requete_imp.setString(4, obj.getTitre());
+			boolean b = requete_imp.execute();
+			requete_imp.close();
+			return b;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -42,9 +96,16 @@ public class Impression extends DAO<Impression>{
 			requete_select.setInt(1, (int)id);
 			
 			ResultSet result = requete_select.executeQuery();
-			result.first();
-			//Impression res = new Impression(this.connect,result.);
-			return null;
+			if(result.next())
+			{
+				Impression res = new Impression(this.connect,
+						result.getInt("idImpression"),
+						result.getString("reference"),
+						result.getString("type"),
+						result.getString("titre"));
+				requete_select.close();
+				return res;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -64,8 +125,9 @@ public class Impression extends DAO<Impression>{
 			requete_update.setString(2, obj.getReference());
 			requete_update.setString(3, obj.getType());
 			requete_update.setString(4, obj.getTitre());
-			
-			return requete_update.execute();
+			boolean b = requete_update.execute();
+			requete_update.close();
+			return b;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -84,8 +146,9 @@ public class Impression extends DAO<Impression>{
 			requete_delete.setString(2, obj.getReference());
 			requete_delete.setString(3, obj.getType());
 			requete_delete.setString(4, obj.getTitre());
-			
-			return requete_delete.execute();
+			boolean b = requete_delete.execute();
+			requete_delete.close();
+			return b;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -94,7 +157,25 @@ public class Impression extends DAO<Impression>{
 
 	@Override
 	public Impression[] readAll() {
-		// TODO Auto-generated method stub
+		try {
+			PreparedStatement requete_select = this.connect.prepareStatement("SELECT * FROM LesImpressions");
+			
+			ResultSet result = requete_select.executeQuery();
+			ArrayList<Impression> tab  = new ArrayList<Impression>();
+			while(result.next())
+			{
+				Impression res = new Impression(this.connect,
+						result.getInt("idImpression"),
+						result.getString("reference"),
+						result.getString("type"),
+						result.getString("titre"));
+				requete_select.close();
+				tab.add(res);
+			}
+			return (Impression[])tab.toArray();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
