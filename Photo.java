@@ -14,7 +14,10 @@ public class Photo extends DAO<Photo> {
 		this.idPhoto = idPhoto;
 		this.chemin = chemin;
 	}
-
+	
+	public Photo(Connection conn) {
+		super(conn);
+	}
 	@Override
 	public boolean create(Photo obj) {
 		try {

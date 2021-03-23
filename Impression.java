@@ -11,64 +11,15 @@ public class Impression extends DAO<Impression>{
 	private String type;
 	private String titre;
 	
+	public Impression(Connection conn) {
+		super(conn);
+	}
 	public Impression(Connection conn, int idImpression, String reference, String type, String titre) {
 		super(conn);
 		this.idImpression = idImpression;
 		this.reference = reference;
 		this.type = type;
 		this.titre = titre;
-	}
-
-	public void interfaceImpression() {
-		System.out.println("Quel type d'impression voulez-vous créer?");
-		System.out.println("1. Tirage\n2. Album\n3. Calendrier\n4. Cadre");
-		int choix = LectureClavier.lireEntier("1, 2, 3 ou 4?");
-		while(choix!= 1 && choix!= 2 && choix!= 3 && choix!= 4) {
-			System.out.println("Vous devez choisir un nombre entre 1 et 4.");
-			choix = LectureClavier.lireEntier("1, 2, 3 ou 4?");
-		}
-		switch(choix) {
-		case 1:
-			setType("tirage");
-			createTirage();
-			break;
-		case 2:
-			setType("album");
-			createAlbum();
-			break;
-		case 3:
-			setType("calendrier");
-			createCalendrier();
-			break;
-		case 4:
-			setType("cadre");
-			createCadre();
-			break;
-		default:
-			setType("tirage");
-			createTirage();
-			break;
-		}
-	}
-	
-	private void createCadre() {
-		System.out.println("Vous allez ici créer votre cadre.");
-		//Page.InterfacePage();
-	}
-
-	private void createCalendrier() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void createAlbum() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void createTirage() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
