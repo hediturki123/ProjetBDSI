@@ -19,8 +19,15 @@ public class squellete_appli {
    	        System.out.println("connected");
             conn.setAutoCommit(true);
 
-            Client c = new Client(conn);
-            c.interfaceConnexion();
+            int choix=LectureClavier.lireEntier("1. Interface Client \n2. Interface Gestion");
+            while(choix!=1 && choix!=2){
+                choix=LectureClavier.lireEntier("1. Interface Client \n2. Interface Gestion");
+            }
+            switch(choix){
+                case 1 : InferfaceClient.interfaceConnexion();
+                        break;
+                case 2: break;
+            }
 
         }
         catch(SQLException e){

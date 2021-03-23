@@ -26,121 +26,28 @@ public class Client extends DAO<Client> {
 		this.setAll(mail, nom, prenom, mdp, numeroRue, nomRue, ville, cp, pays);
 	}
 
-	public void interfaceConnexion(){
-		System.out.println("1 . se connecter ? \n2. creer un nouveau compte ? ");
-		int choix=LectureClavier.lireEntier("1/2 ?");
-		while(choix !=1 && choix!=2){
-			System.out.println("vous devez choisir entre 1 ou 2 !");
-			choix=LectureClavier.lireEntier("1/2 ?");
-		}
-		if(choix==1){
-			this.connexion();
-		}else{
-			this.creationCompte();
-		}
-	}
-	public void connexion(){
-		System.out.println("veuillez entrez votre adresse mail");
-		String mailConnexion=LectureClavier.lireChaine();
-		System.out.println("veuillez entrez votre mot de passe");
-		String mdpconnexion=LectureClavier.lireChaine();
-		String [] args={mailConnexion,mdpconnexion};
-		Client c;
-		while(( c = this.read(args))==null){
-			System.out.println("mot de passe/ identifiant incorrect");
-			System.out.println("veuillez entrez votre adresse mail");
-			mailConnexion=LectureClavier.lireChaine();
-			System.out.println("veuillez entrez votre adresse mail");
-			mdpconnexion=LectureClavier.lireChaine();
-			args[0]=mailConnexion;
-			args[1]=mdpconnexion;
-		}
-		if(c!=null){
-			this.setAll(c.mail, c.nom, c.prenom,c.mdp, c.numeroRue, c.nomRue, c.ville, c.cp, c.pays);
-		}
-		this.Menu();
-	}
-
-	public void Menu(){
-		System.out.println("1. Afficher mes informations  \n2. Impression \n3. \n4. \n 5. Se deconnecter");
-		int choix=LectureClavier.lireEntier("?");
-		while(choix!=5){
-			switch (choix){
-				case 1:System.out.println(this.mail);
-				System.out.println(this.nom);
-				System.out.println(this.numeroRue);
-				System.out.println(this.nomRue);
-				System.out.println(this.ville);
-				System.out.println(this.cp);
-					break;
-				case 2:break;
-				case 3:break;
-				case 4:break;
-				default:System.out.println("Veuilllez choisir entre 1,2,3,4,5 ! ");
-						choix=LectureClavier.lireEntier("Alors ?");
-			}
-		}
-		System.out.println("Merci de votre visite !");
-
-	}	
-	public void creationCompte(){
-		System.out.println("veuillez entrez votre adresse mail");
-		String mail=LectureClavier.lireChaine();
-		
-		System.out.println("veuillez entrez votre mdp");
-		String mdp=LectureClavier.lireChaine();
-		
-		System.out.println("veuillez entrez votre nom");
-		String nom=LectureClavier.lireChaine();
-
-		System.out.println("veuillez entrez votre prenom");
-		String prenom=LectureClavier.lireChaine();
-
-		int numeroRue=LectureClavier.lireEntier("veuillez entrez votre numero de rue");
-
-		System.out.println("veuillez entrez votre rue");
-		String nomRue=LectureClavier.lireChaine();
-
-		System.out.println("veuillez entrez votre ville");
-		String ville=LectureClavier.lireChaine();
-
-		int cp=LectureClavier.lireEntier("veuillez entrez votre code postal");
-
-		System.out.println("veuillez entrez votre pays ");
-		String pays=LectureClavier.lireChaine();
-
-		Client c = new Client(this.connect, mail, nom, prenom, mdp, numeroRue, nomRue, ville, cp, pays);
-			this.setMail(c.mail);
-			this.setMdp(c.mdp);
-			this.setNom(c.nom);
-			this.setPrenom(c.prenom);
-			this.setNomRue(c.nomRue);
-			this.setNumeroRue(c.numeroRue);
-			this.setVille(c.ville);
-			this.setCp(c.cp);
-			this.setPays(c.pays);
-			this.create(c);
-	}
-
 	@Override
 	public boolean create(Client obj) {
-		// TODO Auto-generated method stub
+
 		try {
 			PreparedStatement requete_ajout=this.connect.prepareStatement(
 					"INSERT INTO LesClients VALUES (?,?,?,?,?,?,?,?,?)");
-			requete_ajout.setString(1, mail);
-			requete_ajout.setString(2, nom);
-			requete_ajout.setString(3, prenom);
-			requete_ajout.setString(4, mdp);
-			requete_ajout.setInt(5, numeroRue);
-			requete_ajout.setString(6, nomRue);
-			requete_ajout.setString(7, ville);
-			requete_ajout.setInt(8,cp);
-			requete_ajout.setString(9, pays);
+			requete_ajout.setString(1, obj.mail);
+			requete_ajout.setString(2, obj.nom);
+			requete_ajout.setString(3, obj.prenom);
+			requete_ajout.setString(4, obj.mdp);
+			requete_ajout.setInt(5, obj.numeroRue);
+			requete_ajout.setString(6, obj.nomRue);
+			requete_ajout.setString(7, obj.ville);
+			requete_ajout.setInt(8,obj.cp);
+			requete_ajout.setString(9, obj.pays);
 			
-			return requete_ajout.execute();
+			boolean reussi=requete_ajout.execute();
+			setAll(obj.mail, obj.nom, obj.prenom, obj.mdp, obj.numeroRue, obj.nomRue, obj.ville, obj.cp, obj.pays);
+			requete_ajout.close();
+			return reussi;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 		return false;
@@ -148,7 +55,6 @@ public class Client extends DAO<Client> {
 
 	@Override
 	public Client read(Object obj) {
-		// TODO Auto-generated method 
 		try {
 			String [] args=(String[]) obj;
 			Client c;
@@ -176,7 +82,6 @@ public class Client extends DAO<Client> {
 			requete_selection.close();
 			return c;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -184,23 +89,47 @@ public class Client extends DAO<Client> {
 
 	@Override
 	public boolean update(Client obj) {
-		// TODO Auto-generated method stub
+		try {
+			PreparedStatement requeteUpdate=this.connect.prepareStatement(
+			"UPDATE LesClients set"+
+			"mdp=?,"+
+			"nom=?,"+
+			"prenom=?,"+
+			"numeroRue=?,"+
+			"nomRue=?,"+
+			"ville=?,"+
+			"cp=?,"+
+			""+
+			"where mail=?");
+			requeteUpdate.setString(1, obj.mail);
+			requeteUpdate.setString(2, obj.nom);
+			requeteUpdate.setString(3, obj.prenom);
+			requeteUpdate.setString(4, obj.mdp);
+			requeteUpdate.setInt(5, obj.numeroRue);
+			requeteUpdate.setString(6, obj.nomRue);
+			requeteUpdate.setString(7, obj.ville);
+			requeteUpdate.setInt(8,obj.cp);
+			requeteUpdate.setString(9, obj.pays);
+			int reussi= requeteUpdate.executeUpdate();
+			requeteUpdate.close();
+			return reussi ==1;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 
 	@Override
 	public boolean delete(Client obj) {
-		// TODO Auto-generated method stub
 		try {
 			PreparedStatement requete_delette=this.connect.prepareStatement(
-				"DELETE FROM Lesclients where mail=?"
+				"DELETE FROM LesClients where mail=?"
 			);
 			requete_delette.setString(1,obj.mail);
-			int ok=requete_delette.executeUpdate();
+			int reussi=requete_delette.executeUpdate();
 			requete_delette.close();
-			return ok==1;
+			return reussi==1;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return false;
@@ -208,7 +137,6 @@ public class Client extends DAO<Client> {
 
 	@Override
 	public Client[] readAll() {
-		// TODO Auto-generated method stub
 		ArrayList<Client> c= new ArrayList<Client>();
 		try{
 		PreparedStatement requete_all=this.connect.prepareStatement(
@@ -231,7 +159,6 @@ public class Client extends DAO<Client> {
 			requete_all.close();
 			return (Client[]) c.toArray();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -310,7 +237,7 @@ public class Client extends DAO<Client> {
 		public void setPays(String pays) {
 			this.pays = pays;
 		}
-		private void setAll(String mail, String nom, String prenom, String mdp, int numeroRue, String nomRue,
+		public void setAll(String mail, String nom, String prenom, String mdp, int numeroRue, String nomRue,
 		String ville, int cp, String pays){
 			this.setMail(mail);
 			this.setMdp(mdp);
