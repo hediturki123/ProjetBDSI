@@ -1,3 +1,4 @@
+package photonum;
 public class InferfaceClient  {
     
     public static void interfaceConnexion(){

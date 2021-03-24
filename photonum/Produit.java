@@ -1,41 +1,42 @@
+package photonum;
 import java.sql.Connection;
 
-public class Commande extends DAO<Commande> {
+public class Produit extends DAO<Produit>{
 
-	public Commande(Connection conn) {
+	public Produit(Connection conn) {
 		// TODO Auto-generated constructor stub
 		super(conn);
+		
 	}
 
 	@Override
-	public boolean create(Commande obj) {
+	public boolean create(Produit obj) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public Commande read(Object id) {
+	public Produit read(Object id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Commande[] readAll() {
+	public Produit[] readAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public boolean update(Commande obj) {
+	public boolean update(Produit obj) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean delete(Commande obj) {
+	public boolean delete(Produit obj) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
 
 }

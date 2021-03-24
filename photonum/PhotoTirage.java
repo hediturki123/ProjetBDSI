@@ -1,3 +1,4 @@
+package photonum;
 import java.sql.Connection;
 
 public class PhotoTirage extends Photo {
