@@ -42,7 +42,6 @@ public class ImpressionDAO extends DAO<Impression> {
 			if(result.next())
 			{
 				Impression res = new Impression(
-						result.getInt("idImpression"),
 						result.getString("reference"),
 						result.getString("type"),
 						result.getString("titre"));
@@ -108,7 +107,6 @@ public class ImpressionDAO extends DAO<Impression> {
 			while(result.next())
 			{
 				Impression res = new Impression(
-						result.getInt("idImpression"),
 						result.getString("reference"),
 						result.getString("type"),
 						result.getString("titre"));

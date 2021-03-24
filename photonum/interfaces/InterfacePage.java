@@ -5,7 +5,7 @@ import photonum.utils.LectureClavier;
 
 public class InterfacePage {
 
-	public Page interfaceCreationPage(int idImpression) {
+	public static Page interfaceCreationPage(int idImpression) {
 		System.out.println("Vous allez ici créer une page pour votre impression.");
 		System.out.println("Rentrez votre mise en forme");
 		String mef = LectureClavier.lireChaine();
