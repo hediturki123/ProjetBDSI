@@ -1,43 +1,43 @@
 package photonum.dao;
+
 import java.sql.Connection;
 
-import photonum.objects.PhotoAlbum;
+import photonum.objects.PhotoTirage;
 
-public class PhotoAlbumDAO extends DAO<PhotoAlbum>{
-    
-    public PhotoAlbumDAO(Connection conn) {
+public class PhotoTirageDAO extends DAO<PhotoTirage>{
+	
+	public PhotoTirageDAO(Connection conn) {
 		super(conn);
 	}
 
 	@Override
-	public boolean create(PhotoAlbum obj) {
+	public boolean create(PhotoTirage obj) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public PhotoAlbum read(Object obj) {
+	public PhotoTirage read(Object obj) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public PhotoAlbum[] readAll(Object obj) {
+	public PhotoTirage[] readAll(Object obj) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public boolean update(PhotoAlbum obj) {
+	public boolean update(PhotoTirage obj) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean delete(PhotoAlbum obj) {
+	public boolean delete(PhotoTirage obj) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 
 }

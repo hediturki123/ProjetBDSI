@@ -1,5 +1,5 @@
 package photonum.objects;
-import photonum.squellete_appli;
+import photonum.PhotoNum;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,7 +18,7 @@ public class Page{
 	
 	public static int lastId() {
 		try {
-			PreparedStatement requete_last = squellete_appli.conn.prepareStatement("SELECT max(idPage)+1 FROM LesPages");
+			PreparedStatement requete_last = PhotoNum.conn.prepareStatement("SELECT max(idPage)+1 FROM LesPages");
 			ResultSet res = requete_last.executeQuery();
 			if(res.next()) {
 				return res.getInt("idPage");
