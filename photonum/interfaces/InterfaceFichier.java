@@ -35,12 +35,12 @@ public class InterfaceFichier {
             infoPVD=LectureClavier.lireChaine();
         }
         int resolution=LectureClavier.lireEntier("donnez moi la resolution");
-        img=new FichierImage(squellete_appli.conn, chemin,c.getMail(), infoPVD, resolution,false,Date.valueOf(LocalDate.now()));
+        img=new FichierImage(chemin,c.getMail(), infoPVD, resolution,false,Date.valueOf(LocalDate.now()));
         img.create(img);
     }
 
     public static void supprimerFichierImage(Client c){
-        FichierImage img=new FichierImage(squellete_appli.conn);
+        FichierImage img=new FichierImage(PhotoNum.conn);
         FichierImage [] imageClient=img.readAll(c);
         if(imageClient.length>0){
             System.out.println("Vos fichiers d'image : ");

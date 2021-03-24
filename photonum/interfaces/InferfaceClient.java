@@ -21,7 +21,7 @@ public class InferfaceClient  {
 	}
     
     public static void connexion(){
-		ClientDAO c=new ClientDAO(photonum.conn);
+		ClientDAO c=new ClientDAO(PhotoNum.conn);
 		System.out.println("veuillez entrez votre adresse mail");
 		String mailConnexion=LectureClavier.lireChaine();
 		System.out.println("veuillez entrez votre mot de passe");
