@@ -1,5 +1,8 @@
-package photonum;
-
+package photonum.interfaces;
+import photonum.squellete_appli;
+import photonum.objects.Client;
+import photonum.objects.Impression;
+import photonum.utils.*;
 public class InterfaceImpression {
 
 	public void interfaceImpression() {
