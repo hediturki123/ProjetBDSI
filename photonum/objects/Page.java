@@ -18,13 +18,12 @@ public class Page{
 	
 	public static int lastId() {
 		try {
-			PreparedStatement requete_last = PhotoNum.conn.prepareStatement("SELECT max(idPage)+1 FROM LesPages");
+			PreparedStatement requete_last = PhotoNum.conn.prepareStatement("SELECT max(idPage) FROM LesPages");
 			ResultSet res = requete_last.executeQuery();
 			if(res.next()) {
 				return res.getInt("idPage");
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return 0;

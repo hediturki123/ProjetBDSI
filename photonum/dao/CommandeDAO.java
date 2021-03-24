@@ -1,42 +1,220 @@
 package photonum.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import photonum.objects.Commande;
+import photonum.objects.StatutCommande;
 
 public class CommandeDAO extends DAO<Commande>{
 	public CommandeDAO(Connection conn) {
 		super(conn);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public boolean create(Commande obj) {
-		// TODO Auto-generated method stub
+		try {
+			PreparedStatement requete = this.connect.prepareStatement(
+				"INSERT INTO LesCommandes VALUES (?, ?, ?, ?, ?)"
+			);
+			requete.setString(1, obj.getMail());
+			requete.setDate(2, obj.getDateCommande());
+			requete.setBoolean(3, obj.getEstLivreChezClient());
+			
+			switch(obj.getStatus()) {
+				case EN_COURS :
+					requete.setString(4, "enCours");
+				case PRETE_ENVOI :
+					requete.setString(4, "preteEnvoi");
+				case ENVOYEE :
+					requete.setString(4, "envoyee");
+			}
+
+			requete.setString(5, obj.getCodePromo());
+
+			boolean reussi = requete.execute();
+			requete.close();
+			return reussi;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 
 	@Override
 	public Commande read(Object id) {
-		// TODO Auto-generated method stub
+		try {
+			int identifiant = (int) id;
+			Commande c;
+			StatutCommande statut;
+			PreparedStatement requete = this.connect.prepareStatement(
+				"SELECT * FROM LesCommandes WHERE idCommande = ?"
+			);
+			requete.setInt(1, identifiant);
+			ResultSet resultat = requete.executeQuery();
+
+			if (resultat.next()) {
+				c = new Commande(
+					resultat.getString("mail"),
+					resultat.getDate("date"),
+					resultat.getBoolean("estLivreChezClient"),
+					statut,
+					resultat.getString("codePromo")
+				);
+			}
+			requete.close();
+			return c;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 		return null;
 	}
 
 	@Override
 	public Commande[] readAll(Object obj) {
-		// TODO Auto-generated method stub
+		
+		List<Commande> commandes = new List<Commande>();
+		
+		try {
+			PreparedStatement requete = this.connect.prepareStatement(
+				"SELECT * FROM LesCommandes"
+			);
+			ResultSet resultat = requete.executeQuery();
+			
+			while (resultat.next()) {
+				
+				StatutCommande statut;
+				switch(resultat.getString("status")) {
+					case "enCours":
+						statut = StatutCommande.EN_COURS;
+						break;
+					case "preteEnvoi" :
+						statut = StatutCommande.PRETE_ENVOI;
+						break;
+					case "envoyee" :
+						statut = StatutCommande.ENVOYEE;
+						break;
+					default :
+						statut = null;
+						break;
+				}
+
+				commandes.add(new Commande(
+					resultat.getString("mail"),
+					resultat.getDate("dateCommande"),
+					resultat.getBoolean("estLivreChezClient"),
+					statut,
+					resultat.getString("codePromo")
+				));
+			}
+
+			requete.close();
+			return commandes;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+
 		return null;
 	}
 
 	@Override
 	public boolean update(Commande obj) {
-		// TODO Auto-generated method stub
+		try {
+			PreparedStatement requete = this.connect.prepareStatement(
+				"UPDATE LesCommandes SET status = ? WHERE idCommande = ?"
+			);
+			requete.setInt(1, obj.getIdCommande());
+
+			switch(obj.getStatus()) {
+				case EN_COURS :
+					requete.setString(2, "enCours");
+				case PRETE_ENVOI :
+					requete.setString(2, "preteEnvoi");
+				case ENVOYEE :
+					requete.setString(2, "envoyee");
+			}
+
+			int reussi = requete.executeUpdate();
+			requete.close();
+			return reussi == 1;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 
 	@Override
 	public boolean delete(Commande obj) {
-		// TODO Auto-generated method stub
+		 try {
+			PreparedStatement requete = this.connect.prepareStatement(
+				"DELETE FROM LesCommandes WHERE idCommande = ?"
+			);
+			requete.setInt(1, obj.getIdCommande());
+			int reussi = requete.executeUpdate();
+			requete.close();
+			return reussi == 1;
+
+		 } catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return false;
+	}
+
+	public List<Commande> readAllByStatus(StatutCommande sc) {
+
+		List<Commande> commande = new ArrayList<Commande>();
+
+		try {
+
+			PreparedStatement requete = this.connect.prepareStatement(
+				"SELECT * FROM LesCommandes WHERE status = ?"
+			);
+			requete.setString(1, sc.toString());
+			ResultSet resultat = requete.executeQuery();
+
+			while(resultat.next()) {
+				StatutCommande statut;
+				switch(resultat.getString("status")) {
+					case "enCours":
+						statut = StatutCommande.EN_COURS;
+						break;
+					case "preteEnvoi" :
+						statut = StatutCommande.PRETE_ENVOI;
+						break;
+					case "envoyee" :
+						statut = StatutCommande.ENVOYEE;
+						break;
+					default :
+						statut = null;
+						break;
+				}
+
+				Commande c = new Commande(
+					resultat.getString("mail"),
+					resultat.getDate("dateCommande"),
+					resultat.getBoolean("estLivreChezClient"),
+					statut,
+					resultat.getString("codePromo")
+				);
+				commande.add(c);
+			}
+
+			return commande;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

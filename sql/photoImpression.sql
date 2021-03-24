@@ -28,8 +28,8 @@ CREATE TABLE LesClients (
 );
 
 CREATE TABLE LesCodesPromo (
+	code varchar2(10), -- Attention si de manière procédurale.
 	mail varchar2(80),
-	code varchar2(10),--attention si de maniere procedural ,
 	estUtilise number(1),
 	constraint priCP1 primary key (code),-- Genéré de manière procédurale.
 	constraint frClientCP foreign key (mail) references LesClients(mail)
@@ -41,7 +41,7 @@ CREATE TABLE LesCommandes (
 	dateCommande date not null,
 	estLivreChezClient number(1) not null,
 	status varchar2(20) not null,
-	code varchar2(10) not null,
+	code varchar2(10) null,
 	constraint priCO1 primary key (idCommande),
 	constraint frClientCom foreign key (mail) references LesClients(mail),
 	constraint frCodeProm foreign key (code) references LesCodesPromo(code),
@@ -74,7 +74,7 @@ CREATE TABLE LesFichiersImage (
 	estPartage number(1),
 	dateUpload Date,
 	constraint PriF1 primary key (chemin),
-	constraint frFichierClient foreign key (mailProprio) references LesClients(mail)	
+	constraint frFichierClient foreign key (mailProprio) references LesClients(mail)
 );
 
 CREATE TABLE LesImpressions (
@@ -139,7 +139,7 @@ CREATE TABLE LesPhotosAlbums (
 CREATE VIEW LesCommandesPrix AS
 	SELECT idCommande, sum(prix * quantite * CASE WHEN code IS NULL THEN 1 ELSE 0.95 END) AS prixTotal
 	FROM LesCommandes
-	NATURAL JOIN LesArticles 
+	NATURAL JOIN LesArticles
 	NATURAL JOIN LesImpressions
 	NATURAL JOIN LesProduits
 	GROUP BY idCommande

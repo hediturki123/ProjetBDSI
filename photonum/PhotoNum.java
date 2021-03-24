@@ -8,12 +8,9 @@ public class PhotoNum {
     private static final String configurationFile = "BD.properties";
     public static Connection conn;
 
-
-
-
     public static void main(String[] args) {
 
-        try{
+        try {
             System.out.print("Loading Oracle driver... ");
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
             System.out.println("loaded");
@@ -23,18 +20,22 @@ public class PhotoNum {
    	        System.out.println("connected");
             conn.setAutoCommit(true);
 
-            int choix=LectureClavier.lireEntier("1. Interface Client \n2. Interface Gestion");
-            while(choix!=1 && choix!=2){
-                choix=LectureClavier.lireEntier("1. Interface Client \n2. Interface Gestion");
+            int choix = LectureClavier.lireEntier(
+                "1. Connexion client\n" +
+                "2. Accès gestionnaire" + "> "
+            );
+            while (choix!=1 && choix!=2) {
+                choix = LectureClavier.lireEntier(
+                    "1. Connexion client\n" +
+                    "2. Accès gestionnaire" + "> "
+                );
             }
-            switch(choix){
-                case 1 : InterfaceClient.interfaceConnexion();
-                        break;
+            switch (choix) {
+                case 1: InterfaceClient.interfaceConnexion(); break;
                 case 2: break;
             }
 
-        }
-        catch(SQLException e){
+        } catch(SQLException e) {
             System.err.println("failed");
               System.out.println("Affichage de la pile d'erreur");
   	          e.printStackTrace(System.err);

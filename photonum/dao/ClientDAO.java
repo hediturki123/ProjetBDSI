@@ -1,4 +1,5 @@
 package photonum.dao;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,25 +14,24 @@ public class ClientDAO extends DAO<Client> {
 	public ClientDAO(Connection conn){
 		super(conn);
 	}
-	
-	
 
 	@Override
 	public boolean create(Client obj) {
 
 		try {
 			PreparedStatement requeteAjout=this.connect.prepareStatement(
-					"INSERT INTO LesClients VALUES (?,?,?,?,?,?,?,?,?)");
-					requeteAjout.setString(1, obj.getMail());
-					requeteAjout.setString(2, obj.getNom());
-					requeteAjout.setString(3, obj.getPrenom());
-					requeteAjout.setString(4, obj.getMdp());
-					requeteAjout.setInt(5, obj.getNumeroRue());
-					requeteAjout.setString(6, obj.getNomRue());
-					requeteAjout.setString(7, obj.getVille());
-					requeteAjout.setInt(8,obj.getCp());
-					requeteAjout.setString(9, obj.getPays());
-			
+				"INSERT INTO LesClients VALUES (?,?,?,?,?,?,?,?,?)"
+			);
+			requeteAjout.setString(1, obj.getMail());
+			requeteAjout.setString(2, obj.getNom());
+			requeteAjout.setString(3, obj.getPrenom());
+			requeteAjout.setString(4, obj.getMdp());
+			requeteAjout.setInt(5, obj.getNumeroRue());
+			requeteAjout.setString(6, obj.getNomRue());
+			requeteAjout.setString(7, obj.getVille());
+			requeteAjout.setInt(8,obj.getCp());
+			requeteAjout.setString(9, obj.getPays());
+
 			boolean reussi=requeteAjout.execute();
 			requeteAjout.close();
 			return reussi;

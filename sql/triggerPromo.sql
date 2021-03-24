@@ -1,12 +1,12 @@
 CREATE PROCEDURE promo_proc (
-    idCommande NUMBER(3) 
+    idCommande NUMBER(3)
 )
 AS LANGUAGE JAVA
-NAME 'Promotion.ajouterPromo(int)';
+NAME 'CodePromo.ajouterPromo(int)';
 
 CREATE trigger promo_trg
-    AFTER 
-    CREATE 
+    AFTER
+    CREATE
     ON LesCommandes
     FOR EACH ROW
     WHEN ((SELECT prixTotal FROM LesCommandesPrix WHERE idCommande = :NEW.idCommande) >= 100)
