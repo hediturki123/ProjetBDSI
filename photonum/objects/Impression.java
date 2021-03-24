@@ -8,6 +8,7 @@ public class Impression{
 	private String titre;
 	
 	public Impression() {}
+	
 	public Impression(int idImpression, String reference, String type, String titre) {
 		this.idImpression = idImpression;
 		this.reference = reference;
