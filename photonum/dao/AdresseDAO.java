@@ -3,8 +3,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import photonum.Adresse;
-import photonum.Client;
+
+import photonum.objects.Client;
+import photonum.objects.Adresse;
 
 public class AdresseDAO extends DAO<Adresse>{
 	public AdresseDAO(Connection conn) {

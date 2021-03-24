@@ -1,5 +1,11 @@
 package photonum;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+import photonum.interfaces.InferfaceClient;
+import photonum.utils.DatabaseAccessProperties;
+import photonum.utils.LectureClavier;
 
 public class squellete_appli {
     private static final String configurationFile = "BD.properties";
