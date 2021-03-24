@@ -1,3 +1,4 @@
+package photonum;
 public class InterfaceFichier {
     
     public static void interfaceDemandeFichier(Client c){

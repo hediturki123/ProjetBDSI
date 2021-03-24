@@ -22,7 +22,7 @@ public class Produit extends DAO<Produit>{
 	}
 
 	@Override
-	public Produit[] readAll() {
+	public Produit[] readAll(Object obj) {
 		// TODO Auto-generated method stub
 		return null;
 	}
