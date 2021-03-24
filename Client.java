@@ -30,21 +30,21 @@ public class Client extends DAO<Client> {
 	public boolean create(Client obj) {
 
 		try {
-			PreparedStatement requete_ajout=this.connect.prepareStatement(
+			PreparedStatement requeteAjout=this.connect.prepareStatement(
 					"INSERT INTO LesClients VALUES (?,?,?,?,?,?,?,?,?)");
-			requete_ajout.setString(1, obj.mail);
-			requete_ajout.setString(2, obj.nom);
-			requete_ajout.setString(3, obj.prenom);
-			requete_ajout.setString(4, obj.mdp);
-			requete_ajout.setInt(5, obj.numeroRue);
-			requete_ajout.setString(6, obj.nomRue);
-			requete_ajout.setString(7, obj.ville);
-			requete_ajout.setInt(8,obj.cp);
-			requete_ajout.setString(9, obj.pays);
+					requeteAjout.setString(1, obj.getMail());
+					requeteAjout.setString(2, obj.getNom());
+					requeteAjout.setString(3, obj.getPrenom());
+					requeteAjout.setString(4, obj.getMdp());
+					requeteAjout.setInt(5, obj.getNumeroRue());
+					requeteAjout.setString(6, obj.getNomRue());
+					requeteAjout.setString(7, obj.getVille());
+					requeteAjout.setInt(8,obj.getCp());
+					requeteAjout.setString(9, obj.getPays());
 			
-			boolean reussi=requete_ajout.execute();
+			boolean reussi=requeteAjout.execute();
 			setAll(obj.mail, obj.nom, obj.prenom, obj.mdp, obj.numeroRue, obj.nomRue, obj.ville, obj.cp, obj.pays);
-			requete_ajout.close();
+			requeteAjout.close();
 			return reussi;
 		} catch (SQLException e) {
 
@@ -101,15 +101,15 @@ public class Client extends DAO<Client> {
 			"cp=?,"+
 			""+
 			"where mail=?");
-			requeteUpdate.setString(1, obj.mail);
-			requeteUpdate.setString(2, obj.nom);
-			requeteUpdate.setString(3, obj.prenom);
-			requeteUpdate.setString(4, obj.mdp);
-			requeteUpdate.setInt(5, obj.numeroRue);
-			requeteUpdate.setString(6, obj.nomRue);
-			requeteUpdate.setString(7, obj.ville);
-			requeteUpdate.setInt(8,obj.cp);
-			requeteUpdate.setString(9, obj.pays);
+			requeteUpdate.setString(1, obj.getMail());
+			requeteUpdate.setString(2, obj.getNom());
+			requeteUpdate.setString(3, obj.getPrenom());
+			requeteUpdate.setString(4, obj.getMdp());
+			requeteUpdate.setInt(5, obj.getNumeroRue());
+			requeteUpdate.setString(6, obj.getNomRue());
+			requeteUpdate.setString(7, obj.getVille());
+			requeteUpdate.setInt(8,obj.getCp());
+			requeteUpdate.setString(9, obj.getPays());
 			int reussi= requeteUpdate.executeUpdate();
 			requeteUpdate.close();
 			return reussi ==1;
@@ -125,7 +125,7 @@ public class Client extends DAO<Client> {
 			PreparedStatement requete_delette=this.connect.prepareStatement(
 				"DELETE FROM LesClients where mail=?"
 			);
-			requete_delette.setString(1,obj.mail);
+			requete_delette.setString(1,obj.getMail());
 			int reussi=requete_delette.executeUpdate();
 			requete_delette.close();
 			return reussi==1;

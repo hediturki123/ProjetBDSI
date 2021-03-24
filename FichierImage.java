@@ -27,17 +27,18 @@ public class FichierImage extends DAO<FichierImage> {
 	@Override
 	public boolean create(FichierImage obj) {
 		try{
-			PreparedStatement requete_ajout=this.connect.prepareStatement(
+			PreparedStatement requeteAjout=this.connect.prepareStatement(
 				"INSERT INTO LesFichiersImage values (?,?,?,?,?,?)");
-			requete_ajout.setString(1, obj.chemin);
-			requete_ajout.setString(2, obj.mailProprio);
-			requete_ajout.setString(3, obj.infoPVD);
-			requete_ajout.setInt(4, obj.resolution);
-			requete_ajout.setInt(5, obj.estPartage ? 0:1);
-			requete_ajout.setDate(6, obj.dateUpload);
+				requeteAjout.setString(1, obj.getChemin());
+				requeteAjout.setString(2, obj.getMailProprio());
+				requeteAjout.setString(3, obj.getInfoPVD());
+				requeteAjout.setInt(4, obj.getResolution());
+				requeteAjout.setInt(5, obj.isEstPartage() ? 0:1);
+				requeteAjout.setDate(6, obj.getDateUpload());
+				
 
-			boolean reussi=requete_ajout.execute();
-			requete_ajout.close();
+			boolean reussi=requeteAjout.execute();
+			requeteAjout.close();
 			setAll(obj.chemin, obj.mailProprio, obj.infoPVD, obj.resolution, obj.estPartage, obj.dateUpload);
 			return reussi;
 		}catch(SQLException e){
@@ -87,12 +88,12 @@ public class FichierImage extends DAO<FichierImage> {
 				"estPartage=?,"+
 				"dateUpload=?"+
 				"where mailProprio=? and chemin=?");
-			requeteUpdate.setString(1, obj.chemin);
-			requeteUpdate.setString(2, obj.mailProprio);
-			requeteUpdate.setString(3, obj.infoPVD);
-			requeteUpdate.setInt(4, obj.resolution);
-			requeteUpdate.setInt(5, obj.estPartage ? 0:1);
-			requeteUpdate.setDate(6, obj.dateUpload);
+			requeteUpdate.setString(1, obj.getChemin());
+			requeteUpdate.setString(2, obj.getMailProprio());
+			requeteUpdate.setString(3, obj.getInfoPVD());
+			requeteUpdate.setInt(4, obj.getResolution());
+			requeteUpdate.setInt(5, obj.isEstPartage() ? 0:1);
+			requeteUpdate.setDate(6, obj.getDateUpload());
 			
 			int reussi=requeteUpdate.executeUpdate();
 			requeteUpdate.close();
@@ -109,8 +110,8 @@ public class FichierImage extends DAO<FichierImage> {
 		try {
 			PreparedStatement requeteSuppr=this.connect.prepareStatement(
 				"DELETE FROM lesFichiersImage where mailProprio=? and chemin=?");
-				requeteSuppr.setString(1, obj.mailProprio);
-				requeteSuppr.setString(2, obj.chemin);
+				requeteSuppr.setString(1, obj.getMailProprio());
+				requeteSuppr.setString(2, obj.getChemin());
 			int reussi=requeteSuppr.executeUpdate();
 			requeteSuppr.close();
 			return reussi==1;

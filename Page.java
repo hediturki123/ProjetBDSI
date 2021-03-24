@@ -1,50 +1,125 @@
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 
 public class Page extends DAO<Page> {
 
 	private int idPage;
-	private String idImpression;
+	private int idImpression;
 	private String miseEnForme;
 	
-	public Page(Connection conn, int idPage, String idImpression, String miseEnForme) {
+	public Page(Connection conn, int idPage, int idImpression, String miseEnForme) {
 		super(conn);
-		this.idPage = idPage;
-		this.idImpression = idImpression;
-		this.miseEnForme = miseEnForme;
+		setAll(idPage, idImpression, miseEnForme);
 	}
 
 	@Override
 	public boolean create(Page obj) {
-		// TODO Auto-generated method stub
+		try {
+			PreparedStatement requeteCreate=this.connect.prepareStatement(
+				"INSERT INTO LesPages VALUES (?,?,?)"
+			);
+			requeteCreate.setInt(1,obj.getIdPage());
+			requeteCreate.setInt(2, obj.getIdImpression());
+			requeteCreate.setString(3, obj.getMiseEnForme());
+
+			int reussi = requeteCreate.executeUpdate();
+			requeteCreate.close();
+			return reussi==1;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 
 	@Override
 	public Page read(Object id) {
-		// TODO Auto-generated method stub
+		int [] args=(int[])id;
+		Page p;
+		try {
+			PreparedStatement requeteRead=this.connect.prepareStatement(
+				"SELECT * FROM LesPages where idPage=? and idImpression=?"
+			);
+			requeteRead.setInt(1,args[0]);
+			requeteRead.setInt(2,args[1]);
+			ResultSet resultat = requeteRead.executeQuery();
+			if(!resultat.next()){
+				p=null;
+			}else{
+				p=new Page(this.connect, 
+				resultat.getInt("idPage"), 
+				resultat.getInt("idImpression"), 
+				resultat.getString("miseEnForme"));
+			}
+			requeteRead.close();
+			return p;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
 	@Override
 	public Page[] readAll() {
-		// TODO Auto-generated method stub
+		ArrayList<Page> tab = new ArrayList<>();
+		try {
+			PreparedStatement requeteAll=this.connect.prepareStatement(
+				"select * from LesPages"
+			);
+			ResultSet resultat=requeteAll.executeQuery();
+			while(resultat.next()){
+				tab.add(
+					new Page(this.connect,
+					 resultat.getInt("idPage"),
+					 resultat.getInt("idImpression"),
+					 resultat.getString("miseEnForme"))
+				);
+			}
+			requeteAll.close();
+			return (Page []) tab.toArray();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
 	@Override
 	public boolean update(Page obj) {
-		// TODO Auto-generated method stub
+		try {
+			PreparedStatement requeteUpdate=this.connect.prepareStatement(
+				"UPDATE INTO LesPages set"+
+				"miseEnForme=? where idPage=? and idImpression=?"
+			);
+			requeteUpdate.setString(1,obj.getMiseEnForme());
+			requeteUpdate.setInt(1,obj.getIdPage());
+			requeteUpdate.setInt(2,obj.getIdImpression());
+
+			int reussi=requeteUpdate.executeUpdate();
+			requeteUpdate.close();
+			return reussi==1;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 
 	@Override
 	public boolean delete(Page obj) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+		try {
+			PreparedStatement requetDelete=this.connect.prepareStatement(
+				"DELETE FROM lesPages where idPage=? and idImpression=?"
+			);
+			requetDelete.setInt(1, obj.getIdPage());
+			requetDelete.setInt(2, obj.getIdImpression());
 
-	public static void InterfacePage() {
-		System.out.println("Vous allez ici créer une page");
+			int reussi=requetDelete.executeUpdate();
+			requetDelete.close();
+			return reussi==1;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	
@@ -58,11 +133,11 @@ public class Page extends DAO<Page> {
 		this.idPage = idPage;
 	}
 
-	protected String getIdImpression() {
+	protected int getIdImpression() {
 		return idImpression;
 	}
 
-	protected void setIdImpression(String idImpression) {
+	protected void setIdImpression(int idImpression) {
 		this.idImpression = idImpression;
 	}
 
@@ -72,5 +147,10 @@ public class Page extends DAO<Page> {
 
 	protected void setMiseEnForme(String miseEnForme) {
 		this.miseEnForme = miseEnForme;
+	}
+	private void setAll(int idPage, int idImpression, String miseEnForme){
+		setIdImpression(idImpression);
+		setIdPage(idPage);
+		setMiseEnForme(miseEnForme);
 	}
 }
