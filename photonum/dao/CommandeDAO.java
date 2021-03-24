@@ -50,7 +50,7 @@ public class CommandeDAO extends DAO<Commande>{
 	public Commande read(Object id) {
 		try {
 			int identifiant = (int) id;
-			Commande c;
+			Commande c=null;
 			StatutCommande statut;
 			PreparedStatement requete = this.connect.prepareStatement(
 				"SELECT * FROM LesCommandes WHERE idCommande = ?"
@@ -59,6 +59,16 @@ public class CommandeDAO extends DAO<Commande>{
 			ResultSet resultat = requete.executeQuery();
 
 			if (resultat.next()) {
+				switch(resultat.getString("status")){
+					case "enCours":statut=StatutCommande.EN_COURS;
+						break;
+					case "preteEnvoi":statut=StatutCommande.PRETE_ENVOI;
+						break;
+					case "envoyee":statut=StatutCommande.ENVOYEE;
+					default :
+					statut=StatutCommande.EN_COURS;
+					
+				}
 				c = new Commande(
 					resultat.getString("mail"),
 					resultat.getDate("date"),
@@ -78,9 +88,9 @@ public class CommandeDAO extends DAO<Commande>{
 	}
 
 	@Override
-	public Commande[] readAll(Object obj) {
+	public List<Commande> readAll() {
 		
-		List<Commande> commandes = new List<Commande>();
+		List<Commande> commandes = new ArrayList<Commande>();
 		
 		try {
 			PreparedStatement requete = this.connect.prepareStatement(

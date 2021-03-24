@@ -28,8 +28,8 @@ public class InterfaceGestion {
         System.out.println("idCommande | mail | date | estLivreChezClient | Statut | codePromo");
         co.forEach(
             c -> {
-                System.out.println(co.getIdCommande() + co.getMail() + co.getDateCommande() 
-                + co.getEstLivreChezClient() + co.getStatus() + co.getCodePromo());
+                System.out.println(c.getIdCommande() + c.getMail() + c.getDateCommande() 
+                + c.getEstLivreChezClient() + c.getStatus() + c.getCodePromo());
             }
         );  
         Commande commande = commandeDAO.read(id);

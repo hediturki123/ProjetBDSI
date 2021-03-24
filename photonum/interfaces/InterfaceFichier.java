@@ -2,6 +2,8 @@ package photonum.interfaces;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
+
 import photonum.utils.*;
 import photonum.objects.*;
 import photonum.*;
@@ -43,26 +45,27 @@ public class InterfaceFichier {
     }
 
     public static void supprimerFichierImage(Client c){
-    	//TODO A VERIFIER
+        //TODO A VERIFIER
+        int choix;
         DAO<FichierImage> imgDAO=new FichierImageDAO(PhotoNum.conn);
-        FichierImage [] imageClient=imgDAO.readAll(c);
-        if(imageClient.length>0){
+        List<FichierImage> imageClient=imgDAO.readAll();
+        if(imageClient.size()>0){
             System.out.println("Vos fichiers d'image : ");
-            for(int i=1;i<=imageClient.length;i++){
-                System.out.println(i+". "+imageClient[i-1].getChemin());
+            for(int i=1;i<=imageClient.size();i++){
+                System.out.println(i+". "+imageClient.get(i-1).getChemin());
             }
-            int choix=LectureClavier.lireEntier("choissisez quel photos vous voulez supprimez ? ");
+            choix=LectureClavier.lireEntier("choissisez quel photos vous voulez supprimez ? ");
 
-            while(choix<1 && choix>imageClient.length){
+            while(choix<1 && choix>imageClient.size()){
                 System.out.println("vous n'avez pas choissi un image existantes, veuillez recommencer");
                 System.out.println("Vos fichiers d'image : ");
-                for(int i=1;i<=imageClient.length;i++){
-                    System.out.println(i+". "+imageClient[i-1].getChemin());
+                for(int i=1;i<=imageClient.size();i++){
+                    System.out.println(i+". "+imageClient.get(i-1).getChemin());
                 }
                 choix=LectureClavier.lireEntier("choissisez quel photos vous voulez supprimez ? ");
             }
             if(LectureClavier.lireOuiNon("êtes vous sur de la supression")){
-                if(imgDAO.delete(imageClient[choix-1])){
+                if(imgDAO.delete(imageClient.get(choix-1))){
                      System.out.println("votre fichier a bien été supprimer");
                 }else{
                     System.out.println("votre fichier n'a pas pu etre supprimer veuillez reessayer");

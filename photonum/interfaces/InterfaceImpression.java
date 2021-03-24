@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import photonum.PhotoNum;
-import photonum.dao.DAO;
 import photonum.dao.ImpressionDAO;
 import photonum.objects.*;
 import photonum.utils.*;
@@ -94,7 +93,7 @@ public class InterfaceImpression {
 		System.out.println("Choisissez maintenant le titre de votre "+impression.getType()+".");
 		impression.setTitre(LectureClavier.lireChaine());
 		
-		DAO<Impression> impDAO = new ImpressionDAO(PhotoNum.conn);
+		ImpressionDAO impDAO = new ImpressionDAO(PhotoNum.conn);
 		boolean reussi = impDAO.create(impression);
 		if(reussi) 
 		{
