@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import photonum.objects.Impression;
 
@@ -98,7 +99,7 @@ public class ImpressionDAO extends DAO<Impression> {
 	}
 
 	@Override
-	public Impression[] readAll(Object obj) {
+	public List<Impression> readAll() {
 		try {
 			PreparedStatement requete_select = this.connect.prepareStatement("SELECT * FROM LesImpressions");
 			
@@ -113,7 +114,7 @@ public class ImpressionDAO extends DAO<Impression> {
 				requete_select.close();
 				tab.add(res);
 			}
-			return (Impression[])tab.toArray();
+			return tab;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

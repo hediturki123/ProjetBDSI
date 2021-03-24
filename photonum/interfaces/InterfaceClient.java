@@ -22,15 +22,17 @@ public class InterfaceClient  {
 	}
     
     public static void connexion(){
+		ClientDAO c=new ClientDAO(PhotoNum.conn);
+
 		System.out.println("veuillez entrez votre adresse mail");
 		String mailConnexion=LectureClavier.lireChaine();
 		System.out.println("veuillez entrez votre mot de passe");
 		String mdpconnexion=LectureClavier.lireChaine();
         String [] args= new String[2];
         args[0]=mailConnexion;
-	    args[1]=mdpconnexion;
-        DAO<Client> c = new ClientDAO(PhotoNum.conn);
-		while(c.read(args)==null){
+		args[1]=mdpconnexion;
+		Client clientCourant;
+		while((clientCourant=c.read(args))==null){
 			System.err.println("mot de passe/ identifiant incorrect");
 			System.out.println("veuillez entrez votre adresse mail");
 			mailConnexion=LectureClavier.lireChaine();
@@ -39,6 +41,7 @@ public class InterfaceClient  {
 			args[0]=mailConnexion;
 			args[1]=mdpconnexion;
 		}
+		menu(clientCourant);
     }
 
     public static void creationCompte(){
@@ -67,6 +70,16 @@ public class InterfaceClient  {
 		System.out.println("veuillez entrez votre pays ");
 		String pays=LectureClavier.lireChaine();
 
+		DAO<Client> clientDao=new ClientDAO(PhotoNum.conn);
+		Client c = new Client(mail, nom, prenom, mdp, numeroRue, nomRue, ville, cp, pays);
+	
+		if(clientDao.create(c)){
+			menu(c);
+		}else{
+			System.out.println("votre creation n'a pas marcher veuillez recommencer");
+			creationCompte();
+		}
+
 	}
     
     //ici dans cette fonction mmettre les fonctionnalité du client et l'envoyer dans les bonne interface
@@ -89,6 +102,7 @@ public class InterfaceClient  {
 		System.out.println("Merci de votre visite !");
  
 	}
+
 public static void afficherInfo(Client c){
 	System.out.println(c.toString());
 }

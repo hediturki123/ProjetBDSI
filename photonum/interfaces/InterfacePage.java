@@ -4,12 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import photonum.PhotoNum;
-import photonum.dao.DAO;
-import photonum.dao.PhotoDAO;
-import photonum.objects.Client;
-import photonum.objects.Page;
-import photonum.objects.Photo;
-import photonum.objects.PhotoTirage;
+import photonum.dao.*;
+import photonum.objects.*;
 import photonum.utils.LectureClavier;
 
 public class InterfacePage {

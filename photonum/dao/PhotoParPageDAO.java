@@ -1,6 +1,8 @@
 package photonum.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.util.List;
+
 import photonum.objects.Photo;
 import photonum.objects.PhotoParPage;
 
@@ -34,7 +36,7 @@ public class PhotoParPageDAO extends DAO<PhotoParPage> {
 	}
 
 	@Override
-	public PhotoParPage[] readAll(Object obj) {
+	public List<PhotoParPage> readAll() {
 		return null;
 	}
 	

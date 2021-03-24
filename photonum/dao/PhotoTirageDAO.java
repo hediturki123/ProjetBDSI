@@ -1,6 +1,7 @@
 package photonum.dao;
 
 import java.sql.Connection;
+import java.util.List;
 
 import photonum.objects.PhotoTirage;
 
@@ -23,7 +24,7 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 	}
 
 	@Override
-	public PhotoTirage[] readAll(Object obj) {
+	public List<PhotoTirage> readAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}

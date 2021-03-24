@@ -1,6 +1,7 @@
 package photonum.dao;
 
 import java.sql.Connection;
+import java.util.List;
 
 import photonum.objects.Article;
 
@@ -24,7 +25,7 @@ public class ArticleDAO  extends DAO<Article> {
 	}
 
 	@Override
-	public Article[] readAll(Object obj) {
+	public List<Article>readAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}

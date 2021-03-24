@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import photonum.objects.Client;
 
@@ -124,7 +125,7 @@ public class ClientDAO extends DAO<Client> {
 	}
 
 	@Override
-	public Client[] readAll(Object obj) {
+	public List<Client> readAll() {
 		ArrayList<Client> c= new ArrayList<Client>();
 		try{
 		PreparedStatement requete_all=this.connect.prepareStatement(
@@ -145,7 +146,7 @@ public class ClientDAO extends DAO<Client> {
 					resultat.getString("pays")));
 			}
 			requete_all.close();
-			return (Client[]) c.toArray();
+			return c;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

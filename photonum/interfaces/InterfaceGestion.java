@@ -1,4 +1,5 @@
 package photonum.interfaces;
+import photonum.PhotoNum;
 import photonum.objects.Client;
 import photonum.utils.*;
 public class InterfaceGestion {
@@ -7,7 +8,7 @@ public class InterfaceGestion {
     public void chercherCommande() {
         System.out.println("Entrer le mail du client : ");
         String mail = LectureClavier.lireChaine();
-        Commande commande = new Commande(squellete_appli.conn);
+        CommandeDAO commande = new CommandeDAO(PhotoNum.conn);
         commande.read(mail);
         
     } 

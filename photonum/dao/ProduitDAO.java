@@ -1,6 +1,8 @@
 package photonum.dao;
 
 import java.sql.Connection;
+import java.util.List;
+
 import photonum.objects.Produit;
 
 public class ProduitDAO extends DAO<Produit>{
@@ -22,7 +24,7 @@ public class ProduitDAO extends DAO<Produit>{
 	}
 
 	@Override
-	public Produit[] readAll(Object obj) {
+	public List<Produit> readAll() {
 		return null;
 	}
 

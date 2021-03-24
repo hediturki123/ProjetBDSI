@@ -1,6 +1,7 @@
 package photonum.dao;
 
 import java.sql.Connection;
+import java.util.List;
 
 import photonum.objects.Commande;
 
@@ -23,7 +24,7 @@ public class CommandeDAO extends DAO<Commande>{
 	}
 
 	@Override
-	public Commande[] readAll(Object obj) {
+	public List<Commande> readAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}
