@@ -47,7 +47,6 @@ public class PageDAO extends DAO<Page>{
 				p=null;
 			}else{
 				p=new Page(
-				resultat.getInt("idPage"), 
 				resultat.getInt("idImpression"), 
 				resultat.getString("miseEnForme"));
 			}
@@ -70,7 +69,6 @@ public class PageDAO extends DAO<Page>{
 			while(resultat.next()){
 				tab.add(
 					new Page(
-					 resultat.getInt("idPage"),
 					 resultat.getInt("idImpression"),
 					 resultat.getString("miseEnForme"))
 				);

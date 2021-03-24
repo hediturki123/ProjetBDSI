@@ -10,7 +10,7 @@ import photonum.utils.*;
 
 public class InterfaceImpression {
 
-	public void interfaceCreationImpression() {
+	public void interfaceCreationImpression(Client client) {
 		Impression imp = new Impression();
 		System.out.println("Quel type d'impression voulez-vous créer?");
 		System.out.println("1. Tirage\n2. Album\n3. Calendrier\n4. Cadre");
@@ -22,62 +22,62 @@ public class InterfaceImpression {
 		switch(choix) {
 		case 1:
 			imp.setType("tirage");
-			createTirage(imp);
+			createTirage(imp,client);
 			break;
 		case 2:
 			imp.setType("album");
-			createAlbum(imp);
+			createAlbum(imp,client);
 			break;
 		case 3:
 			imp.setType("calendrier");
-			createCalendrier(imp);
+			createCalendrier(imp,client);
 			break;
 		case 4:
 			imp.setType("cadre");
-			createCadre(imp);
+			createCadre(imp,client);
 			break;
 		default:
 			imp.setType("tirage");
-			createTirage(imp);
+			createTirage(imp,client);
 			break;
 		}
 	}
 	
-	private void createCadre(Impression impression) {
+	private void createCadre(Impression impression, Client client) {
 		System.out.println("Vous allez ici créer votre cadre.\nVous devez donc créer une unique page.");
-		Page p = InterfacePage.interfaceCreationPage(impression.getIdImpression());
+		Page p = InterfacePage.interfaceCreationPage(impression.getIdImpression(),client);
 		List<Page> pages = new ArrayList<>();
 		pages.add(p);
 		impression.setPages(pages);
 		createImpression(impression);
 	}
 
-	private void createCalendrier(Impression impression) {
+	private void createCalendrier(Impression impression, Client client) {
 		System.out.println("Vous allez ici créer votre Calendrier.\nVous devez donc créer 12 pages.");
 		List<Page> pages = new ArrayList<>();
 		for(int i = 0; i<12; i++) {
-			pages.add(InterfacePage.interfaceCreationPage(impression.getIdImpression()));
+			pages.add(InterfacePage.interfaceCreationPage(impression.getIdImpression(),client));
 		}
 		impression.setPages(pages);
 		createImpression(impression);
 	}
 
-	private void createAlbum(Impression impression) {
+	private void createAlbum(Impression impression, Client client) {
 		System.out.println("Vous allez ici créer votre Album.\nVous pouvez donc créer le nombre de pages que vous voulez.");
 		List<Page> pages = new ArrayList<>();
 		for(boolean b = true; b; b = 1 != LectureClavier.lireEntier("quitter ou continuer")) {
-			pages.add(InterfacePage.interfaceCreationPage(impression.getIdImpression()));
+			pages.add(InterfacePage.interfaceCreationPage(impression.getIdImpression(),client));
 			System.out.println("Selectionnez 1 pour quitter et un autre nombre pour continuer la création de pages");
 		}
 		impression.setPages(pages);
 		createImpression(impression);
 	}
 
-	private void createTirage(Impression impression) {
+	private void createTirage(Impression impression, Client client) {
 		System.out.println("Vous allez ici créer votre Tirage.\nVous allez donc créer des photos spécifiques aux tirages");
 		List<PhotoTirage> photos = new ArrayList<>();
 		for(boolean b = true; b; b = 1 != LectureClavier.lireEntier("quitter ou continuer")) {
-			photos.add(InterfacePhoto.creationPhotoTirage(impression.getIdImpression()));
+			photos.add(InterfacePhoto.creationPhotoTirage(impression.getIdImpression(),client));
 			System.out.println("Selectionnez 1 pour quitter et un autre nombre pour continuer la création de pages");
 		}
 		impression.setPhotosTirage(photos);

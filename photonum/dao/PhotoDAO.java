@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+
 import photonum.objects.*;
 
 public class PhotoDAO extends DAO<Photo>{
@@ -107,4 +109,7 @@ public class PhotoDAO extends DAO<Photo>{
 		return false;
 	}
 
+	public List<Photo> readAllPhotosByClient(String mail){
+		return null;
+	}
 }

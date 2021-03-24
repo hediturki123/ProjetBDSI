@@ -12,7 +12,13 @@ public class InterfacePhoto {
 		//PhotoParPage p = new PhotoParPage(squellete_appli,idPhoto,idPage);
 	}
 	
-	public static PhotoTirage creationPhotoTirage(int idPhoto) {
+	public static PhotoTirage creationPhotoTirage(int idPhoto, Client client) {
+		//TODO
+		return null;
+	}
+	
+	public static Photo creationPhoto(int idPhoto, Client client)
+	{
 		//TODO
 		return null;
 	}
