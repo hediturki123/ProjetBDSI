@@ -58,10 +58,13 @@ public class InterfaceFichier {
                 if(img.delete(imageClient[choix-1])){
                      System.out.println("votre fichier a bien été supprimer");
                 }else{
-                    System.out.println("votre fichier n'a pas pu etre supprimer veuillez reesayer");
+                    System.out.println("votre fichier n'a pas pu etre supprimer veuillez reessayer");
                 }
             }else{
-
+                System.out.println("pas de souci votre image n'a pas été supprimer");
+            }
+            if(LectureClavier.lireOuiNon("voulez vous supprimer une autre image ? ")){
+                supprimerFichierImage(c);
             }
         }else{
             System.out.println("Vous avez aucun fichier dans votre compte , pensez a en ajouter avant dans supprimer :) ");

@@ -137,11 +137,13 @@ public class Adresse extends DAO<Adresse>{
 
 	@Override
 	public Adresse[] readAll(Object obj) {
+		Client c = (Client) obj;
 		ArrayList<Adresse> tab =new ArrayList<>();
 		try {
 			PreparedStatement requeteAll=this.connect.prepareStatement(
-				"select * from lesAdressesDeLivraison"
+				"select * from lesAdressesDeLivraison where mailClient=?"
 			);
+			requeteAll.setString(1, c.getMail());
 			ResultSet resultat=requeteAll.executeQuery();
 			while(resultat.next()){
 				tab.add(

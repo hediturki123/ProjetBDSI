@@ -76,7 +76,8 @@ public class InferfaceClient  {
 					break;
 				case 2:InterfaceFichier.interfaceDemandeFichier(c);
 					break;
-				case 3:break;
+				case 3:
+				break;
 				case 4:break;
 				default:System.out.println("Veuilllez choisir entre 1,2,3,4,5 ! ");
 						choix=LectureClavier.lireEntier("Alors ?");
