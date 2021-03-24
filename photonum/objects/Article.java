@@ -1,41 +1,5 @@
-package photonum;
+package photonum.objects;
 import java.sql.Connection;
 
-public class Article extends DAO<Article> {
-
-	public Article(Connection conn) {
-		super(conn);
-		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public boolean create(Article obj) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Article read(Object id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Article[] readAll(Object obj) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean update(Article obj) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean delete(Article obj) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
+public class Article{
 }

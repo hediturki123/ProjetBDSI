@@ -1,4 +1,4 @@
-package photonum;
+package photonum.objects;
 public class Adresse {
     private String mailClient;
 	private int numeroRue;

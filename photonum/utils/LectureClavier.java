@@ -1,4 +1,4 @@
-package photonum;
+package photonum.utils;
 /*package tplogo;*/
 import java.io.*;
 
