@@ -38,7 +38,7 @@ public class InterfaceFichier {
         }
         int resolution=LectureClavier.lireEntier("donnez moi la resolution");
         img=new FichierImage(chemin,c.getMail(), infoPVD, resolution,false,Date.valueOf(LocalDate.now()));
-        DAO<FichierImage> imgDAO = new FichierImageDAO(PhotoNum.conn);
+        FichierImageDAO imgDAO = new FichierImageDAO(PhotoNum.conn);
         imgDAO.create(img);
     }
 

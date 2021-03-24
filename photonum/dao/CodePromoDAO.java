@@ -1,7 +1,7 @@
 package photonum.dao;
 
 import java.sql.Connection;
-
+import java.util.List;
 import photonum.objects.CodePromo;
 
 public class CodePromoDAO extends DAO<CodePromo>{
@@ -24,7 +24,7 @@ public class CodePromoDAO extends DAO<CodePromo>{
 	}
 
 	@Override
-	public CodePromo[] readAll(Object obj) {
+	public List<CodePromo> readAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -30,9 +30,9 @@ public class InterfaceClient  {
 		String mdpconnexion=LectureClavier.lireChaine();
         String [] args= new String[2];
         args[0]=mailConnexion;
-	    args[1]=mdpconnexion;
-        DAO<Client> c = new ClientDAO(PhotoNum.conn);
-		while(c.read(args)==null){
+		args[1]=mdpconnexion;
+		Client clientCourant;
+		while((clientCourant=c.read(args))==null){
 			System.err.println("mot de passe/ identifiant incorrect");
 			System.out.println("veuillez entrez votre adresse mail");
 			mailConnexion=LectureClavier.lireChaine();
@@ -41,6 +41,7 @@ public class InterfaceClient  {
 			args[0]=mailConnexion;
 			args[1]=mdpconnexion;
 		}
+		menu(clientCourant);
     }
 
     public static void creationCompte(){
@@ -101,7 +102,7 @@ public class InterfaceClient  {
 		System.out.println("Merci de votre visite !");
  
 	}
-	
+
 public static void afficherInfo(Client c){
 	System.out.println(c.toString());
 }

@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import photonum.objects.Client;
 
@@ -114,13 +115,11 @@ public class FichierImageDAO extends DAO<FichierImage> {
 	}
 
 	@Override
-	public FichierImage[] readAll(Object obj) {
-		Client c = (Client) obj;
+	public List<FichierImage> readAll() {
 		ArrayList<FichierImage> tab=new ArrayList<>();
 		try {
 			PreparedStatement requeteAll=this.connect.prepareStatement(
-				"select * from LesFichiersImage where mailProprio=?");
-				requeteAll.setString(1,c.getMail());
+				"select * from LesFichiersImage ");
 			ResultSet resultat= requeteAll.executeQuery();
 			while(resultat.next()){
 				tab.add(
@@ -134,7 +133,7 @@ public class FichierImageDAO extends DAO<FichierImage> {
 				));
 			}
 			requeteAll.close();
-			return (FichierImage[]) tab.toArray();
+			return tab;
 			
 		} catch (Exception e) {
 			e.printStackTrace();
