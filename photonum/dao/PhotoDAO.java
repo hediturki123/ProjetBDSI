@@ -53,28 +53,6 @@ public class PhotoDAO extends DAO<Photo>{
 	}
 
 	@Override
-	public Photo[] readAll(Object obj) {
-		try {
-			PreparedStatement requete_select = this.connect.prepareStatement("SELECT * FROM LesPhotos");
-			
-			ResultSet result = requete_select.executeQuery();
-			ArrayList<Photo> tab  = new ArrayList<Photo>();
-			while(result.next())
-			{
-				Photo res = new Photo(
-						result.getInt("idPhoto"),
-						result.getString("chemin"));
-				requete_select.close();
-				tab.add(res);
-			}
-			return (Photo[])tab.toArray();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Override
 	public boolean update(Photo obj) {
 		try {
 			PreparedStatement requete_update = this.connect.prepareStatement(
@@ -110,6 +88,28 @@ public class PhotoDAO extends DAO<Photo>{
 	}
 
 	public List<Photo> readAllPhotosByClient(String mail){
+		return null;
+	}
+
+	@Override
+	public List<Photo> readAll() {
+		try {
+			PreparedStatement requete_select = this.connect.prepareStatement("SELECT * FROM LesPhotos");
+			
+			ResultSet result = requete_select.executeQuery();
+			ArrayList<Photo> tab  = new ArrayList<Photo>();
+			while(result.next())
+			{
+				Photo res = new Photo(
+						result.getInt("idPhoto"),
+						result.getString("chemin"));
+				requete_select.close();
+				tab.add(res);
+			}
+			return tab;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 }

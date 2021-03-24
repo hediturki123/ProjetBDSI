@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 
 import photonum.objects.Page;
 
@@ -59,29 +60,6 @@ public class PageDAO extends DAO<Page>{
 	}
 
 	@Override
-	public Page[] readAll(Object obj) {
-		ArrayList<Page> tab = new ArrayList<>();
-		try {
-			PreparedStatement requeteAll=this.connect.prepareStatement(
-				"select * from LesPages"
-			);
-			ResultSet resultat=requeteAll.executeQuery();
-			while(resultat.next()){
-				tab.add(
-					new Page(
-					 resultat.getInt("idImpression"),
-					 resultat.getString("miseEnForme"))
-				);
-			}
-			requeteAll.close();
-			return (Page []) tab.toArray();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Override
 	public boolean update(Page obj) {
 		try {
 			PreparedStatement requeteUpdate=this.connect.prepareStatement(
@@ -117,5 +95,28 @@ public class PageDAO extends DAO<Page>{
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	@Override
+	public List<Page> readAll() {
+		ArrayList<Page> tab = new ArrayList<>();
+		try {
+			PreparedStatement requeteAll=this.connect.prepareStatement(
+				"select * from LesPages"
+			);
+			ResultSet resultat=requeteAll.executeQuery();
+			while(resultat.next()){
+				tab.add(
+					new Page(
+					 resultat.getInt("idImpression"),
+					 resultat.getString("miseEnForme"))
+				);
+			}
+			requeteAll.close();
+			return tab;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
