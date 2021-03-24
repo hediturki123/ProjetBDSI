@@ -1,4 +1,6 @@
-package photonum;
+package photonum.interfaces;
+import photonum.objects.*;
+import photonum.utils.*;
 
 public class InterfaceImpression {
 

@@ -1,7 +1,10 @@
-package photonum;
+package photonum.interfaces;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import photonum.utils.*;
+import photonum.objects.*;
+import photonum.*;
 
 public class InterfaceFichier {
     

@@ -1,4 +1,4 @@
-package photonum;
+package photonum.interfaces;
 
 public class InterfacePage {
 
