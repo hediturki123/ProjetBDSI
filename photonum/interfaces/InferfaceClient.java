@@ -1,25 +1,27 @@
 package photonum.interfaces;
-import photonum.squellete_appli;
-import photonum.objects.Client;
+
+import photonum.*;
+import photonum.dao.ClientDAO;
 import photonum.utils.*;
+import photonum.objects.*;
 
 public class InferfaceClient  {
     
     public static void interfaceConnexion(){
-        Client c= new Client(squellete_appli.conn);
 		int choix=LectureClavier.lireEntier("1 . se connecter ? \n2. creer un nouveau compte ? ");
 		while(choix !=1 && choix!=2){
 			System.out.println("vous devez choisir entre 1 ou 2 !");
 			choix=LectureClavier.lireEntier("1 . se connecter ? \n2. creer un nouveau compte ? ");
 		}
 		if(choix==1){
-			connexion(c);
+			connexion();
 		}else{
-			creationCompte(c);
+			creationCompte();
 		}
 	}
     
-    public static void connexion(Client c){
+    public static void connexion(){
+		ClientDAO c=new ClientDAO(photonum.conn);
 		System.out.println("veuillez entrez votre adresse mail");
 		String mailConnexion=LectureClavier.lireChaine();
 		System.out.println("veuillez entrez votre mot de passe");
@@ -36,12 +38,10 @@ public class InferfaceClient  {
 			mdpconnexion=LectureClavier.lireChaine();
 			args[0]=mailConnexion;
 			args[1]=mdpconnexion;
-        }
-        c=c.read(args);
-        menu(c);
+		}
     }
 
-    public static void creationCompte(Client c){
+    public static void creationCompte(){
 		System.out.println("veuillez entrez votre adresse mail");
 		String mail=LectureClavier.lireChaine();
 		
@@ -66,9 +66,7 @@ public class InferfaceClient  {
 
 		System.out.println("veuillez entrez votre pays ");
 		String pays=LectureClavier.lireChaine();
-        
-        c.create(new Client(c.connect, mail, nom, prenom, mdp, numeroRue, nomRue, ville, cp, pays));
-        menu(c);
+
 	}
     
     //ici dans cette fonction mmettre les fonctionnalité du client et l'envoyer dans les bonne interface

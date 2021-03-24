@@ -1,16 +1,11 @@
-package photonum;
-import java.sql.Connection;
+package photonum.objects;
 
-public class PhotoAlbum extends Photo{
+
+public class PhotoAlbum extends Photo {
 	private String texteDescrptif;
 
-	public PhotoAlbum(Connection conn) {
-		super(conn);
-		// TODO Auto-generated constructor stub
-	}
-
-	public PhotoAlbum(Connection conn, int idPhoto, String chemin, String textDescrptif) {
-		super(conn, idPhoto, chemin);
+	public PhotoAlbum(int idPhoto, String chemin, String textDescrptif) {
+		super(idPhoto, chemin);
 		setTextDescrptif(textDescrptif);
 	}
 

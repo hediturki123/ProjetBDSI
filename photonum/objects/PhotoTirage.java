@@ -1,4 +1,5 @@
-package photonum;
+package photonum.objects;
+
 import java.sql.Connection;
 
 public class PhotoTirage extends Photo {
@@ -20,12 +21,4 @@ public class PhotoTirage extends Photo {
 	public void setNbFoisTiree(int nbFoisTiree) {
 		this.nbFoisTiree = nbFoisTiree;
 	}
-
-	@Override
-	public PhotoTirage read(Object id) {
-		return null;
-	}
-
-	
-
 }

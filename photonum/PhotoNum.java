@@ -1,13 +1,10 @@
 package photonum;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
+import java.sql.*;
+import photonum.utils.*;
 import photonum.interfaces.InferfaceClient;
-import photonum.utils.DatabaseAccessProperties;
-import photonum.utils.LectureClavier;
 
-public class squellete_appli {
+public class PhotoNum {
     private static final String configurationFile = "BD.properties";
     public static Connection conn;
 
@@ -17,7 +14,7 @@ public class squellete_appli {
     public static void main(String[] args) {
 
         try{
-            System.out.print("Loading Oracle driver... "); 
+            System.out.print("Loading Oracle driver... ");
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
             System.out.println("loaded");
             DatabaseAccessProperties dap = new DatabaseAccessProperties(configurationFile);
@@ -44,8 +41,7 @@ public class squellete_appli {
               System.out.println("Affichage du message d'erreur");
               System.out.println(e.getMessage());
               System.out.println("Affichage du code d'erreur");
-  	          System.out.println(e.getErrorCode());	    
+  	          System.out.println(e.getErrorCode());
         }
-        
-    }   
+    }
 }

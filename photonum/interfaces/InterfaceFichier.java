@@ -1,10 +1,10 @@
 package photonum.interfaces;
-import photonum.squellete_appli;
-import photonum.objects.Client;
-import photonum.objects.FichierImage;
-import photonum.utils.*;
+
 import java.sql.Date;
 import java.time.LocalDate;
+import photonum.utils.*;
+import photonum.objects.*;
+import photonum.*;
 
 public class InterfaceFichier {
     

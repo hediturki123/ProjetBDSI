@@ -1,4 +1,4 @@
-package photonum;
+package photonum.objects;
 public class Client {
     private String mail;
 	private String nom;
@@ -9,7 +9,6 @@ public class Client {
 	private String ville;
 	private int cp;
 	private String pays;
-	private Commande [] commandesClient;
     
     public Client(String mail, String nom, String prenom, String mdp, int numeroRue, String nomRue,
 			String ville, int cp, String pays) {
