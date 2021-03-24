@@ -125,10 +125,12 @@ public class FichierImage extends DAO<FichierImage> {
 
 	@Override
 	public FichierImage[] readAll(Object obj) {
+		Client c = (Client) obj;
 		ArrayList<FichierImage> tab=new ArrayList<>();
 		try {
 			PreparedStatement requeteAll=this.connect.prepareStatement(
-				"select * from LesFichiersImage");
+				"select * from LesFichiersImage where mailProprio=?");
+				requeteAll.setString(1,c.getMail());
 			ResultSet resultat= requeteAll.executeQuery();
 			while(resultat.next()){
 				tab.add(
