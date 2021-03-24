@@ -2,10 +2,11 @@ package photonum.interfaces;
 
 import photonum.*;
 import photonum.dao.ClientDAO;
+import photonum.dao.DAO;
 import photonum.utils.*;
 import photonum.objects.*;
 
-public class InferfaceClient  {
+public class InterfaceClient  {
     
     public static void interfaceConnexion(){
 		int choix=LectureClavier.lireEntier("1 . se connecter ? \n2. creer un nouveau compte ? ");
@@ -21,7 +22,6 @@ public class InferfaceClient  {
 	}
     
     public static void connexion(){
-		ClientDAO c=new ClientDAO(photonum.conn);
 		System.out.println("veuillez entrez votre adresse mail");
 		String mailConnexion=LectureClavier.lireChaine();
 		System.out.println("veuillez entrez votre mot de passe");
@@ -29,7 +29,7 @@ public class InferfaceClient  {
         String [] args= new String[2];
         args[0]=mailConnexion;
 	    args[1]=mdpconnexion;
-        
+        DAO<Client> c = new ClientDAO(PhotoNum.conn);
 		while(c.read(args)==null){
 			System.err.println("mot de passe/ identifiant incorrect");
 			System.out.println("veuillez entrez votre adresse mail");

@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import photonum.utils.*;
 import photonum.objects.*;
 import photonum.*;
+import photonum.dao.DAO;
+import photonum.dao.FichierImageDAO;
 
 public class InterfaceFichier {
     
@@ -35,13 +37,15 @@ public class InterfaceFichier {
             infoPVD=LectureClavier.lireChaine();
         }
         int resolution=LectureClavier.lireEntier("donnez moi la resolution");
-        img=new FichierImage(squellete_appli.conn, chemin,c.getMail(), infoPVD, resolution,false,Date.valueOf(LocalDate.now()));
-        img.create(img);
+        img=new FichierImage(chemin,c.getMail(), infoPVD, resolution,false,Date.valueOf(LocalDate.now()));
+        DAO<FichierImage> imgDAO = new FichierImageDAO(PhotoNum.conn);
+        imgDAO.create(img);
     }
 
     public static void supprimerFichierImage(Client c){
-        FichierImage img=new FichierImage(squellete_appli.conn);
-        FichierImage [] imageClient=img.readAll(c);
+    	//TODO A VERIFIER
+        DAO<FichierImage> imgDAO=new FichierImageDAO(PhotoNum.conn);
+        FichierImage [] imageClient=imgDAO.readAll(c);
         if(imageClient.length>0){
             System.out.println("Vos fichiers d'image : ");
             for(int i=1;i<=imageClient.length;i++){
@@ -58,7 +62,7 @@ public class InterfaceFichier {
                 choix=LectureClavier.lireEntier("choissisez quel photos vous voulez supprimez ? ");
             }
             if(LectureClavier.lireOuiNon("êtes vous sur de la supression")){
-                if(img.delete(imageClient[choix-1])){
+                if(imgDAO.delete(imageClient[choix-1])){
                      System.out.println("votre fichier a bien été supprimer");
                 }else{
                     System.out.println("votre fichier n'a pas pu etre supprimer veuillez reessayer");

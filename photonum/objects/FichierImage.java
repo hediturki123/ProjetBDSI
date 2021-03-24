@@ -14,6 +14,9 @@ public class FichierImage {
 		setAll(chemin, mailProprio, infoPVD, resolution, estPartage, dateUpload);
 	}
 
+	public FichierImage() {
+	}
+
 	/***********setter and getter  ***********/
 	public String getChemin() {
 		return chemin;

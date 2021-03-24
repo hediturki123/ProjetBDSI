@@ -2,7 +2,7 @@ package photonum;
 
 import java.sql.*;
 import photonum.utils.*;
-import photonum.interfaces.InferfaceClient;
+import photonum.interfaces.InterfaceClient;
 
 public class PhotoNum {
     private static final String configurationFile = "BD.properties";
@@ -28,7 +28,7 @@ public class PhotoNum {
                 choix=LectureClavier.lireEntier("1. Interface Client \n2. Interface Gestion");
             }
             switch(choix){
-                case 1 : InferfaceClient.interfaceConnexion();
+                case 1 : InterfaceClient.interfaceConnexion();
                         break;
                 case 2: break;
             }

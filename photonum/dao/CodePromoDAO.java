@@ -4,9 +4,9 @@ import java.sql.Connection;
 
 import photonum.objects.CodePromo;
 
-public class codePromoDAO extends DAO<CodePromo>{
+public class CodePromoDAO extends DAO<CodePromo>{
     
-    public codePromoDAO(Connection conn) {
+    public CodePromoDAO(Connection conn) {
 		// TODO Auto-generated constructor stub
 		super(conn);
 	}
