@@ -1,10 +1,12 @@
-package photonum;
+package photonum.interfaces;
+import photonum.objects.*;
+import photonum.utils.*;
 
 public class InterfaceImpression {
 
 	public void interfaceImpression() {
 		Impression imp = new Impression(squellete_appli.conn);
-		System.out.println("Quel type d'impression voulez-vous créer?");
+		System.out.println("Quel type d'impression voulez-vous crï¿½er?");
 		System.out.println("1. Tirage\n2. Album\n3. Calendrier\n4. Cadre");
 		int choix = LectureClavier.lireEntier("1, 2, 3 ou 4?");
 		while(choix!= 1 && choix!= 2 && choix!= 3 && choix!= 4) {
@@ -36,7 +38,7 @@ public class InterfaceImpression {
 	}
 	
 	private void createCadre() {
-		System.out.println("Vous allez ici créer votre cadre.");
+		System.out.println("Vous allez ici crï¿½er votre cadre.");
 		//Page.InterfacePage();
 	}
 
