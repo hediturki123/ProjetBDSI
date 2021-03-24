@@ -1,12 +1,15 @@
 package photonum.interfaces;
 
+import photonum.objects.*;
+import photonum.utils.LectureClavier;
+
 public class InterfacePage {
 
 	public Page interfaceCreationPage(int idImpression) {
-		System.out.println("Vous allez ici créer une page pour votre impression.");
+		System.out.println("Vous allez ici crÃ©er une page pour votre impression.");
 		System.out.println("Rentrez votre mise en forme");
 		String mef = LectureClavier.lireChaine();
-		Page p = new Page(squellete_appli.conn,Page.lastId(),idImpression,mef);
+		Page p = new Page(Page.lastId(),idImpression,mef);
 		return p;
 	}
 }

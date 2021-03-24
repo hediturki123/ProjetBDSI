@@ -12,13 +12,13 @@ public class PhotoParPageDAO extends DAO<PhotoParPage> {
 
     
 	@Override
-	public boolean create(Photo obj){
+	public boolean create(PhotoParPage obj){
 		try {
 			PreparedStatement requeteCreate=this.connect.prepareStatement(
 				"INSERT INTO LesPhotosParPages VALUES (?,?)"
 			);
 			requeteCreate.setInt(1,obj.getIdPhoto());
-			requeteCreate.setInt(2,getIdPhoto());
+			requeteCreate.setInt(2,obj.getIdPhoto());
 			int reussi=requeteCreate.executeUpdate();
 			requeteCreate.close();
 			return reussi==1;
@@ -34,12 +34,19 @@ public class PhotoParPageDAO extends DAO<PhotoParPage> {
 	}
 
 	@Override
-	public Photo[] readAll(Object obj) {
+	public PhotoParPage[] readAll(Object obj) {
 		return null;
 	}
 	
 	@Override
-	public boolean update(Photo obj) {
+	public boolean update(PhotoParPage obj) {
+		return false;
+	}
+
+
+	@Override
+	public boolean delete(PhotoParPage obj) {
+		// TODO Auto-generated method stub
 		return false;
 	}
 

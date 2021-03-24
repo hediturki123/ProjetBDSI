@@ -2,10 +2,11 @@ package photonum.interfaces;
 
 import photonum.*;
 import photonum.dao.ClientDAO;
+import photonum.dao.DAO;
 import photonum.utils.*;
 import photonum.objects.*;
 
-public class InferfaceClient  {
+public class InterfaceClient  {
     
     public static void interfaceConnexion(){
 		int choix=LectureClavier.lireEntier("1 . se connecter ? \n2. creer un nouveau compte ? ");
@@ -22,6 +23,7 @@ public class InferfaceClient  {
     
     public static void connexion(){
 		ClientDAO c=new ClientDAO(PhotoNum.conn);
+
 		System.out.println("veuillez entrez votre adresse mail");
 		String mailConnexion=LectureClavier.lireChaine();
 		System.out.println("veuillez entrez votre mot de passe");
@@ -29,7 +31,7 @@ public class InferfaceClient  {
         String [] args= new String[2];
         args[0]=mailConnexion;
 	    args[1]=mdpconnexion;
-        
+        DAO<Client> c = new ClientDAO(PhotoNum.conn);
 		while(c.read(args)==null){
 			System.err.println("mot de passe/ identifiant incorrect");
 			System.out.println("veuillez entrez votre adresse mail");
@@ -67,6 +69,16 @@ public class InferfaceClient  {
 		System.out.println("veuillez entrez votre pays ");
 		String pays=LectureClavier.lireChaine();
 
+		DAO<Client> clientDao=new ClientDAO(PhotoNum.conn);
+		Client c = new Client(mail, nom, prenom, mdp, numeroRue, nomRue, ville, cp, pays);
+	
+		if(clientDao.create(c)){
+			menu(c);
+		}else{
+			System.out.println("votre creation n'a pas marcher veuillez recommencer");
+			creationCompte();
+		}
+
 	}
     
     //ici dans cette fonction mmettre les fonctionnalité du client et l'envoyer dans les bonne interface
@@ -89,6 +101,7 @@ public class InferfaceClient  {
 		System.out.println("Merci de votre visite !");
  
 	}
+	
 public static void afficherInfo(Client c){
 	System.out.println(c.toString());
 }
