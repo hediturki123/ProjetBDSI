@@ -57,7 +57,7 @@ public class Photo extends DAO<Photo> {
 	}
 
 	@Override
-	public Photo[] readAll() {
+	public Photo[] readAll(Object obj) {
 		try {
 			PreparedStatement requete_select = this.connect.prepareStatement("SELECT * FROM LesPhotos");
 			
