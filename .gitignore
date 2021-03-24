@@ -1,28 +1,10 @@
-/*.class
-/DatabaseAccessProperties.class
-/LectureClavier.class
+# Fichiers éditeurs
 /.project
 /.classpath
-/DAO.class
-/client.class
-/fichierImage.class
-/impression.class
-/Impression.class
-/FichierImage.class
-/Client.class
-/Adresse.class
-/DAO$impression.class
-/Commande.class
-/CodePromo.class
-/Produit.class
-/Page.class
-/Photo.class
-/PhotoParPage.class
-/PhotoAlbum.class
-/PhotoTirage.class
-/Article.class
-/BD.properties
-/squellete_appli.class
-/InterfacePhoto.class
-/InterfaceImpression.class
 
+# Fichiers binaires
+/bin/
+/*.class
+
+# Infos de connexion
+BD.properties
