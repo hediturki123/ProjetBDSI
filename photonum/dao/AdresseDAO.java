@@ -3,6 +3,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 
 import photonum.objects.*;
 
@@ -127,14 +128,12 @@ public class AdresseDAO extends DAO<Adresse>{
 	}
 
 	@Override
-	public Adresse[] readAll(Object obj) {
-		Client c = (Client) obj;
+	public List<Adresse> readAll() {
 		ArrayList<Adresse> tab =new ArrayList<>();
 		try {
 			PreparedStatement requeteAll=this.connect.prepareStatement(
-				"select * from lesAdressesDeLivraison where mailClient=?"
+				"select * from lesAdressesDeLivraison"
 			);
-			requeteAll.setString(1, c.getMail());
 			ResultSet resultat=requeteAll.executeQuery();
 			while(resultat.next()){
 				tab.add(
@@ -148,7 +147,7 @@ public class AdresseDAO extends DAO<Adresse>{
 				));
 			}
 			requeteAll.close();
-			return (Adresse []) tab.toArray();
+			return tab;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

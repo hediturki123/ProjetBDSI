@@ -1,19 +1,21 @@
 package photonum.objects;
 import photonum.PhotoNum;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Page{
 
 	private int idPage;
 	private int idImpression;
 	private String miseEnForme;
+	private List<Photo> photos;
 	
-	public Page(int idPage, int idImpression, String miseEnForme) {
-		setAll(idPage, idImpression, miseEnForme);
+	public Page(int idImpression, String miseEnForme) {
+		setIdPage(lastId()+1);
+		setAll(idImpression, miseEnForme);
 	}
 	
 	public static int lastId() {
@@ -57,8 +59,16 @@ public class Page{
 	public void setMiseEnForme(String miseEnForme) {
 		this.miseEnForme = miseEnForme;
 	}
-	private void setAll(int idPage, int idImpression, String miseEnForme){
-		setIdImpression(idImpression);
+	
+	public List<Photo> getPhotos() {
+		return photos;
+	}
+
+	public void setPhotos(List<Photo> photos) {
+		this.photos = photos;
+	}
+
+	private void setAll(int idPage, String miseEnForme){
 		setIdPage(idPage);
 		setMiseEnForme(miseEnForme);
 	}
