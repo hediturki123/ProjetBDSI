@@ -19,6 +19,7 @@ public class Photo extends DAO<Photo> {
 	public Photo(Connection conn) {
 		super(conn);
 	}
+
 	@Override
 	public boolean create(Photo obj) {
 		try {

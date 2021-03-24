@@ -24,7 +24,7 @@ public class FichierImage extends DAO<FichierImage> {
 		setAll(chemin, mailProprio, infoPVD, resolution, estPartage, dateUpload);
 	}
 	
-
+	
 	@Override
 	public boolean create(FichierImage obj) {
 		try{
