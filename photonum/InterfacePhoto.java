@@ -8,4 +8,8 @@ public class InterfacePhoto {
 		p.setChemin(path);
 		return p;
 	}
+	
+	public static void creationPhotoParPage(int idPhoto, int idPage) {
+		//PhotoParPage p = new PhotoParPage(squellete_appli,idPhoto,idPage);
+	}
 }

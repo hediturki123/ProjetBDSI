@@ -2,6 +2,7 @@ package photonum;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Page extends DAO<Page> {
@@ -13,6 +14,20 @@ public class Page extends DAO<Page> {
 	public Page(Connection conn, int idPage, int idImpression, String miseEnForme) {
 		super(conn);
 		setAll(idPage, idImpression, miseEnForme);
+	}
+	
+	public static int lastId() {
+		try {
+			PreparedStatement requete_last = squellete_appli.conn.prepareStatement("SELECT max(idPage)+1 FROM LesPages");
+			ResultSet res = requete_last.executeQuery();
+			if(res.next()) {
+				return res.getInt("idPage");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 	@Override
