@@ -99,7 +99,7 @@ public class Client extends DAO<Client> {
 			"nomRue=?,"+
 			"ville=?,"+
 			"cp=?,"+
-			""+
+			"pays=?"+
 			"where mail=?");
 			requeteUpdate.setString(1, obj.getMail());
 			requeteUpdate.setString(2, obj.getNom());
@@ -136,7 +136,7 @@ public class Client extends DAO<Client> {
 	}
 
 	@Override
-	public Client[] readAll() {
+	public Client[] readAll(Object obj) {
 		ArrayList<Client> c= new ArrayList<Client>();
 		try{
 		PreparedStatement requete_all=this.connect.prepareStatement(
@@ -248,6 +248,12 @@ public class Client extends DAO<Client> {
 			this.setVille(ville);
 			this.setCp(cp);
 			this.setPays(pays);
+		}
+
+		@Override
+		public String toString() {
+			return "Client [cp=" + cp + ", mail=" + mail + ", mdp=" + mdp + ", nom=" + nom + ", nomRue=" + nomRue
+					+ ", numeroRue=" + numeroRue + ", pays=" + pays + ", prenom=" + prenom + ", ville=" + ville + "]";
 		}
 	
 	/**************************************/

@@ -135,7 +135,7 @@ public class Adresse extends DAO<Adresse>{
 	}
 
 	@Override
-	public Adresse[] readAll() {
+	public Adresse[] readAll(Object obj) {
 		ArrayList<Adresse> tab =new ArrayList<>();
 		try {
 			PreparedStatement requeteAll=this.connect.prepareStatement(

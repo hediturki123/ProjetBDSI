@@ -1,7 +1,7 @@
 import java.sql.Connection;
 
 public class PhotoAlbum extends Photo{
-	private String textDescrptif;
+	private String texteDescrptif;
 
 	public PhotoAlbum(Connection conn) {
 		super(conn);
@@ -14,11 +14,11 @@ public class PhotoAlbum extends Photo{
 	}
 
 	public String getTextDescrptif() {
-		return textDescrptif;
+		return texteDescrptif;
 	}
 
 	public void setTextDescrptif(String textDescrptif) {
-		this.textDescrptif = textDescrptif;
+		this.texteDescrptif = textDescrptif;
 	}
 
 }

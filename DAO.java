@@ -9,7 +9,7 @@ public abstract class DAO<T> {
 	
 	public abstract boolean create(T obj);
 	public abstract T read (Object obj);
-	public abstract T[] readAll ();
+	public abstract T[] readAll (Object obj);
 	public abstract boolean update (T obj);
 	public abstract boolean delete(T obj);
 }

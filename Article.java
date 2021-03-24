@@ -20,7 +20,7 @@ public class Article extends DAO<Article> {
 	}
 
 	@Override
-	public Article[] readAll() {
+	public Article[] readAll(Object obj) {
 		// TODO Auto-generated method stub
 		return null;
 	}

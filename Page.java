@@ -61,7 +61,7 @@ public class Page extends DAO<Page> {
 	}
 
 	@Override
-	public Page[] readAll() {
+	public Page[] readAll(Object obj) {
 		ArrayList<Page> tab = new ArrayList<>();
 		try {
 			PreparedStatement requeteAll=this.connect.prepareStatement(

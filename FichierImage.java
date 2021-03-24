@@ -123,7 +123,7 @@ public class FichierImage extends DAO<FichierImage> {
 	}
 
 	@Override
-	public FichierImage[] readAll() {
+	public FichierImage[] readAll(Object obj) {
 		ArrayList<FichierImage> tab=new ArrayList<>();
 		try {
 			PreparedStatement requeteAll=this.connect.prepareStatement(

@@ -19,6 +19,12 @@ public class PhotoTirage extends Photo {
 	public void setNbFoisTiree(int nbFoisTiree) {
 		this.nbFoisTiree = nbFoisTiree;
 	}
+
+	@Override
+	public PhotoTirage read(Object id) {
+		return null;
+	}
+
 	
 
 }

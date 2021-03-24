@@ -67,13 +67,14 @@ public class InferfaceClient  {
 	}
     
     //ici dans cette fonction mmettre les fonctionnalité du client et l'envoyer dans les bonne interface
-    public static void menu(Client C){
-		int choix=LectureClavier.lireEntier("1. Afficher mes informations  \n2. Impression \n3. \n4. \n5. Se deconnecter");
+    public static void menu(Client c){
+		int choix=LectureClavier.lireEntier("1. Afficher mes informations  \n2. Telecharger un fichier \n3. \n4. \n5. Se deconnecter");
 		while(choix!=5){
 			switch (choix){
-				case 1:
+				case 1:afficherInfo(c);
 					break;
-				case 2:break;
+				case 2:InterfaceFichier.interfaceDemandeFichier(c);
+					break;
 				case 3:break;
 				case 4:break;
 				default:System.out.println("Veuilllez choisir entre 1,2,3,4,5 ! ");
@@ -83,5 +84,8 @@ public class InferfaceClient  {
 		}
 		System.out.println("Merci de votre visite !");
  
-	}	
+	}
+public static void afficherInfo(Client c){
+	System.out.println(c.toString());
+}
 }

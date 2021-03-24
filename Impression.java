@@ -107,7 +107,7 @@ public class Impression extends DAO<Impression>{
 	}
 
 	@Override
-	public Impression[] readAll() {
+	public Impression[] readAll(Object obj) {
 		try {
 			PreparedStatement requete_select = this.connect.prepareStatement("SELECT * FROM LesImpressions");
 			

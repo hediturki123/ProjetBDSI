@@ -20,7 +20,7 @@ public class Commande extends DAO<Commande> {
 	}
 
 	@Override
-	public Commande[] readAll() {
+	public Commande[] readAll(Object obj) {
 		// TODO Auto-generated method stub
 		return null;
 	}
