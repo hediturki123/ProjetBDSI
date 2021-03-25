@@ -80,13 +80,7 @@ public class Commande {
 
 	@Override
 	public String toString() {
-		ArticleDAO artDao=new ArticleDAO(PhotoNum.conn);
-        List<Article> tabArticles = artDao.readAllByCommande(this);
-       String message=	"\n\nLes details de votre commande :";
-        for(int i=1;i<=tabArticles.size();i++){
-			message+="	Article n°"+i+" :"+tabArticles.get(i-1).toString()+"\n";
-		}
-		return message;
+		return idCommande+"  | le "+dateCommande+"  | status : "+status+"\n";
 	}
 
 	
