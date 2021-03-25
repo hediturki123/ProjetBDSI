@@ -63,11 +63,13 @@ CREATE TABLE LesFichiersImage (
 
 CREATE TABLE LesImpressions (
 	idImpression number(3),
+	mailClient varchar2(80),
 	reference varchar2(20) not null,
 	type varchar2(30) not null,
 	titre varchar2(30) null,-- Ne doit pas être nul si c'est un album.
 	constraint priImpr1 primary key (idImpression),
 	constraint frRefImpr1 foreign key (reference) references LesProduits(reference),
+	constraint frClient foreign key (mailClient) references LesClients(mail),
 	constraint ckType check (type in ('tirage','cadre','album','calendrier'))
 );
 
