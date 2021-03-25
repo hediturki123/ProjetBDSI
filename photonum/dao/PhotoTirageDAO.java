@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import photonum.PhotoNum;
-import photonum.objects.Photo;
 import photonum.objects.PhotoTirage;
 
 public class PhotoTirageDAO extends DAO<PhotoTirage>{
