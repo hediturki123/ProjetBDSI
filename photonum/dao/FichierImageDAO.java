@@ -25,7 +25,7 @@ public class FichierImageDAO extends DAO<FichierImage> {
 				requeteAjout.setString(2, obj.getMailProprio());
 				requeteAjout.setString(3, obj.getInfoPVD());
 				requeteAjout.setInt(4, obj.getResolution());
-				requeteAjout.setInt(5, obj.isEstPartage() ? 0:1);
+				requeteAjout.setBoolean(5, obj.isEstPartage());
 				requeteAjout.setDate(6, obj.getDateUpload());
 				
 
@@ -148,6 +148,33 @@ public class FichierImageDAO extends DAO<FichierImage> {
 				"SELECT * FROM LesFichiersImage where mailProprio=?"
 			);
 			requeteAll.setString(1,c.getMail());
+			ResultSet resultat=requeteAll.executeQuery();
+			while(resultat.next()){
+				tabImg.add(
+					new FichierImage(
+						resultat.getString("chemin"),
+						resultat.getString("mailProprio"),
+						resultat.getString("infoPVD"),
+						resultat.getInt("resolution"),
+						resultat.getBoolean("estPartage"),
+						resultat.getDate("dateUpload"))
+				);
+			}
+			requeteAll.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return tabImg;
+	}
+
+	public List<FichierImage> readAllByClient(Client c,boolean estPartagee){
+		ArrayList<FichierImage> tabImg=new ArrayList<>();
+		try {
+			PreparedStatement requeteAll=this.connect.prepareStatement(
+				"SELECT * FROM LesFichiersImage where mailProprio=? and estPartage=?"
+			);
+			requeteAll.setString(1,c.getMail());
+			requeteAll.setBoolean(2, estPartagee);
 			ResultSet resultat=requeteAll.executeQuery();
 			while(resultat.next()){
 				tabImg.add(
