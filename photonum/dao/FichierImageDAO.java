@@ -2,6 +2,7 @@ package photonum.dao;
 
 import photonum.objects.FichierImage;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import photonum.PhotoNum;
 import photonum.objects.Client;
 
 public class FichierImageDAO extends DAO<FichierImage> {
@@ -27,7 +29,7 @@ public class FichierImageDAO extends DAO<FichierImage> {
 				requeteAjout.setInt(4, obj.getResolution());
 				requeteAjout.setBoolean(5, obj.isEstPartage());
 				requeteAjout.setDate(6, obj.getDateUpload());
-				
+
 
 			boolean reussi=requeteAjout.execute();
 			requeteAjout.close();
@@ -94,7 +96,7 @@ public class FichierImageDAO extends DAO<FichierImage> {
 			return reussi==1;
 
 		} catch (Exception e) {
-			e.printStackTrace(); 
+			e.printStackTrace();
 		}
 		return false;
 	}
@@ -126,17 +128,17 @@ public class FichierImageDAO extends DAO<FichierImage> {
 			while(resultat.next()){
 				tab.add(
 					new FichierImage(
-					resultat.getString("chemin"), 
-					resultat.getString("mailProprio"), 
-					resultat.getString("infoPVD"), 
-					resultat.getInt("resolution"), 
-					resultat.getInt("estPartage")==1 ? true:false, 
+					resultat.getString("chemin"),
+					resultat.getString("mailProprio"),
+					resultat.getString("infoPVD"),
+					resultat.getInt("resolution"),
+					resultat.getInt("estPartage")==1 ? true:false,
 					resultat.getDate("dateUpload")
 				));
 			}
 			requeteAll.close();
 			return tab;
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -194,6 +196,18 @@ public class FichierImageDAO extends DAO<FichierImage> {
 			e.printStackTrace();
 		}
 		return tabImg;
+	}
+
+	public boolean cleanExpiredImages() {
+		boolean success = false;
+		try {
+			CallableStatement cstmt = PhotoNum.conn.prepareCall("{call expi_img_proc}");
+			cstmt.execute();
+			success = true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return success;
 	}
 }
 
