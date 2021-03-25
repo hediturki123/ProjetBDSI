@@ -1,10 +1,11 @@
 package photonum;
 
-import java.sql.*;
-import photonum.utils.*;
-import photonum.interfaces.InterfaceClient;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 import photonum.interfaces.InterfaceGeneral;
-import photonum.interfaces.InterfaceGestion;
+import photonum.utils.DatabaseAccessProperties;
 
 public class PhotoNum {
     private static final String configurationFile = "BD.properties";

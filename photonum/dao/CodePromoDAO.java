@@ -23,7 +23,7 @@ public class CodePromoDAO extends DAO<CodePromo>{
 				"INSERT INTO LesCodesPromo VALUES (?,?,?)"
 			);
 			pstmt.setString(1, cp.getMail());
-			pstmt.setString(2, cp.getCode());
+			pstmt.setString(2, System.currentTimeMillis()+""); // TODO: Générer un code lisible.
 			pstmt.setBoolean(3, cp.getEstUtilise());
 			success = pstmt.execute();
 			pstmt.close();
@@ -88,7 +88,7 @@ public class CodePromoDAO extends DAO<CodePromo>{
 				"UPDATE LesCodesPromo SET mail=?, estUtilise=? WHERE code=?"
 			);
 			pstmt.setString(1, cp.getMail());
-			pstmt.setInt(2, cp.getEstUtilise()?1:0);
+			pstmt.setBoolean(2, cp.getEstUtilise());
 			pstmt.setString(3, cp.getCode());
 			success = (pstmt.executeUpdate() == 1);
 			pstmt.close();

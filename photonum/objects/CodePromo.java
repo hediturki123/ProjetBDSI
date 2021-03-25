@@ -12,7 +12,7 @@ public class CodePromo  {
 
     public CodePromo(String code, String mail) {
         this.mail = mail;
-        this.code = (code.length() != 0 || code != null) ? code : System.currentTimeMillis()+"";
+        this.code = code;
         this.estUtilise = false;
     }
 
