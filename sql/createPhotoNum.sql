@@ -25,10 +25,10 @@ CREATE TABLE LesCommandes (
 	dateCommande date not null,
 	estLivreChezClient number(1) not null,
 	status varchar2(20) not null,
-	code varchar2(10) null,
+	codePromo varchar2(10) null,
 	constraint priCO1 primary key (idCommande),
 	constraint frClientCom foreign key (mail) references LesClients(mail),
-	constraint frCodeProm foreign key (code) references LesCodesPromo(code),
+	constraint frCodeProm foreign key (codePromo) references LesCodesPromo(code),
 	constraint ckStat check (status in ('enCours','preteEnvoi','envoyee'))
 );
 
