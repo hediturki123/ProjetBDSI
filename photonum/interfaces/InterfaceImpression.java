@@ -126,15 +126,27 @@ public class InterfaceImpression {
 	
 	//Affiche toutes les impressions du client, peut selectionner une impression pour avoir du detail
 	public static void interfaceVueImpression(Client client) {
-		System.out.println("Voici toutes vos impressions (du compte): "+client.getMail());
 		ImpressionDAO impressionDAO = new ImpressionDAO(PhotoNum.conn);
 
 		List<Impression> list = impressionDAO.readAllByClient(client);
 		if(list.size() != 0) {
-			for(Impression i : list){
-				System.out.println();
+			System.out.println("Voici toutes vos impressions (du compte): "+client.getMail());
+			int choix=-1;
+			while(choix!=0){
+				while(!(choix>0 && choix<=list.size())){
+					for(int i=1;i<=list.size();i++){
+						System.out.println(i+". "+list.get(i-1).getTitre());
+					}
+					choix=LectureClavier.lireEntier(
+						"choisissez une impression pour la voir plus en detail dans la liste ci-dessus \n"+
+						"ou taper sur 0"
+					);
+				}
 			}
-			int choix;	
+			if(choix!=0)list.get(choix-1).toString();
+			if(LectureClavier.lireOuiNon("Voulez vous regardez une autre impression ? (o/n)")){
+				interfaceVueImpression(client);
+			}
 		}else {
 			System.out.println("Vous n'avez pas d'impressions.");
 		}

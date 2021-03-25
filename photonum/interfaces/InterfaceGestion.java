@@ -3,13 +3,15 @@ package photonum.interfaces;
 import java.util.List;
 import photonum.PhotoNum;
 import photonum.dao.CommandeDAO;
+import photonum.dao.FichierImageDAO;
 import photonum.objects.Commande;
 import photonum.objects.StatutCommande;
 import photonum.utils.*;
 
 public class InterfaceGestion {
 
-    private static CommandeDAO commandeDAO = new CommandeDAO(PhotoNum.conn);
+    private final static CommandeDAO commandeDAO = new CommandeDAO(PhotoNum.conn);
+    private final static FichierImageDAO fichierImageDAO = new FichierImageDAO(PhotoNum.conn);
 
     private static void envoyerToutesCommandes(List<Commande> cmds) {
         if (cmds.size() > 0) {
@@ -50,16 +52,16 @@ public class InterfaceGestion {
         }
     }
 
-
     public static void menuPrincipal() {
         int choix = -1;
-        while(choix != 4) {
+        while(choix != 5) {
             System.out.print(
-                "\n--- Gérer les commandes ---\n" +
+                "\n--- Gestion de l'application ---\n" +
                 "\t1. Afficher les commandes prêtes à l'envoi\n" +
                 "\t2. Envoyer toutes les commandes prêtes à l'envoi\n" +
                 "\t3. Envoyer une commande\n" +
-                "\t4. Retour au menu principal\n"
+                "\t4. Supprimer les images inutilisées\n" +
+                "\t5. Retour au menu principal\n"
             );
             choix = LectureClavier.lireEntier(">");
             switch(choix) {
@@ -75,6 +77,10 @@ public class InterfaceGestion {
                     envoyerUneCommande(id);
                     break;
                 case 4:
+                    if (fichierImageDAO.cleanExpiredImages())
+                        System.out.println("Les images inutilisées depuis plus de 10 jours ont été supprimées !");
+                    else System.out.println("Les images inutilisées n'ont pas pu être supprimées...");
+                case 5:
                 default:
                     break;
             }
