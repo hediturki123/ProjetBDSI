@@ -19,7 +19,6 @@ public class CommandeDAO extends DAO<Commande>{
 
 	@Override
 	public boolean create(Commande cmd) {
-		boolean reussi = false;
 		try {
 			PreparedStatement requete = this.connect.prepareStatement(
 				"INSERT INTO LesCommandes VALUES (?, ?, ?, ?, ?, ?)"
@@ -31,20 +30,20 @@ public class CommandeDAO extends DAO<Commande>{
 			requete.setBoolean(4, cmd.getEstLivreChezClient());
 			requete.setString(5, cmd.getStatus().getString());
 			requete.setString(6, cmd.getCodePromo());
-			reussi = requete.execute();
+			int reussi = requete.executeUpdate();
 			requete.close();
+			return reussi == 1;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return reussi;
+		return false;
 	}
 
 	@Override
 	public Commande read(Object id) {
 		try {
 			int identifiant = (int) id;
-			Commande c=null;
-			StatutCommande statut;
+			Commande c = null;
 			PreparedStatement requete = this.connect.prepareStatement(
 				"SELECT * FROM LesCommandes WHERE idCommande = ?"
 			);
