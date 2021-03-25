@@ -130,23 +130,24 @@ public class InterfaceImpression {
 		ImpressionDAO impressionDAO = new ImpressionDAO(PhotoNum.conn);
 		
 		List<Impression> list = impressionDAO.readAllByClient(client);
-		int i = 1;
-		int choix;
-		for(Impression imp: list) {
-			System.out.println(i+". Le titre de l'impression est: "+imp.getTitre());
-			System.out.println("Voulez voir les details de l'impression?\n1. Oui\n2. Non");
-			choix = LectureClavier.lireEntier("Oui/Non");
-			while(choix != 1 && choix != 2) {
-				System.out.println("Choisissez 1 ou 2.");
+		if(list.size() != 0) {
+			int i = 1;
+			int choix;
+			for(Impression imp: list) {
+				System.out.println(i+". Le titre de l'impression est: "+imp.getTitre());
+				System.out.println("Voulez voir les details de l'impression?\n1. Oui\n2. Non");
 				choix = LectureClavier.lireEntier("Oui/Non");
+				while(choix != 1 && choix != 2) {
+					System.out.println("Choisissez 1 ou 2.");
+					choix = LectureClavier.lireEntier("Oui/Non");
+				}
+				if(choix==1) {
+					imp.toString();
+				}
+				i++;
 			}
-			if(choix==1) {
-				imp.toString();
-			}
-			i++;
+		}else {
+			System.out.println("Vous n'avez pas d'impressions.");
 		}
-		
-		
-		
 	}
 }

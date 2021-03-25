@@ -10,6 +10,13 @@ public class Photo  {
 		this.chemin = chemin;
 	}
 	
+	@Override
+	public String toString() {
+		String s ="Le chemin de cette photo est: ";
+		s += getChemin();
+		return s;
+	}
+	
 	/***** getters and setters *****/
 	
 	public int getIdPhoto() {

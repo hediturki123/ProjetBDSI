@@ -1,12 +1,8 @@
 package photonum.objects;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import photonum.PhotoNum;
 
 public class Impression{
 
@@ -35,12 +31,18 @@ public class Impression{
 	public String toString() {
 		String s="Le titre de l'impression est: ";
 		s += getTitre();
-		s += ".\n C'est un: "+getType();
-		s += ".\n Sa référence est: "+getReference();
+		s += ".\nC'est un: "+getType();
+		s += ".\nSa référence est: "+getReference();
 		if(getType().equals("tirage")) {
-			s += ".\n Les photos de ce tirage sont: ";
+			s += ".\nLes photos de ce tirage sont:\n";
 			for(PhotoTirage p: getPhotosTirage()) {
-				
+				s += "\t" + p.toString() + "\n";
+			}
+		}
+		else {
+			s += ".\nLes pages de ce "+getType()+" sont:\n";
+			for(Page p: getPages()) {
+				s += "\t" + p.toString() + "\n";
 			}
 		}
 		return s;

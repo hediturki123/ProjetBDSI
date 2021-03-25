@@ -16,18 +16,23 @@ public class InterfacePage {
 		List<Photo> resultat = new ArrayList<>();
 		
 		List<Photo> photosExi = dao.readAllPhotosByClient(client.getMail());
-		System.out.println("Votre liste de photo:");
-		for(Photo photo: photosExi) {
-			System.out.println("Vous avez cette photo: "+photo.getChemin());
-			System.out.println("Voulez vous la mettre dans votre page?\n 1.Oui\n 2.Non");
-			int choix = LectureClavier.lireEntier("Oui/Non");
-			while(choix != 1 && choix != 2)
-			{
-				System.out.println("Choisissez 1 ou 2, oui ou non");
-				choix = LectureClavier.lireEntier("Oui/Non");
+		
+		if(photosExi.size()!=0) {
+			System.out.println("Votre liste de photo:");
+			for(Photo photo: photosExi) {
+				System.out.println("Vous avez cette photo: "+photo.toString());
+				System.out.println("Voulez vous la mettre dans votre page?\n 1.Oui\n 2.Non");
+				int choix = LectureClavier.lireEntier("Oui/Non");
+				while(choix != 1 && choix != 2)
+				{
+					System.out.println("Choisissez 1 ou 2, oui ou non");
+					choix = LectureClavier.lireEntier("Oui/Non");
+				}
+				if(choix == 1)
+					resultat.add(photo);
 			}
-			if(choix == 1)
-				resultat.add(photo);
+		}else {
+			System.out.println("Vous n'avez pas de photos.");
 		}
 		DAO<Page> pageDAO = new PageDAO(PhotoNum.conn);
 		pageDAO.create(page);
