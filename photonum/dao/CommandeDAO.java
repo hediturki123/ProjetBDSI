@@ -214,25 +214,4 @@ public class CommandeDAO extends DAO<Commande>{
 		return 0;
 	}
 
-	public int getCommandePrixTotal(Commande commande) {
-		try {
-			PreparedStatement requete = this.connect.prepareStatement(
-				"SELECT * FROM LesCommandesPrix WHERE idCommande = ?"
-			);
-			requete.setInt(1, commande.getIdCommande());
-			ResultSet resultat = requete.executeQuery();
-
-			if (resultat.next()) {
-				resultat.getInt("prixTotal");
-			}
-			requete.close();
-			return resultat.getInt("prixTotal");
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return 0;
-	}
-
-
 }

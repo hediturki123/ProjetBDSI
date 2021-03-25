@@ -90,9 +90,4 @@ public class Commande {
 		return s;
 	}
 
-
-	public void genererFacture(int id) {
-		
-	}
-
 }
