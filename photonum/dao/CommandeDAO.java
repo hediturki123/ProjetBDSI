@@ -144,17 +144,8 @@ public class CommandeDAO extends DAO<Commande>{
 			PreparedStatement requete = this.connect.prepareStatement(
 				"UPDATE LesCommandes SET status = ? WHERE idCommande = ?"
 			);
+			requete.setString(1, obj.getStatus().getString());
 			requete.setInt(2, obj.getIdCommande());
-
-			switch(obj.getStatus()) {
-				case EN_COURS :
-					requete.setString(1, "enCours");
-				case PRETE_ENVOI :
-					requete.setString(1, "preteEnvoi");
-				case ENVOYEE :
-					requete.setString(1, "envoyee");
-			}
-
 			int reussi = requete.executeUpdate();
 			requete.close();
 			return reussi == 1;
@@ -191,32 +182,16 @@ public class CommandeDAO extends DAO<Commande>{
 			PreparedStatement requete = this.connect.prepareStatement(
 				"SELECT * FROM LesCommandes WHERE status = ?"
 			);
-			requete.setString(1, sc.toString());
+			requete.setString(1, sc.getString());
 			ResultSet resultat = requete.executeQuery();
 
 			while(resultat.next()) {
-				StatutCommande statut;
-				switch(resultat.getString("status")) {
-					case "enCours":
-						statut = StatutCommande.EN_COURS;
-						break;
-					case "preteEnvoi" :
-						statut = StatutCommande.PRETE_ENVOI;
-						break;
-					case "envoyee" :
-						statut = StatutCommande.ENVOYEE;
-						break;
-					default :
-						statut = null;
-						break;
-				}
-
 				commande.add(new Commande (
 					resultat.getInt("idCommande"),
 					resultat.getString("mail"),
 					resultat.getDate("dateCommande"),
 					resultat.getBoolean("estLivreChezClient"),
-					statut,
+					StatutCommande.fromString(resultat.getString("status")),
 					resultat.getString("codePromo")
 				));
 			}

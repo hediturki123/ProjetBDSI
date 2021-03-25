@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import photonum.PhotoNum;
 
@@ -77,5 +79,18 @@ public class Commande {
 
 	public void setCodePromo(String codePromo) {
 		this.codePromo = codePromo;
+	}
+
+	@Override
+	public String toString() {
+		String s = String.join(" ; ",
+			idCommande+"",
+			mail,
+			new SimpleDateFormat("dd/MM/yyyy").format(dateCommande),
+			estLivreChezClient ? "Domicile" : "Point relais",
+			status.getFancyString(),
+			(codePromo == null ? "---" : codePromo)
+		);
+		return s;
 	}
 }

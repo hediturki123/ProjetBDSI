@@ -11,56 +11,70 @@ public class InterfaceGestion {
 
     private static CommandeDAO commandeDAO = new CommandeDAO(PhotoNum.conn);
 
-    public void genererCodePromo(Commande commande) {
-
+    private static void envoyerToutesCommandes(List<Commande> cmds) {
+        if (cmds.size() > 0) {
+            int i = 0;
+            for (Commande c : cmds) {
+                if (c.getStatus() == StatutCommande.PRETE_ENVOI) {
+                    c.setStatus(StatutCommande.ENVOYEE);
+                    i += commandeDAO.update(c) ? 1 : 0;
+                }
+            }
+            System.out.println(i+"/"+cmds.size()+" commandes envoyées avec succès !");
+        } else {
+            System.out.println("Il n'y a aucune commande à envoyer.");
+        }
     }
 
-    private static void envoyerCommandes(List<Commande> commandes) {
-        commandes.forEach(
-            c -> {
-                c.setStatus(StatutCommande.ENVOYEE);
-                commandeDAO.update(c);
-            }
-        );
-    }
-
-    private static void changerStatutCommande(List<Commande> co, int id) {
-        System.out.println("idCommande | mail | dateCommande | estLivreChezClient | Statut | codePromo");
-        co.forEach(
-            c -> {
-                System.out.println(c.getIdCommande() + c.getMail() + c.getDateCommande()
-                + c.getEstLivreChezClient() + c.getStatus() + c.getCodePromo());
-            }
-        );
+    private static void envoyerUneCommande(int id) {
         Commande commande = commandeDAO.read(id);
-        commande.setStatus(StatutCommande.ENVOYEE);
-        commandeDAO.update(commande);
+        if (commande.getStatus() == StatutCommande.PRETE_ENVOI) {
+            commande.setStatus(StatutCommande.ENVOYEE);
+            if (commandeDAO.update(commande)) {
+                System.out.println("La commande n°"+id+" a bien été envoyée !");
+            } else {
+                System.out.println("La commande n°"+id+" n'a pas pu être envoyée.");
+            }
+        } else {
+            System.out.println("La commande n°"+id+" n'est pas encore prête ou a déjà été envoyée.");
+        }
+    }
+
+    private static void afficherCommandesPretes() {
+        List<Commande> cmds = commandeDAO.readAllByStatus(StatutCommande.PRETE_ENVOI);
+        if (cmds.size() > 0) {
+            System.out.println("ID | Compte | Date | Livraison | Statut | Code promo");
+            cmds.forEach(c -> System.out.println(c.toString()));
+        } else {
+            System.out.println("Aucune commande à envoyer.");
+        }
     }
 
 
     public static void menuPrincipal() {
-        List<Commande> commandes = commandeDAO.readAllByStatus(StatutCommande.PRETE_ENVOI);
         int choix = -1;
-
-        while(choix != 3) {
+        while(choix != 4) {
             System.out.print(
-                "--- Gérer les commandes ---\n" +
-                "1. Envoyer toutes les commandes prêtes à l'envoi\n" +
-                "2. Changer le statut d'une commande\n" +
-                "3. Retour au menu principal" +
-                "> "
+                "\n--- Gérer les commandes ---\n" +
+                "\t1. Afficher les commandes prêtes à l'envoi\n" +
+                "\t2. Envoyer toutes les commandes prêtes à l'envoi\n" +
+                "\t3. Envoyer une commande\n" +
+                "\t4. Retour au menu principal\n"
             );
-            choix = LectureClavier.lireEntier("");
+            choix = LectureClavier.lireEntier(">");
             switch(choix) {
                 case 1:
-                    envoyerCommandes(commandes);
+                    afficherCommandesPretes();
                     break;
                 case 2:
-                    System.out.println("Entrer l'identifiant d'une commande à envoyer");
-                    int id = LectureClavier.lireEntier("");
-                    changerStatutCommande(commandes, id);
+                    envoyerToutesCommandes(commandeDAO.readAllByStatus(StatutCommande.PRETE_ENVOI));
                     break;
                 case 3:
+                    System.out.println("Entrez l'identifiant d'une commande à envoyer :");
+                    int id = LectureClavier.lireEntier(">");
+                    envoyerUneCommande(id);
+                    break;
+                case 4:
                 default:
                     break;
             }
