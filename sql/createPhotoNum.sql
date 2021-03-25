@@ -1,19 +1,3 @@
-DROP TABLE LesPhotosTirees;
-DROP TABLE LesPhotosAlbums;
-DROP TABLE LesPhotosParPages;
-DROP TABLE LesPhotos;
-DROP TABLE LesFichiersImage;
-DROP TABLE LesArticles;
-DROP TABLE LesPages;
-DROP TABLE LesImpressions;
-DROP TABLE LesProduits;
-DROP TABLE LesCommandes;
-DROP TABLE LESADRESSESDELIVRAISON;
-DROP TABLE LesCodesPromo;
-DROP VIEW LesCommandesPrix;
-DROP TABLE LesClients;
-
-
 CREATE TABLE LesClients (
 	mail varchar2(80),
 	nom varchar2(30) not null,

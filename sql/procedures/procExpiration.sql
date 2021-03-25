@@ -1,4 +1,4 @@
-CREATE PROCEDURE proc_expi(
+CREATE OR REPLACE PROCEDURE proc_expi(
     dateUpload date
 )
 dateToday date := sysDate;
