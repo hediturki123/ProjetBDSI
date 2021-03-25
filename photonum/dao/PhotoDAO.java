@@ -38,15 +38,19 @@ public class PhotoDAO extends DAO<Photo>{
 		try {
 			PreparedStatement requete_select = this.connect.prepareStatement("SELECT * FROM LesPhotos WHERE idPhoto=?");
 			requete_select.setInt(1, (int)id);
-			
+			Photo res;
 			ResultSet result = requete_select.executeQuery();
 			if(result.next())
 			{
-				Photo res = new Photo(
+				res = new Photo(
 						result.getString("chemin"));
-				requete_select.close();
-				return res;
+				res.setIdPhoto(result.getInt("idPhoto"));
 			}
+			else {
+				res = null;
+			}
+			requete_select.close();
+			return res;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

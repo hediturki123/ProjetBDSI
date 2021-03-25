@@ -53,6 +53,7 @@ public class PageDAO extends DAO<Page>{
 				p=new Page(
 				resultat.getInt("idImpression"), 
 				resultat.getString("miseEnForme"));
+				p.setIdPage(resultat.getInt("idPage"));
 			}
 			requeteRead.close();
 			return p;

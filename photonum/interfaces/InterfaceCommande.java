@@ -17,10 +17,7 @@ public class InterfaceCommande {
         if(commandesClient.size()!=0){
             System.out.println("Voici toutes vos commandes :");
             for(int i=1;i<=commandesClient.size();i++){
-                System.out.println(i+". "+commandesClient.get(i-1).getIdCommande()+
-                "  | le "+commandesClient.get(i-1)+
-                "  | status : "+commandesClient.get(i-1).getStatus()+
-                "\n");
+                System.out.println(i+". "+commandesClient.get(i-1).toString());
             }
             int choix=LectureClavier.lireEntier(
                 "si vous voulez plus de detail sur une commande\n"+ 
@@ -41,17 +38,31 @@ public class InterfaceCommande {
                             );
                     }
                 afficherDetailCommande(commandesClient.get(choix-1));
+
+                System.out.println("Voici toutes vos commandes :");
+                for(int i=1;i<=commandesClient.size();i++){
+                    System.out.println(i+". "+commandesClient.get(i-1).toString());
+                }
+                choix=LectureClavier.lireEntier(
+                            "si vous voulez plus de detail sur une commande\n"+ 
+                            "choissiez une commande dans la liste ci-dessus\n"+
+                            "sinon taper 0"
+                            );
             }
         }else{
-            System.out.println("Désolé mais vous n'avez pas fait encore de commande");
+            System.out.println("Désolé mais vous n'avez pas fait encore de commande \n");
         }
     }
     public static void afficherDetailCommande(Commande c){
         ArticleDAO artDao=new ArticleDAO(PhotoNum.conn);
         List<Article> tabArticles = artDao.readAllByCommande(c);
         System.out.println("\n\nLes details de votre commande :");
-        for(int i=1;i<=tabArticles.size();i++){
-			System.out.println("    "+tabArticles.get(i-1).toString());
+        if(tabArticles.size()>0){
+            for(int i=1;i<=tabArticles.size();i++){
+                System.out.println("    "+tabArticles.get(i-1).toString());
+            }
+        }else{
+            System.out.println("    aucun article dans votre commande !\n");
         }
     }
 }

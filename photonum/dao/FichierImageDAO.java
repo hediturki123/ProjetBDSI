@@ -57,7 +57,7 @@ public class FichierImageDAO extends DAO<FichierImage> {
 				resultat.getString("mailProprio"), 
 				resultat.getString("infoPVD"), 
 				resultat.getInt("resolution"), 
-				resultat.getInt("estPartage")==0?true:false, 
+				resultat.getBoolean("estPartage"), 
 				resultat.getDate("dateUpload"));
 			}
 			requete_read.close();
@@ -72,7 +72,7 @@ public class FichierImageDAO extends DAO<FichierImage> {
 	public boolean update(FichierImage obj) {
 		try {
 			PreparedStatement requeteUpdate=this.connect.prepareStatement(
-				"UPDATE INTO LesFichiersImage set"+
+				"UPDATE LesFichiersImage SET "+
 				"chemin=?,"+
 				"mailProprio=?,"+
 				"infoPvd=?,"+
@@ -84,8 +84,10 @@ public class FichierImageDAO extends DAO<FichierImage> {
 			requeteUpdate.setString(2, obj.getMailProprio());
 			requeteUpdate.setString(3, obj.getInfoPVD());
 			requeteUpdate.setInt(4, obj.getResolution());
-			requeteUpdate.setInt(5, obj.isEstPartage() ? 0:1);
+			requeteUpdate.setBoolean(5, obj.isEstPartage());
 			requeteUpdate.setDate(6, obj.getDateUpload());
+			requeteUpdate.setString(7, obj.getMailProprio());
+			requeteUpdate.setString(8, obj.getChemin());
 			
 			int reussi=requeteUpdate.executeUpdate();
 			requeteUpdate.close();
@@ -145,7 +147,7 @@ public class FichierImageDAO extends DAO<FichierImage> {
 		ArrayList<FichierImage> tabImg=new ArrayList<>();
 		try {
 			PreparedStatement requeteAll=this.connect.prepareStatement(
-				"SELECT * FROM LesFichiersImage where mailProprio=?"
+				"SELECT * FROM LesFichiersImage where mailProprio=? or estPartage=1"
 			);
 			requeteAll.setString(1,c.getMail());
 			ResultSet resultat=requeteAll.executeQuery();
