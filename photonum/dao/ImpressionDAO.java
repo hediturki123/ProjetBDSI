@@ -53,6 +53,7 @@ public class ImpressionDAO extends DAO<Impression> {
 						TypeImpression.fromString(result.getString("type")),
 						result.getString("titre")
 						);
+				 res.setIdImpression(result.getInt("idImpressions"));
 			}
 			requete_select.close();
 			return res;
