@@ -3,7 +3,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import photonum.PhotoNum;
+import photonum.dao.DAO;
 import photonum.dao.ImpressionDAO;
+import photonum.dao.ProduitDAO;
 import photonum.objects.*;
 import photonum.utils.*;
 
@@ -84,7 +86,7 @@ public class InterfaceImpression {
 		System.out.println("Vous allez ici créer votre Tirage.\nVous allez donc créer des photos spécifiques aux tirages");
 		List<PhotoTirage> photos = new ArrayList<>();
 		String chemin;
-		PhotoTirage photo = new PhotoTirage("", 0);
+		PhotoTirage photo = new PhotoTirage("", client.getMail(), 0);
 		int nbFois;
 		for(boolean b = true; b; b = 1 != LectureClavier.lireEntier("quitter ou continuer")) {
 			System.out.println("Rentrez le chemin de votre photo");
@@ -101,11 +103,22 @@ public class InterfaceImpression {
 	}
 	
 	private static void createImpression(Impression impression, Client client) {
-		System.out.println("Vous devez maintenant sélectioner le format de votre "+impression.getType()+".");
-		String format = LectureClavier.lireChaine();
-		System.out.println("Vous devez maintenant sélectioner la qualité de votre "+impression.getType()+".");
-		String qualite = LectureClavier.lireChaine();
-		impression.setReference(format + qualite);
+		DAO<Produit> prodDAO = new ProduitDAO(PhotoNum.conn);
+		List<Produit> listProd = prodDAO.readAll();
+		int i = 1;
+		for(Produit prod : listProd) {
+			System.out.println(i+". "+prod.toString());
+		}
+		int choix=LectureClavier.lireEntier(
+				"Choisissez une reference pour votre impression\n"
+			);
+		while(choix>i) {
+			System.out.println("Prenez une référence qui existe");
+			choix=LectureClavier.lireEntier(
+					"Choisissez une reference pour votre impression\n"
+				);
+		}
+		impression.setReference(listProd.get(choix-1).getReference());
 		
 		impression.setMailClient(client.getMail());
 		

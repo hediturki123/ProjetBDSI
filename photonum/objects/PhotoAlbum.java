@@ -2,19 +2,19 @@ package photonum.objects;
 
 
 public class PhotoAlbum extends Photo {
-	private String texteDescrptif;
+	private String texteDescriptif;
 
-	public PhotoAlbum(String chemin, String textDescrptif) {
-		super(chemin);
-		setTextDescrptif(textDescrptif);
+	public PhotoAlbum(String chemin, String mailClient, String textDescriptif) {
+		super(chemin, mailClient);
+		setTexteDescriptif(textDescriptif);
 	}
 
-	public String getTextDescrptif() {
-		return texteDescrptif;
+	public String getTexteDescriptif() {
+		return texteDescriptif;
 	}
 
-	public void setTextDescrptif(String textDescrptif) {
-		this.texteDescrptif = textDescrptif;
+	public void setTexteDescriptif(String textDescriptif) {
+		this.texteDescriptif = textDescriptif;
 	}
 
 }

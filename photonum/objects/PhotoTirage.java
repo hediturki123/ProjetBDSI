@@ -4,8 +4,8 @@ public class PhotoTirage extends Photo {
 
 	private int nbFoisTiree;
 
-	public PhotoTirage(String chemin, int nbFois) {
-		super(chemin);
+	public PhotoTirage(String chemin, String mailClient, int nbFois) {
+		super(chemin, mailClient);
 		setNbFoisTiree(nbFois);
 	}
 

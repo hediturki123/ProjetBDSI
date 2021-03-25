@@ -90,8 +90,10 @@ CREATE TABLE LesPages (
 CREATE TABLE LesPhotos (
 	idPhoto number(3) ,--AUTO_INCREMENT
 	chemin varchar2(80) not null,
+	mailClient varchar2(80) not null,
 	constraint priPho1 primary key (idPhoto),
-	constraint frPhoFichier foreign key (chemin) references LESFICHIERSIMAGE(chemin)
+	constraint frPhoFichier foreign key (chemin) references LesFichiersImage(chemin)
+	constraint frMailClient foreign key (mailClient) references LesClients(mail)
 );
 
 
@@ -121,9 +123,9 @@ CREATE TABLE LesPhotosTirees (
 	constraint ckNbTirees check (nbPhotoTirees >=1)
 );
 
-CREATE TABLE LesPhotosAlbums (
+CREATE TABLE LesPhotosAlbum (
 	idPhoto number(3),
-	texteDescriptif varchar (80),
+	texteDescriptif varchar2(80),
 	constraint priPPA1 primary key (idPhoto),
 	constraint frPPALesPhoto foreign key (idPhoto) references LesPhotos(idPhoto)
 );
