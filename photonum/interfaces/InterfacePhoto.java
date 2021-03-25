@@ -13,29 +13,24 @@ public class InterfacePhoto {
 		return null;
 	}
 	
-	/*public static void creationPhotoParPage(int idPhoto, int idPage) {
-		//PhotoParPage p = new PhotoParPage(squellete_appli,idPhoto,idPage);
-	}*/
-	
-	public static PhotoTirage creationPhotoTirage(String chemin ,int nbFois) {
+	public static void creationPhotoTirage(String chemin ,int nbFois, PhotoTirage photo) {
 		DAO<PhotoTirage> photoDAO = new PhotoTirageDAO(PhotoNum.conn);
-		PhotoTirage photo = new PhotoTirage(chemin, nbFois);
+		photo.setChemin(chemin);
+		photo.setNbFoisTiree(nbFois);
 		
 		photoDAO.create(photo);
-		return photo;
 	}
 	
-	public static Photo creationPhoto(int idPage,String chemin)
+	public static void creationPhoto(int idPage,String chemin, Photo photo)
 	{
 		DAO<Photo> photoDAO = new PhotoDAO(PhotoNum.conn);
 		
-		Photo p = new Photo(chemin);
+		photo.setChemin(chemin);
 		
-		photoDAO.create(p);
+		photoDAO.create(photo);
 		
 		DAO<PhotoParPage> photoPageDAO = new PhotoParPageDAO(PhotoNum.conn);
-		PhotoParPage pp = new PhotoParPage(p.getIdPhoto(),idPage);
+		PhotoParPage pp = new PhotoParPage(photo.getIdPhoto(),idPage);
 		photoPageDAO.create(pp);
-		return p;
 	}
 }

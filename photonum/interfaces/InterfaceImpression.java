@@ -9,8 +9,12 @@ import photonum.utils.*;
 
 public class InterfaceImpression {
 
+	private ImpressionDAO impDAO;
 	public void interfaceCreationImpression(Client client) {
 		Impression imp = new Impression();
+		impDAO = new ImpressionDAO(PhotoNum.conn);
+		impDAO.create(imp);
+		
 		System.out.println("Quel type d'impression voulez-vous créer?");
 		System.out.println("1. Tirage\n2. Album\n3. Calendrier\n4. Cadre\n5.");
 		int choix = LectureClavier.lireEntier("1, 2, 3 ou 4?");
@@ -44,7 +48,8 @@ public class InterfaceImpression {
 	
 	private void createCadre(Impression impression, Client client) {
 		System.out.println("Vous allez ici créer votre cadre.\nVous devez donc créer une unique page.");
-		Page p = InterfacePage.interfaceCreationPage(impression.getIdImpression(),client);
+		Page p = new Page(impression.getIdImpression(),"");
+		InterfacePage.interfaceCreationPage(impression.getIdImpression(),client,p);
 		List<Page> pages = new ArrayList<>();
 		pages.add(p);
 		impression.setPages(pages);
@@ -54,8 +59,10 @@ public class InterfaceImpression {
 	private void createCalendrier(Impression impression, Client client) {
 		System.out.println("Vous allez ici créer votre Calendrier.\nVous devez donc créer 12 pages.");
 		List<Page> pages = new ArrayList<>();
+		Page p = new Page(impression.getIdImpression(),"");
 		for(int i = 0; i<12; i++) {
-			pages.add(InterfacePage.interfaceCreationPage(impression.getIdImpression(),client));
+			InterfacePage.interfaceCreationPage(impression.getIdImpression(),client,p);
+			pages.add(p);
 		}
 		impression.setPages(pages);
 		createImpression(impression);
@@ -64,8 +71,10 @@ public class InterfaceImpression {
 	private void createAlbum(Impression impression, Client client) {
 		System.out.println("Vous allez ici créer votre Album.\nVous pouvez donc créer le nombre de pages que vous voulez.");
 		List<Page> pages = new ArrayList<>();
+		Page p = new Page(impression.getIdImpression(),"");
 		for(boolean b = true; b; b = 1 != LectureClavier.lireEntier("quitter ou continuer")) {
-			pages.add(InterfacePage.interfaceCreationPage(impression.getIdImpression(),client));
+			InterfacePage.interfaceCreationPage(impression.getIdImpression(),client,p);
+			pages.add(p);
 			System.out.println("Selectionnez 1 pour quitter et un autre nombre pour continuer la création de pages");
 		}
 		impression.setPages(pages);
@@ -76,6 +85,7 @@ public class InterfaceImpression {
 		System.out.println("Vous allez ici créer votre Tirage.\nVous allez donc créer des photos spécifiques aux tirages");
 		List<PhotoTirage> photos = new ArrayList<>();
 		String chemin;
+		PhotoTirage photo = new PhotoTirage("", 0);
 		int nbFois;
 		for(boolean b = true; b; b = 1 != LectureClavier.lireEntier("quitter ou continuer")) {
 			System.out.println("Rentrez le chemin de votre photo");
@@ -83,8 +93,8 @@ public class InterfaceImpression {
 			
 			System.out.println("Rentrez le nombre de fois que vous voulez cette photo");
 			nbFois = LectureClavier.lireEntier("1, 2, 3, 4, ...");
-			
-			photos.add(InterfacePhoto.creationPhotoTirage(chemin, nbFois));
+			InterfacePhoto.creationPhotoTirage(chemin, nbFois,photo);
+			photos.add(photo);
 			System.out.println("Selectionnez 1 pour quitter et un autre nombre pour continuer la création de pages");
 		}
 		impression.setPhotosTirage(photos);
@@ -101,8 +111,7 @@ public class InterfaceImpression {
 		System.out.println("Choisissez maintenant le titre de votre "+impression.getType()+".");
 		impression.setTitre(LectureClavier.lireChaine());
 		
-		ImpressionDAO impDAO = new ImpressionDAO(PhotoNum.conn);
-		boolean reussi = impDAO.create(impression);
+		boolean reussi = impDAO.update(impression);
 		if(reussi) 
 		{
 			System.out.println("Votre "+impression.getType()+" a bien été créé.");

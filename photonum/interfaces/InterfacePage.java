@@ -10,8 +10,7 @@ import photonum.utils.LectureClavier;
 
 public class InterfacePage {
 
-	public static Page interfaceCreationPage(int idImpression, Client client) {
-		Page p = new Page(idImpression,"");
+	public static void interfaceCreationPage(int idImpression, Client client,Page page) {
 		System.out.println("Vous allez ici créer une page pour votre impression.");
 		PhotoDAO dao = new PhotoDAO(PhotoNum.conn);
 		List<Photo> resultat = new ArrayList<>();
@@ -30,29 +29,29 @@ public class InterfacePage {
 			if(choix == 1)
 				resultat.add(photo);
 		}
+		DAO<Page> pageDAO = new PageDAO(PhotoNum.conn);
+		pageDAO.create(page);
 		
 		
 		System.out.println("Voulez vous créer des photos à mettre dans votre page?");
 		int choix = LectureClavier.lireEntier("Oui/Non");
 		String chemin;
 		if(choix==1) {
+			Photo photo = new Photo("");
 			for(boolean b = true; b; b = 1 != LectureClavier.lireEntier("quitter ou continuer")) {
 				System.out.println("Rentrez le chemin de votre photo");
 				chemin = LectureClavier.lireChaine();
-				
-				resultat.add(InterfacePhoto.creationPhoto(p.getIdPage(),chemin));
+				InterfacePhoto.creationPhoto(page.getIdPage(),chemin,photo);
+				resultat.add(photo);
 				System.out.println("Selectionnez 1 pour quitter et un autre nombre pour continuer la création de pages");
 			}
 		}
-		p.setPhotos(resultat);
+		page.setPhotos(resultat);
 		
 		System.out.println("Rentrez votre mise en forme");
 		String mef = LectureClavier.lireChaine();
-		p.setMiseEnForme(mef);
+		page.setMiseEnForme(mef);
 		
-		DAO<Page> pageDAO = new PageDAO(PhotoNum.conn);
-		pageDAO.create(p);
-		
-		return p;
+		pageDAO.update(page);
 	}
 }
