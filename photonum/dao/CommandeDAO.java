@@ -19,31 +19,36 @@ public class CommandeDAO extends DAO<Commande>{
 
 	@Override
 	public boolean create(Commande cmd) {
+		boolean reussi = false;
 		try {
-			PreparedStatement requete = this.connect.prepareStatement(
-				"INSERT INTO LesCommandes VALUES (?, ?, ?, ?, ?, ?)"
+			PreparedStatement pstmt = this.connect.prepareStatement(
+				"INSERT INTO LesCommandes VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 			);
 			cmd.setIdCommande(getLastId()+1);
-			requete.setInt(1, cmd.getIdCommande());
-			requete.setString(2, cmd.getMail());
-			requete.setDate(3, cmd.getDateCommande());
-			requete.setBoolean(4, cmd.getEstLivreChezClient());
-			requete.setString(5, cmd.getStatus().getString());
-			requete.setString(6, cmd.getCodePromo());
-			int reussi = requete.executeUpdate();
-			requete.close();
-			return reussi == 1;
+			pstmt.setInt(1, cmd.getIdCommande());
+			pstmt.setString(2, cmd.getMail());
+			pstmt.setDate(3, cmd.getDateCommande());
+			pstmt.setBoolean(4, cmd.getEstLivreChezClient());
+			pstmt.setString(5, cmd.getStatus().getString());
+			pstmt.setString(6, cmd.getCodePromo());
+			pstmt.setInt(7, cmd.getNumeroRue());
+			pstmt.setString(8, cmd.getNomRue());
+			pstmt.setString(9, cmd.getVille());
+			pstmt.setInt(10, cmd.getCodePostal());
+			pstmt.setString(11, cmd.getPays());
+			reussi = pstmt.executeUpdate() != 0;
+			pstmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return reussi;
 	}
 
 	@Override
 	public Commande read(Object id) {
+		Commande c = null;
 		try {
 			int identifiant = (int) id;
-			Commande c = null;
 			PreparedStatement requete = this.connect.prepareStatement(
 				"SELECT * FROM LesCommandes WHERE idCommande = ?"
 			);
@@ -57,17 +62,20 @@ public class CommandeDAO extends DAO<Commande>{
 					resultat.getDate("dateCommande"),
 					resultat.getBoolean("estLivreChezClient"),
 					StatutCommande.fromString(resultat.getString("status")),
-					resultat.getString("codePromo")
+					resultat.getString("codePromo"),
+					resultat.getInt("numeroRue"),
+					resultat.getString("nomRue"),
+					resultat.getString("ville"),
+					resultat.getInt("cp"),
+					resultat.getString("pays")
 				);
 			}
 			requete.close();
-			return c;
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		return null;
+		return c;
 	}
 
 	@Override
@@ -88,54 +96,53 @@ public class CommandeDAO extends DAO<Commande>{
 					resultat.getDate("dateCommande"),
 					resultat.getBoolean("estLivreChezClient"),
 					StatutCommande.fromString(resultat.getString("status")),
-					resultat.getString("codePromo")
+					resultat.getString("codePromo"),
+					resultat.getInt("numeroRue"),
+					resultat.getString("nomRue"),
+					resultat.getString("ville"),
+					resultat.getInt("cp"),
+					resultat.getString("pays")
 				));
 			}
 
 			requete.close();
-			return commandes;
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
-
-		return null;
+		return commandes;
 	}
 
 	@Override
 	public boolean update(Commande obj) {
+		boolean reussi = false;
 		try {
 			PreparedStatement requete = this.connect.prepareStatement(
 				"UPDATE LesCommandes SET status = ? WHERE idCommande = ?"
 			);
 			requete.setString(1, obj.getStatus().getString());
 			requete.setInt(2, obj.getIdCommande());
-			int reussi = requete.executeUpdate();
+			reussi = requete.executeUpdate() != 0;
 			requete.close();
-			return reussi == 1;
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return false;
+		return reussi;
 	}
 
 	@Override
 	public boolean delete(Commande obj) {
+		boolean reussi = false;
 		 try {
 			PreparedStatement requete = this.connect.prepareStatement(
 				"DELETE FROM LesCommandes WHERE idCommande = ?"
 			);
 			requete.setInt(1, obj.getIdCommande());
-			int reussi = requete.executeUpdate();
+			reussi = requete.executeUpdate() != 0;
 			requete.close();
-			return reussi == 1;
-
 		 } catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return reussi;
 	}
 
 	public List<Commande> readAllByStatus(StatutCommande sc) {
@@ -157,7 +164,12 @@ public class CommandeDAO extends DAO<Commande>{
 					resultat.getDate("dateCommande"),
 					resultat.getBoolean("estLivreChezClient"),
 					StatutCommande.fromString(resultat.getString("status")),
-					resultat.getString("codePromo")
+					resultat.getString("codePromo"),
+					resultat.getInt("numeroRue"),
+					resultat.getString("nomRue"),
+					resultat.getString("ville"),
+					resultat.getInt("cp"),
+					resultat.getString("pays")
 				));
 			}
 			requete.close();
@@ -188,7 +200,12 @@ public class CommandeDAO extends DAO<Commande>{
 					resultat.getDate("dateCommande"),
 					resultat.getBoolean("estLivreChezClient"),
 					StatutCommande.fromString(resultat.getString("status")),
-					resultat.getString("codePromo")
+					resultat.getString("codePromo"),
+					resultat.getInt("numeroRue"),
+					resultat.getString("nomRue"),
+					resultat.getString("ville"),
+					resultat.getInt("cp"),
+					resultat.getString("pays")
 				);
 				commande.add(co);
 			}

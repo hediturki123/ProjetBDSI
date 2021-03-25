@@ -18,10 +18,10 @@ public class ClientDAO extends DAO<Client> {
 
 	@Override
 	public boolean create(Client obj) {
-
+		boolean reussi = false;
 		try {
 			PreparedStatement requeteAjout=this.connect.prepareStatement(
-				"INSERT INTO LesClients VALUES (?,?,?,?,?,?,?,?,?)"
+				"INSERT INTO LesClients VALUES (?,?,?,?,?,?,?,?,?,?)"
 			);
 			requeteAjout.setString(1, obj.getMail());
 			requeteAjout.setString(2, obj.getNom());
@@ -32,14 +32,13 @@ public class ClientDAO extends DAO<Client> {
 			requeteAjout.setString(7, obj.getVille());
 			requeteAjout.setInt(8,obj.getCp());
 			requeteAjout.setString(9, obj.getPays());
-
-			int reussi=requeteAjout.executeUpdate();
+			requeteAjout.setBoolean(10, obj.isActif());
+			reussi = requeteAjout.executeUpdate() != 0;
 			requeteAjout.close();
-			return reussi==1;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return reussi;
 	}
 
 	@Override
@@ -52,21 +51,22 @@ public class ClientDAO extends DAO<Client> {
 			requete_selection.setString(1,args[0]); // icic l'obj sera l'adresse mail
 			requete_selection.setString(2,args[1]);
 			ResultSet resultat=requete_selection.executeQuery();
-			if(!resultat.next()){
-				c=null;
-			} //ici last renvoie false si il n'y a aucune row selectionner
-			else{
-			 c= new Client
-			(
-			resultat.getString("mail"),
-			resultat.getString("nom"),
-			resultat.getString("prenom"),
-			resultat.getString("mdp"),
-			resultat.getInt("numeroRue"),
-			resultat.getString("nomRue"),
-			resultat.getString("ville"),
-			resultat.getInt("cp"),
-			resultat.getString("pays"));
+			if (!resultat.next()) {
+				c = null;
+			} // ici last renvoie false si il n'y a aucune row selectionner
+			else {
+				c = new Client(
+					resultat.getString("mail"),
+					resultat.getString("nom"),
+					resultat.getString("prenom"),
+					resultat.getString("mdp"),
+					resultat.getInt("numeroRue"),
+					resultat.getString("nomRue"),
+					resultat.getString("ville"),
+					resultat.getInt("cp"),
+					resultat.getString("pays"),
+					resultat.getBoolean("actif")
+				);
 			}
 			requete_selection.close();
 			return c;
@@ -132,9 +132,7 @@ public class ClientDAO extends DAO<Client> {
 			"SELECT * FROM lesClients");
 			ResultSet resultat=requete_all.executeQuery();
 			while(resultat.next()){
-				 c.add(
-					new Client
-					(
+				 c.add(new Client (
 					resultat.getString("mail"),
 					resultat.getString("nom"),
 					resultat.getString("prenom"),
@@ -143,7 +141,9 @@ public class ClientDAO extends DAO<Client> {
 					resultat.getString("nomRue"),
 					resultat.getString("ville"),
 					resultat.getInt("cp"),
-					resultat.getString("pays")));
+					resultat.getString("pays"),
+					resultat.getBoolean("actif")
+				));
 			}
 			requete_all.close();
 			return c;
