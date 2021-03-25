@@ -1,8 +1,4 @@
 package photonum.objects;
-import photonum.PhotoNum;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 public class Page{
@@ -13,25 +9,21 @@ public class Page{
 	private List<Photo> photos;
 	
 	public Page(int idImpression, String miseEnForme) {
-		setIdPage(lastId()+1);
+		setIdPage(-1);
 		setAll(idImpression, miseEnForme);
 	}
 	
-	public static int lastId() {
-		try {
-			PreparedStatement requete_last = PhotoNum.conn.prepareStatement("SELECT max(idPage) FROM LesPages");
-			ResultSet res = requete_last.executeQuery();
-			if(res.next()) {
-				return res.getInt("idPage");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+	@Override
+	public String toString() {
+		String s = "Cette page a pour ID: "+getIdPage();
+		s += ".\nElle est liée a l'impression d'ID: "+getIdImpression();
+		s += ".\nElle a comme mise en forme: "+getMiseEnForme();
+		s += ".\nElle est composé de ces photos:\n";
+		for(Photo p : getPhotos()) {
+			s += "\t" + p.toString() + ".\n";
 		}
-		return 0;
+		return s;
 	}
-
-	
-
 	
 	/***** getters and setters *****/
 	
@@ -39,7 +31,7 @@ public class Page{
 		return idPage;
 	}
 
-	private void setIdPage(int idPage) {
+	public void setIdPage(int idPage) {
 		this.idPage = idPage;
 	}
 

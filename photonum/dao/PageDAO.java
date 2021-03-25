@@ -3,9 +3,11 @@ package photonum.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import photonum.PhotoNum;
 import photonum.objects.Page;
 
 public class PageDAO extends DAO<Page>{
@@ -20,6 +22,7 @@ public class PageDAO extends DAO<Page>{
 			PreparedStatement requeteCreate=this.connect.prepareStatement(
 				"INSERT INTO LesPages VALUES (?,?,?)"
 			);
+			obj.setIdPage(lastId()+1);
 			requeteCreate.setInt(1,obj.getIdPage());
 			requeteCreate.setInt(2, obj.getIdImpression());
 			requeteCreate.setString(3, obj.getMiseEnForme());
@@ -118,5 +121,18 @@ public class PageDAO extends DAO<Page>{
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	private int lastId() {
+		try {
+			PreparedStatement requete_last = PhotoNum.conn.prepareStatement("SELECT max(idPage) FROM LesPages");
+			ResultSet res = requete_last.executeQuery();
+			if(res.next()) {
+				return res.getInt("idPage");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 }

@@ -74,5 +74,11 @@ public class FichierImage {
 		setEstPartage(estPartage);
 		setDateUpload(dateUpload);
 	}
+
+	@Override
+	public String toString() {
+		return chemin;
+	}
+	
 	/*********************************************/
 }

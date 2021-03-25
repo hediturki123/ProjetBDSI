@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+import photonum.objects.Client;
 import photonum.PhotoNum;
 import photonum.objects.Commande;
 import photonum.objects.StatutCommande;
@@ -205,6 +205,53 @@ public class CommandeDAO extends DAO<Commande>{
 		return null;
 	}
 
+	public List<Commande> readAllByClient(Client c) {
+
+		List<Commande> commande = new ArrayList<Commande>();
+
+		try {
+
+			PreparedStatement requete = this.connect.prepareStatement(
+				"SELECT * FROM LesCommandes WHERE mail=?"
+			);
+			requete.setString(1, c.getMail());
+			ResultSet resultat = requete.executeQuery();
+
+			while(resultat.next()) {
+				StatutCommande statut;
+				switch(resultat.getString("status")) {
+					case "enCours":
+						statut = StatutCommande.EN_COURS;
+						break;
+					case "preteEnvoi" :
+						statut = StatutCommande.PRETE_ENVOI;
+						break;
+					case "envoyee" :
+						statut = StatutCommande.ENVOYEE;
+						break;
+					default :
+						statut = null;
+						break;
+				}
+
+				Commande co = new Commande(
+					0, resultat.getString("mail"),
+					resultat.getDate("dateCommande"),
+					resultat.getBoolean("estLivreChezClient"),
+					statut,
+					resultat.getString("codePromo")
+				);
+				commande.add(co);
+			}
+
+			return commande;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 	public int getLastId() {
 		try {
 			PreparedStatement requete_last = PhotoNum.conn.prepareStatement("SELECT max(idCommande) FROM LesCommandes");

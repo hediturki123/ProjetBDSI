@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import photonum.PhotoNum;
 import photonum.objects.*;
 
 public class PhotoDAO extends DAO<Photo>{
@@ -20,6 +21,7 @@ public class PhotoDAO extends DAO<Photo>{
 		try {
 			PreparedStatement requete_imp = this.connect.prepareStatement(
 					"INSERT INTO LesPhotos VALUES (?,?)");
+			obj.setIdPhoto(lastId()+1);
 			requete_imp.setInt(1, obj.getIdPhoto());
 			requete_imp.setString(2, obj.getChemin());
 			boolean b = requete_imp.execute();
@@ -109,5 +111,18 @@ public class PhotoDAO extends DAO<Photo>{
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	private int lastId() {
+		try {
+			PreparedStatement requete_last = PhotoNum.conn.prepareStatement("SELECT max(idPhoto) FROM LesPhotos");
+			ResultSet res = requete_last.executeQuery();
+			if(res.next()) {
+				return res.getInt("idPhoto");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 }

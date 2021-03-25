@@ -15,8 +15,12 @@ public class InterfaceCodePromo {
         System.out.println("voici vos codes promo toujours actif :");
         CodePromoDAO cpDao=new CodePromoDAO(PhotoNum.conn);
         List<CodePromo> codeClients=cpDao.readAllByClient(c.getMail(),false);
-        for(int i=1;i<=codeClients.size();i++){
-            System.out.println("code n°"+i+" :"+codeClients.get(i-1).getCode());
+        if(codeClients.size()!=0){
+            for(int i=1;i<=codeClients.size();i++){
+                System.out.println("code n°"+i+" :"+codeClients.get(i-1).getCode());
+            }
+        }else{
+            System.out.println("Désolé mais vous n'avez aucun code promo ....");
         }
     }
 }

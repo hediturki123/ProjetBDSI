@@ -1,16 +1,13 @@
 package photonum.objects;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import photonum.PhotoNum;
 
 public class Impression{
 
 	private int idImpression;
+	private String mailClient;
 	private String reference;
 	private String type;
 	private String titre;
@@ -18,29 +15,37 @@ public class Impression{
 	private List<PhotoTirage> photosTirage;
 	
 	public Impression() {
-		setIdImpression(lastId()+1);
+		setIdImpression(-1);
 	}
 	
-	public Impression(String reference, String type, String titre) {
-		setIdImpression(lastId()+1);
+	public Impression(String mailClient ,String reference, String type, String titre) {
+		setIdImpression(-1);
+		setMailClient(mailClient);
 		setReference(reference);
 		setType(type);
 		setTitre(titre);
 		this.pages = new ArrayList<>();
 	}
-
-	public static int lastId() {
-		try {
-			PreparedStatement requete_last = PhotoNum.conn.prepareStatement("SELECT max(idImpression) FROM LesImpressions");
-			ResultSet res = requete_last.executeQuery();
-			if(res.next()) {
-				return res.getInt("idPage");
+	
+	@Override
+	public String toString() {
+		String s="Le titre de l'impression est: ";
+		s += getTitre();
+		s += ".\nC'est un: "+getType();
+		s += ".\nSa référence est: "+getReference();
+		if(getType().equals("tirage")) {
+			s += ".\nLes photos de ce tirage sont:\n";
+			for(PhotoTirage p: getPhotosTirage()) {
+				s += "\t" + p.toString() + "\n";
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-		return 0;
+		else {
+			s += ".\nLes pages de ce "+getType()+" sont:\n";
+			for(Page p: getPages()) {
+				s += "\t" + p.toString() + "\n";
+			}
+		}
+		return s;
 	}
 
 	/*** getters and setters ***/
@@ -48,7 +53,7 @@ public class Impression{
 		return idImpression;
 	}
 
-	private void setIdImpression(int idImpression) {
+	public void setIdImpression(int idImpression) {
 		this.idImpression = idImpression;
 	}
 
@@ -90,6 +95,14 @@ public class Impression{
 
 	public void setPhotosTirage(List<PhotoTirage> photosTirage) {
 		this.photosTirage = photosTirage;
+	}
+
+	public String getMailClient() {
+		return mailClient;
+	}
+
+	public void setMailClient(String mailClient) {
+		this.mailClient = mailClient;
 	}
 	
 }

@@ -1,13 +1,7 @@
 package photonum.objects;
 
 import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-
-import photonum.PhotoNum;
 
 public class Commande {
 
