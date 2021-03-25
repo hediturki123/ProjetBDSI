@@ -11,6 +11,7 @@ import photonum.PhotoNum;
 public class Impression{
 
 	private int idImpression;
+	private String mailClient;
 	private String reference;
 	private String type;
 	private String titre;
@@ -21,12 +22,28 @@ public class Impression{
 		setIdImpression(-1);
 	}
 	
-	public Impression(String reference, String type, String titre) {
+	public Impression(String mailClient ,String reference, String type, String titre) {
 		setIdImpression(-1);
+		setMailClient(mailClient);
 		setReference(reference);
 		setType(type);
 		setTitre(titre);
 		this.pages = new ArrayList<>();
+	}
+	
+	@Override
+	public String toString() {
+		String s="Le titre de l'impression est: ";
+		s += getTitre();
+		s += ".\n C'est un: "+getType();
+		s += ".\n Sa référence est: "+getReference();
+		if(getType().equals("tirage")) {
+			s += ".\n Les photos de ce tirage sont: ";
+			for(PhotoTirage p: getPhotosTirage()) {
+				
+			}
+		}
+		return s;
 	}
 
 	/*** getters and setters ***/
@@ -76,6 +93,14 @@ public class Impression{
 
 	public void setPhotosTirage(List<PhotoTirage> photosTirage) {
 		this.photosTirage = photosTirage;
+	}
+
+	public String getMailClient() {
+		return mailClient;
+	}
+
+	public void setMailClient(String mailClient) {
+		this.mailClient = mailClient;
 	}
 	
 }
