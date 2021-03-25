@@ -3,6 +3,7 @@ package photonum.interfaces;
 import java.util.List;
 
 import photonum.PhotoNum;
+import photonum.dao.ArticleDAO;
 import photonum.dao.CommandeDAO;
 import photonum.objects.*;
 import photonum.utils.LectureClavier;
@@ -45,6 +46,7 @@ public class InterfaceCommande {
         }
     }
     public static void afficherDetailCommande(Commande c){
+            System.out.println(c.toString());
 
     }
 }

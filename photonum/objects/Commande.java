@@ -1,6 +1,10 @@
 package photonum.objects;
 
 import java.sql.Date;
+import java.util.List;
+
+import photonum.PhotoNum;
+import photonum.dao.ArticleDAO;
 
 public class Commande {
 
@@ -73,4 +77,17 @@ public class Commande {
 	public void setCodePromo(String codePromo) {
 		this.codePromo = codePromo;
 	}
+
+	@Override
+	public String toString() {
+		ArticleDAO artDao=new ArticleDAO(PhotoNum.conn);
+        List<Article> tabArticles = artDao.readAllByCommande(this);
+       String message=	"\n\nLes details de votre commande :";
+        for(int i=1;i<=tabArticles.size();i++){
+			message+="	Article n°"+i+" :"+tabArticles.get(i-1).toString()+"\n";
+		}
+		return message;
+	}
+
+	
 }
