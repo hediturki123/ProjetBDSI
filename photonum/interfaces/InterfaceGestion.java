@@ -25,13 +25,13 @@ public class InterfaceGestion {
     }
 
     private static void changerStatutCommande(List<Commande> co, int id) {
-        System.out.println("idCommande | mail | date | estLivreChezClient | Statut | codePromo");
+        System.out.println("idCommande | mail | dateCommande | estLivreChezClient | Statut | codePromo");
         co.forEach(
             c -> {
-                System.out.println(c.getIdCommande() + c.getMail() + c.getDateCommande() 
+                System.out.println(c.getIdCommande() + c.getMail() + c.getDateCommande()
                 + c.getEstLivreChezClient() + c.getStatus() + c.getCodePromo());
             }
-        );  
+        );
         Commande commande = commandeDAO.read(id);
         commande.setStatus(StatutCommande.ENVOYEE);
         commandeDAO.update(commande);
@@ -39,32 +39,30 @@ public class InterfaceGestion {
 
 
     public static void menuPrincipal() {
-        System.out.println("-- Gérer les commandes ---\n");
         List<Commande> commandes = commandeDAO.readAllByStatus(StatutCommande.PRETE_ENVOI);
-        // ici
-        System.out.println(
-            "1. Envoyer toutes les commandes prêtes à l'envoi\n" +
-            "2. Changer le statut d'une commande\n" + "> "
-        );
-        int choix = LectureClavier.lireEntier("");
+        int choix = -1;
 
-        while(choix != -1) {
+        while(choix != 3) {
+            System.out.print(
+                "--- Gérer les commandes ---\n" +
+                "1. Envoyer toutes les commandes prêtes à l'envoi\n" +
+                "2. Changer le statut d'une commande\n" +
+                "3. Retour au menu principal" +
+                "> "
+            );
+            choix = LectureClavier.lireEntier("");
             switch(choix) {
-                case 1 :
+                case 1:
                     envoyerCommandes(commandes);
                     break;
-
-                case 2 :
+                case 2:
                     System.out.println("Entrer l'identifiant d'une commande à envoyer");
                     int id = LectureClavier.lireEntier("");
                     changerStatutCommande(commandes, id);
-
-                default : 
-                    System.out.println(
-                        "1. Envoyer toutes les commandes Prêtes à l'envoi \n" +
-                        "2. Changer le statut d'une commande\n" + "> "
-                        );
-                    choix = LectureClavier.lireEntier("");
+                    break;
+                case 3:
+                default:
+                    break;
             }
         }
 

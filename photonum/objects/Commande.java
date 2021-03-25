@@ -14,15 +14,12 @@ public class Commande {
 	private Date dateCommande;
 	private boolean estLivreChezClient;
 	private StatutCommande status;
-	private String codePromo; 
+	private String codePromo;
 
-	public Commande() {
-	}
+	public Commande() {}
 
-	
-
-	public Commande(String mail, Date dateCommande, boolean estLivreChezClient, StatutCommande status, String codePromo) {
-		this.idCommande = getLastId() + 1;
+	public Commande(int idCommande, String mail, Date dateCommande, boolean estLivreChezClient, StatutCommande status, String codePromo) {
+		this.idCommande = idCommande;
 		this.mail = mail;
 		this.dateCommande = dateCommande;
 		this.estLivreChezClient = estLivreChezClient;
@@ -81,19 +78,4 @@ public class Commande {
 	public void setCodePromo(String codePromo) {
 		this.codePromo = codePromo;
 	}
-
-	public static int getLastId() {
-		try {
-			PreparedStatement requete_last = PhotoNum.conn.prepareStatement("SELECT max(idCommande) FROM LesCommandes");
-			ResultSet res = requete_last.executeQuery();
-			if(res.next()) {
-				return res.getInt("idCommande");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return 0;
-	}
-
-
 }
