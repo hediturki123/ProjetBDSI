@@ -31,7 +31,7 @@ public class Impression{
 
 	public static int lastId() {
 		try {
-			PreparedStatement requete_last = PhotoNum.conn.prepareStatement("SELECT max(idPage) FROM LesImpressions");
+			PreparedStatement requete_last = PhotoNum.conn.prepareStatement("SELECT max(idImpression) FROM LesImpressions");
 			ResultSet res = requete_last.executeQuery();
 			if(res.next()) {
 				return res.getInt("idPage");

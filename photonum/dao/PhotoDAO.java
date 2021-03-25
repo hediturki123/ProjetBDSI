@@ -41,7 +41,6 @@ public class PhotoDAO extends DAO<Photo>{
 			if(result.next())
 			{
 				Photo res = new Photo(
-						result.getInt("idPhoto"),
 						result.getString("chemin"));
 				requete_select.close();
 				return res;
@@ -101,7 +100,6 @@ public class PhotoDAO extends DAO<Photo>{
 			while(result.next())
 			{
 				Photo res = new Photo(
-						result.getInt("idPhoto"),
 						result.getString("chemin"));
 				requete_select.close();
 				tab.add(res);

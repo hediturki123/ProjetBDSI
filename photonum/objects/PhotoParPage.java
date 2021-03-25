@@ -4,10 +4,8 @@ package photonum.objects;
 public class PhotoParPage extends Photo {
 	private int idPage;
 
-
-
-	public PhotoParPage(int idPhoto, String chemin, int idPage) {
-		super(idPhoto, chemin);
+	public PhotoParPage(String chemin, int idPage) {
+		super(chemin);
 		setIdPage(idPage);
 	}
 
