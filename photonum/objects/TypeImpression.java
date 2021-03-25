@@ -4,7 +4,7 @@ public enum TypeImpression {
     TIRAGE ("tirage", "Tirage"),
     CADRE ("cadre", "Cadre"),
     ALBUM ("album", "Album"), 
-    CALENDRIER ("calendrier", "Calendrier")
+    CALENDRIER ("calendrier", "Calendrier");
 
     private final String str;
     private final String fstr;

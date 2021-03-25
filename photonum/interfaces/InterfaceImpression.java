@@ -24,23 +24,23 @@ public class InterfaceImpression {
 		}
 		switch(choix) {
 		case 1:
-			imp.setType("tirage");
+			imp.setType(TypeImpression.TIRAGE);
 			createTirage(imp,client);
 			break;
 		case 2:
-			imp.setType("album");
+			imp.setType(TypeImpression.ALBUM);
 			createAlbum(imp,client);
 			break;
 		case 3:
-			imp.setType("calendrier");
+			imp.setType(TypeImpression.CALENDRIER);
 			createCalendrier(imp,client);
 			break;
 		case 4:
-			imp.setType("cadre");
+			imp.setType(TypeImpression.CADRE);
 			createCadre(imp,client);
 			break;
 		default:
-			imp.setType("tirage");
+			imp.setType(TypeImpression.TIRAGE);
 			createTirage(imp,client);
 			break;
 		}
