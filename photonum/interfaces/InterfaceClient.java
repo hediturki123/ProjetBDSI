@@ -89,7 +89,7 @@ public class InterfaceClient  {
 		int choix=LectureClavier.lireEntier("\n1. Afficher mes informations  \n2. Gerer les fichiers \n3. \n4. \n5. Se deconnecter");
 		while(choix!=5){
 			switch (choix){
-				case 1:afficherInfo(c);
+				case 1:menuInfo(c);
 					break;
 				case 2:InterfaceFichier.interfaceDemandeFichier(c);
 					break;
@@ -103,7 +103,38 @@ public class InterfaceClient  {
 		}
 		System.out.println("Merci de votre visite !");
 	}
-public static void afficherInfo(Client c){
-	System.out.println(c.toString());
-}
+public static void menuInfo(Client c){
+	System.out.println("que voulez vous faire ?");
+	int choix=LectureClavier.lireEntier(
+		"1. Mes informations personnelles\n"+
+		"2. Mes Codes promos\n"+
+		"3. Mes Commandes\n" +
+		"4. Mes Impression\n" +
+		"5. Mes Images Partagées"
+	);
+	while(!(choix>0 && choix<6)){
+		choix=LectureClavier.lireEntier(
+		"1. Mes informations personnelles\n"+
+		"2. Mes Codes promos\n"+
+		"3. Mes Commandes\n" +
+		"4. Mes Impression\n" +
+		"5. Mes Images Partagées\n"
+	);
+	}
+	switch(choix){	
+		case 1 :afficherInfo(c);
+				break;
+		case 2 :InterfaceCodePromo.PresentationCodePromo(c);
+				break;
+		case 3 :InterfaceCommande.affichageCommande(c);
+				break;
+		case 4 ://InterfaceImpression.interfaceVueImpression(c);
+				break;
+		case 5 :
+ 
+	}
+ }
+ public static void afficherInfo(Client c){
+	 System.out.println(c.toString());
+ }
 }
