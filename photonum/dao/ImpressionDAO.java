@@ -40,7 +40,9 @@ public class ImpressionDAO extends DAO<Impression> {
 	@Override
 	public Impression read(Object id) {
 		try {
-			PreparedStatement requete_select = this.connect.prepareStatement("SELECT * FROM LesImpressions WHERE idImpression=?");
+			PreparedStatement requete_select = this.connect.prepareStatement(
+				"SELECT * FROM LesImpressions WHERE idImpression = ?"
+			);
 			requete_select.setInt(1, (int)id);
 			Impression res = null;
 			
@@ -48,11 +50,13 @@ public class ImpressionDAO extends DAO<Impression> {
 			if(result.next())
 			{
 				 res = new Impression(
+					 	result.getInt("idImpression"),
 						result.getString("mailClient"),
 						result.getString("reference"),
 						TypeImpression.fromString(result.getString("type")),
 						result.getString("titre")
 						);
+				 res.setIdImpression(result.getInt("idImpressions"));
 			}
 			requete_select.close();
 			return res;
@@ -114,6 +118,7 @@ public class ImpressionDAO extends DAO<Impression> {
 			while(result.next())
 			{
 				impressions.add(new Impression(
+						result.getInt("idImpression"),
 						result.getString("mailClient"),
 						result.getString("reference"),
 						TypeImpression.fromString(result.getString("type")),
@@ -130,11 +135,8 @@ public class ImpressionDAO extends DAO<Impression> {
 	}
 	
 	public List<Impression> readAllByClient(Client client){
-		
-		ArrayList<Impression> impressions  = new ArrayList<Impression>();
-
 		try {
-
+			ArrayList<Impression> impressions  = new ArrayList<Impression>();
 			PreparedStatement requete_all = this.connect.prepareStatement(
 				"SELECT * FROM LesImpressions WHERE mailClient = ?"
 			);
@@ -142,9 +144,11 @@ public class ImpressionDAO extends DAO<Impression> {
 			requete_all.setString(1, client.getMail());
 			ResultSet result = requete_all.executeQuery();
 			
+			
 			while(result.next())
 			{
-				impressions.add(new Impression (
+				impressions.add(new Impression(
+						result.getInt("idImpression"),
 						result.getString("mailClient"),
 						result.getString("reference"),
 						TypeImpression.fromString(result.getString("type")),
@@ -163,10 +167,12 @@ public class ImpressionDAO extends DAO<Impression> {
 	
 	private int lastId() {
 		try {
-			PreparedStatement requete_last = this.connect.prepareStatement("SELECT max(idImpression) FROM LesImpressions");
+			PreparedStatement requete_last = this.connect.prepareStatement(
+				"SELECT max(idImpression) FROM LesImpressions"
+				);
 			ResultSet res = requete_last.executeQuery();
 			if(res.next()) {
-				return res.getInt("idPage");
+				return res.getInt("idImpression");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

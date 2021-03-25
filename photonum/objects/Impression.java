@@ -18,8 +18,8 @@ public class Impression{
 		setIdImpression(-1);
 	}
 	
-	public Impression(String mailClient ,String reference, TypeImpression type, String titre) {
-		setIdImpression(-1);
+	public Impression(int idImpression, String mailClient ,String reference, TypeImpression type, String titre) {
+		setIdImpression(idImpression);
 		setMailClient(mailClient);
 		setReference(reference);
 		setType(type);
@@ -33,7 +33,7 @@ public class Impression{
 		s += getTitre();
 		s += ".\nC'est un: "+getType();
 		s += ".\nSa référence est: "+getReference();
-		if(getType().equals("tirage")) {
+		if(getType().equals(TypeImpression.TIRAGE)) {
 			s += ".\nLes photos de ce tirage sont:\n";
 			for(PhotoTirage p: getPhotosTirage()) {
 				s += "\t" + p.toString() + "\n";
