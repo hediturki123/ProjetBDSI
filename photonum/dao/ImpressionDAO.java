@@ -7,9 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import photonum.PhotoNum;
 import photonum.objects.Client;
 import photonum.objects.Impression;
+import photonum.objects.TypeImpression;
 
 public class ImpressionDAO extends DAO<Impression> {
 
@@ -21,16 +21,16 @@ public class ImpressionDAO extends DAO<Impression> {
 	public boolean create(Impression obj) {
 		try {
 			PreparedStatement requete_imp = this.connect.prepareStatement(
-					"INSERT INTO LesImpressions VALUES (?,?,?,?,?)");
-			obj.setIdImpression(lastId()+1);
+					"INSERT INTO LesImpressions VALUES (?, ?, ? , ?, ?)");
+			obj.setIdImpression(lastId() + 1);
 			requete_imp.setInt(1, obj.getIdImpression());
 			requete_imp.setString(2, obj.getMailClient());
 			requete_imp.setString(3, obj.getReference());
-			requete_imp.setString(4, obj.getType());
+			requete_imp.setString(4, obj.getType().getString());
 			requete_imp.setString(5, obj.getTitre());
-			boolean b = requete_imp.execute();
+			int b = requete_imp.executeUpdate();
 			requete_imp.close();
-			return b;
+			return b == 1;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -42,18 +42,20 @@ public class ImpressionDAO extends DAO<Impression> {
 		try {
 			PreparedStatement requete_select = this.connect.prepareStatement("SELECT * FROM LesImpressions WHERE idImpression=?");
 			requete_select.setInt(1, (int)id);
+			Impression res = null;
 			
 			ResultSet result = requete_select.executeQuery();
 			if(result.next())
 			{
-				Impression res = new Impression(
+				 res = new Impression(
 						result.getString("mailClient"),
 						result.getString("reference"),
-						result.getString("type"),
-						result.getString("titre"));
-				requete_select.close();
-				return res;
+						TypeImpression.fromString(result.getString("type")),
+						result.getString("titre")
+						);
 			}
+			requete_select.close();
+			return res;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -65,19 +67,20 @@ public class ImpressionDAO extends DAO<Impression> {
 		try {
 			PreparedStatement requete_update = this.connect.prepareStatement(
 					"UPDATE LesImpressions SET"
-					+ "idImpression=?,"
-					+ "mailClient=?,"
-					+ "reference=?,"
-					+ "type=?,"
-					+ "titre=?");
+					+ "idImpression = ?,"
+					+ "mailClient = ?,"
+					+ "reference = ?,"
+					+ "type = ?,"
+					+ "titre = ?"
+				);
 			requete_update.setInt(1, obj.getIdImpression());
 			requete_update.setString(2, obj.getMailClient());
 			requete_update.setString(3, obj.getReference());
-			requete_update.setString(4, obj.getType());
+			requete_update.setString(4, obj.getType().getString());
 			requete_update.setString(5, obj.getTitre());
-			boolean b = requete_update.execute();
+			int resultat = requete_update.executeUpdate();
 			requete_update.close();
-			return b;
+			return resultat == 1;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -88,11 +91,11 @@ public class ImpressionDAO extends DAO<Impression> {
 	public boolean delete(Impression obj) {
 		try {
 			PreparedStatement requete_delete = this.connect.prepareStatement(
-					"DELETE FROM LesImpressions WHERE idImpression=?");
+					"DELETE FROM LesImpressions WHERE idImpression = ?");
 			requete_delete.setInt(1, obj.getIdImpression());
-			boolean b = requete_delete.execute();
+			int b = requete_delete.executeUpdate();
 			requete_delete.close();
-			return b;
+			return b == 1;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -102,21 +105,24 @@ public class ImpressionDAO extends DAO<Impression> {
 	@Override
 	public List<Impression> readAll() {
 		try {
-			PreparedStatement requete_select = this.connect.prepareStatement("SELECT * FROM LesImpressions");
+			PreparedStatement requete_select = this.connect.prepareStatement(
+				"SELECT * FROM LesImpressions"
+			);
 			
 			ResultSet result = requete_select.executeQuery();
-			ArrayList<Impression> tab  = new ArrayList<Impression>();
+			ArrayList<Impression> impressions  = new ArrayList<Impression>();
 			while(result.next())
 			{
-				Impression res = new Impression(
+				impressions.add(new Impression(
 						result.getString("mailClient"),
 						result.getString("reference"),
-						result.getString("type"),
-						result.getString("titre"));
-				requete_select.close();
-				tab.add(res);
+						TypeImpression.fromString(result.getString("type")),
+						result.getString("titre")
+						)
+					);
 			}
-			return tab;
+			requete_select.close();
+			return impressions;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -124,22 +130,31 @@ public class ImpressionDAO extends DAO<Impression> {
 	}
 	
 	public List<Impression> readAllByClient(Client client){
+		
+		ArrayList<Impression> impressions  = new ArrayList<Impression>();
+
 		try {
-			PreparedStatement requete_all = PhotoNum.conn.prepareStatement("SELECT * FROM LesImpressions WHERE mailClient=?");
+
+			PreparedStatement requete_all = this.connect.prepareStatement(
+				"SELECT * FROM LesImpressions WHERE mailClient = ?"
+			);
+
 			requete_all.setString(1, client.getMail());
 			ResultSet result = requete_all.executeQuery();
-			ArrayList<Impression> tab  = new ArrayList<Impression>();
+			
 			while(result.next())
 			{
-				Impression res = new Impression(
+				impressions.add(new Impression (
 						result.getString("mailClient"),
 						result.getString("reference"),
-						result.getString("type"),
-						result.getString("titre"));
-				requete_all.close();
-				tab.add(res);
+						TypeImpression.fromString(result.getString("type")),
+						result.getString("titre")
+						)
+					);
 			}
-			return tab;
+			requete_all.close();
+			return impressions;
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -148,7 +163,7 @@ public class ImpressionDAO extends DAO<Impression> {
 	
 	private int lastId() {
 		try {
-			PreparedStatement requete_last = PhotoNum.conn.prepareStatement("SELECT max(idImpression) FROM LesImpressions");
+			PreparedStatement requete_last = this.connect.prepareStatement("SELECT max(idImpression) FROM LesImpressions");
 			ResultSet res = requete_last.executeQuery();
 			if(res.next()) {
 				return res.getInt("idPage");
