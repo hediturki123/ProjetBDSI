@@ -102,11 +102,11 @@ public class Client {
 
 		@Override
 		public String toString() {
-			String descriptif="vos informations :"+
+			String descriptif="vos informations:\n"+
 			"mail = "+mail+
 			"\nnom ="+nom+
 			"\nprenom =" + prenom +
-			"\nadresse = "+numeroRue +" "+nomRue+" "+ville +" "+cp+" "+pays;
+			"\nadresse = "+numeroRue +" "+nomRue+" "+cp+" "+ville+" "+pays;
 			return descriptif;
 		}
 	

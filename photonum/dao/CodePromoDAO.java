@@ -136,4 +136,28 @@ public class CodePromoDAO extends DAO<CodePromo>{
 		}
 		return lcp;
 	}
+
+	public List<CodePromo> readAllByClient(String mail,boolean estUtilise) {
+		List<CodePromo> lcp = new ArrayList<>();
+		try {
+			PreparedStatement pstmt = this.connect.prepareStatement(
+				"SELECT * from LesCodesPromo WHERE mail=? and estUtilise=?"
+			);
+			pstmt.setString(1, mail);
+			pstmt.setBoolean(2, estUtilise);
+			ResultSet r = pstmt.executeQuery();
+			while (r.next()) {
+				CodePromo cp = new CodePromo(
+					r.getString("code"),
+					r.getString("mail"),
+					r.getBoolean("estUtilise")
+				);
+				lcp.add(cp);
+			}
+			pstmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return lcp;
+	}
 }
