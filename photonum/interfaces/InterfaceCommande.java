@@ -1,11 +1,16 @@
 package photonum.interfaces;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import photonum.PhotoNum;
 import photonum.dao.ArticleDAO;
+import photonum.dao.CodePromoDAO;
 import photonum.dao.CommandeDAO;
 import photonum.dao.ImpressionDAO;
+import photonum.dao.ProduitDAO;
 import photonum.objects.*;
 import photonum.utils.LectureClavier;
 
@@ -15,34 +20,79 @@ public class InterfaceCommande {
     //TODO creation commande
     public static void creationCommande(Client c){
         Commande cmd=new Commande();
+        cmd.setIdCommande(cmdDao.getLastId()+1);
         choixImpression(c, cmd);
-
 
     }
 
     public static void choixImpression(Client c,Commande cmd){
         ImpressionDAO impDao=new ImpressionDAO(PhotoNum.conn);
         List<Impression> impressionClient=impDao.readAllByClient(c);
+        List<Article> articleChoisi= new ArrayList<>();
         if(impressionClient.size() != 0) {
-			int i = 1;
-			int choix;
-			for(Impression imp: impressionClient) {
-				System.out.println(i+". Le titre de l'impression est: "+imp.getTitre());
-				System.out.println("Voulez voir les details de l'impression?\n1. Oui\n2. Non");
-				choix = LectureClavier.lireEntier("Oui/Non");
-				while(choix != 1 && choix != 2) {
-					System.out.println("Choisissez 1 ou 2.");
-					choix = LectureClavier.lireEntier("Oui/Non");
-				}
-				if(choix==1) {
-					imp.toString();
-				}
-				i++;
-			}
+            int choix=-1;
+            while(choix!=0){
+                while(!(choix>0 && choix<=impressionClient.size())){
+                    System.out.println("choissiez l'impression");
+                    for(int i=1;i<=impressionClient.size();i++) {
+                        System.out.println(i+". "+impressionClient.get(i-1).getTitre());
+                    }
+                    choix=LectureClavier.lireEntier(
+                            "choisissez une impression pour la voir plus en detail dans la liste ci-dessus \n"+
+                            "ou taper sur 0"
+                    );
+                }
+                articleChoisi.add(
+                    new Article(cmd.getIdCommande(),
+                    impressionClient.get(choix-1).getIdImpression(),
+                    LectureClavier.lireEntier("Quantite : "))
+                );
+            }
+            utilisationCodePromo(c,cmd,articleChoisi);
 		}else {
 			System.out.println("Vous n'avez pas d'impressions.");
 		}
         
+    }
+
+    public static void  utilisationCodePromo(Client c, Commande cmd,List<Article> articles){
+        CodePromoDAO cpDao=new CodePromoDAO(PhotoNum.conn);
+        List<CodePromo> cpDispo=cpDao.readAllByClient(c.getMail(), false);
+        CodePromo cpUtiliser=new CodePromo();
+        if(LectureClavier.lireOuiNon("voulez vous utiliser un code promo ? (o/n)")){
+            if(cpDispo.size()>0){
+                int choix=-1;
+                while(!(choix>0 && choix<=cpDispo.size())){
+                    System.out.println("vos code promo :");
+                    for(int i=1;i<=cpDispo.size();i++){
+                        System.out.println("    "+i+". "+cpDispo.get(i-1));
+                    }
+                    choix=LectureClavier.lireEntier(" choissisez dans la liste ci-dessus");
+                }
+                cpUtiliser=new CodePromo(cpDispo.get(choix-1).getMail(),cpDispo.get(choix-1).getCode(),cpDispo.get(choix-1).getEstUtilise());
+            }else{
+                System.out.println("Sha !! pas assez bon client pour avoir un code promo baltringue !!");
+            }
+        }else{
+            System.out.println("pas de souci , mais tant pis pour vous SHA !");
+        }
+        livraison(c, cmd, articles, cpUtiliser);
+
+    }
+
+    public static void livraison(Client c,Commande cmd,List<Article> articles,CodePromo cp){
+            if(LectureClavier.lireOuiNon("Voulez vous être livrée chez vous")){
+
+            }else{
+
+            }
+    }
+
+
+    public static void ValidationCommande(Client c,Commande cmd,List<Article> articles,CodePromo cp){
+        System.out.println("voici le descriptif de votre commande :");
+            System.out.println(cmd);
+        if(LectureClavier.lireOuiNon(""))
     }
 
 

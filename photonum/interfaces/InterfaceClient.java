@@ -93,12 +93,13 @@ public class InterfaceClient  {
 				case 2:InterfaceFichier.interfaceDemandeFichier(c);
 					break;
 				case 3:InterfaceImpression.menuImpression(c);
-				break;
-				case 4:break;
+					break;
+				case 4:InterfaceCommande.creationCommande(c);
+					break;
 				default:System.out.println("Veuilllez choisir entre 1,2,3,4,5 ! ");
 						choix=LectureClavier.lireEntier("Alors ?");
             }
-            choix=LectureClavier.lireEntier("\n1. Afficher mes informations  \n2. Gerer les fichiers \n3. Gerer une impression \n4. \n5. Se deconnecter");
+            choix=LectureClavier.lireEntier("\n1. Afficher mes informations  \n2. Gerer les fichiers \n3. Gerer une impression \n4. Commander \n5. Se deconnecter");
 		}
 		System.out.println("Merci de votre visite !");
 	}
