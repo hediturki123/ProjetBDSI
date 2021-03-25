@@ -1,7 +1,6 @@
 package photonum.interfaces;
 
 import photonum.*;
-import photonum.Interface.InterfaceCommande;
 import photonum.dao.ClientDAO;
 import photonum.utils.*;
 import photonum.objects.*;
