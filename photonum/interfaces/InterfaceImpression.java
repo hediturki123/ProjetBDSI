@@ -12,7 +12,7 @@ public class InterfaceImpression {
 	public void interfaceCreationImpression(Client client) {
 		Impression imp = new Impression();
 		System.out.println("Quel type d'impression voulez-vous créer?");
-		System.out.println("1. Tirage\n2. Album\n3. Calendrier\n4. Cadre");
+		System.out.println("1. Tirage\n2. Album\n3. Calendrier\n4. Cadre\n5.");
 		int choix = LectureClavier.lireEntier("1, 2, 3 ou 4?");
 		while(choix!= 1 && choix!= 2 && choix!= 3 && choix!= 4) {
 			System.out.println("Vous devez choisir un nombre entre 1 et 4.");
@@ -75,8 +75,16 @@ public class InterfaceImpression {
 	private void createTirage(Impression impression, Client client) {
 		System.out.println("Vous allez ici créer votre Tirage.\nVous allez donc créer des photos spécifiques aux tirages");
 		List<PhotoTirage> photos = new ArrayList<>();
+		String chemin;
+		int nbFois;
 		for(boolean b = true; b; b = 1 != LectureClavier.lireEntier("quitter ou continuer")) {
-			photos.add(InterfacePhoto.creationPhotoTirage(impression.getIdImpression(),client));
+			System.out.println("Rentrez le chemin de votre photo");
+			chemin = LectureClavier.lireChaine();
+			
+			System.out.println("Rentrez le nombre de fois que vous voulez cette photo");
+			nbFois = LectureClavier.lireEntier("1, 2, 3, 4, ...");
+			
+			photos.add(InterfacePhoto.creationPhotoTirage(impression.getIdImpression(), chemin, nbFois, client));
 			System.out.println("Selectionnez 1 pour quitter et un autre nombre pour continuer la création de pages");
 		}
 		impression.setPhotosTirage(photos);
@@ -103,5 +111,9 @@ public class InterfaceImpression {
 		{
 			System.out.println("Une erreur est survenue, votre "+impression.getType()+" n'a pas pu être créé. Veuillez réessayer.");
 		}
+	}
+	
+	public static void interfaceVueImpression(Client client) {
+		
 	}
 }

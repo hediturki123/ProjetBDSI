@@ -39,7 +39,7 @@ public class Page{
 		return idPage;
 	}
 
-	public void setIdPage(int idPage) {
+	private void setIdPage(int idPage) {
 		this.idPage = idPage;
 	}
 
