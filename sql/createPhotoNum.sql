@@ -26,9 +26,15 @@ CREATE TABLE LesCommandes (
 	estLivreChezClient number(1) not null,
 	status varchar2(20) not null,
 	codePromo varchar2(10) null,
+	numeroRue number(4) not null,
+	nomRue varchar2(80) not null,
+	ville varchar2(30) not null,
+	cp number(5) not null,
+	pays varchar2(30) not null,
 	constraint priCO1 primary key (idCommande),
 	constraint frClientCom foreign key (mail) references LesClients(mail),
 	constraint frCodeProm foreign key (codePromo) references LesCodesPromo(code),
+	constraint frAdresseLivraison foreign (mail,numeroRue,nomRue,ville,cp,pays) references LesAdressesDeLivraison(mailClient,numeroRue,nomRue,ville,cp,pays);
 	constraint ckStat check (status in ('enCours','preteEnvoi','envoyee'))
 );
 
@@ -39,7 +45,7 @@ CREATE TABLE LesAdressesDeLivraison (
 	ville varchar2(30) not null,
 	cp number(5) not null,
 	pays varchar2(30) not null,
-	constraint priA1 primary key (numeroRue,nomRue,ville,cp,pays),
+	constraint priA1 primary key (mailClient,numeroRue,nomRue,ville,cp,pays),
 	constraint frClientAdresse foreign key (mailClient) references LesClients(mail)
 );
 
