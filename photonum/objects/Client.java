@@ -107,7 +107,7 @@ public class Client {
 			"\nnom ="+nom+
 			"\nprenom =" + prenom +
 			"\nadresse = "+numeroRue +" "+nomRue+" "+cp+" "+ville+" "+pays;
-			return descriptif;
+			return descriptif+"\n";
 		}
 	
 }

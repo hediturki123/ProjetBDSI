@@ -184,8 +184,8 @@ public class CommandeDAO extends DAO<Commande>{
 			ResultSet resultat = requete.executeQuery();
 
 			while(resultat.next()) {
-				Commande co = new Commande(
-					0, resultat.getString("mail"),
+				Commande co = new Commande(resultat.getInt("idCommande")
+					, resultat.getString("mail"),
 					resultat.getDate("dateCommande"),
 					resultat.getBoolean("estLivreChezClient"),
 					StatutCommande.fromString(resultat.getString("status")),

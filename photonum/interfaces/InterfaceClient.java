@@ -113,31 +113,41 @@ public static void menuInfo(Client c){
 		"5. Mes Images Partagées\n"+
 		"6. Retour au menu"
 	);
-	while(!(choix>0 && choix<6)){
-		choix=LectureClavier.lireEntier(
-		"1. Mes informations personnelles\n"+
-		"2. Mes Codes promos\n"+
-		"3. Mes Commandes\n" +
-		"4. Mes Impression\n" +
-		"5. Mes Images Partagées\n"+
-		"6. Retour au menu"
-	);
+
+	//ici faire boucler dans le 
+	while(choix!=6){
+		while(!(choix>0 && choix<6)){
+			choix=LectureClavier.lireEntier(
+			"1. Mes informations personnelles\n"+
+			"2. Mes Codes promos\n"+
+			"3. Mes Commandes\n" +
+			"4. Mes Impression\n" +
+			"5. Mes Images Partagées\n"+
+			"6. Retour au menu");
+		};
+			switch(choix){	
+				case 1 :afficherInfo(c);
+					break;
+				case 2 :InterfaceCodePromo.PresentationCodePromo(c);
+					break;
+				case 3 :InterfaceCommande.affichageCommande(c);
+					break;
+				case 4 :InterfaceImpression.interfaceVueImpression(c);
+					break;
+				case 5 :InterfaceFichier.afficherImagesPartage(c);
+					break;
+				case 6:break;
+	
+			}
+			choix=LectureClavier.lireEntier(
+				"1. Mes informations personnelles\n"+
+				"2. Mes Codes promos\n"+
+				"3. Mes Commandes\n" +
+				"4. Mes Impression\n" +
+				"5. Mes Images Partagées\n"+
+				"6. Retour au menu");
 	}
-	switch(choix){	
-		case 1 :afficherInfo(c);
-				break;
-		case 2 :InterfaceCodePromo.PresentationCodePromo(c);
-				break;
-		case 3 :InterfaceCommande.affichageCommande(c);
-				break;
-		case 4 :InterfaceImpression.interfaceVueImpression(c);
-				break;
-		case 5 :InterfaceFichier.afficherImagesPartage(c);
-				break;
-		case 6:break;
- 
-	}
- }
+}
  public static void afficherInfo(Client c){
 	 System.out.println(c.toString());
  }

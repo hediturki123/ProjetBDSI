@@ -12,19 +12,60 @@ import photonum.dao.FichierImageDAO;
 public class InterfaceFichier {
     
     public static void interfaceDemandeFichier(Client c){
-        int choix=LectureClavier.lireEntier("\n1. Rajouter une image\n2. Supprimer une image\n3. Revenir au menu");
-        while(choix!=1 && choix!=2 && choix!=3){
+        int choix=LectureClavier.lireEntier("\n1. Rajouter une image\n2. Supprimer une image\n3. Partager une image\n4. Revenir au menu");
+        while(choix!=1 && choix!=2 && choix!=3 && choix!=4){
             System.err.println("votre entrez n'est pas valide");
-            choix=LectureClavier.lireEntier("\n1. Rajouter une image\n2. Supprimer une image\n3. Revenir au menu");
+            choix=LectureClavier.lireEntier("\n1. Rajouter une image\n2. Supprimer une image\n3. Partager une image\n4. Revenir au menu");
         }
         switch(choix){
             case 1:ajouterFichierImage(c);
                 break;
             case 2:supprimerFichierImage(c);
                 break;
-            case 3:break;           
+            case 3:partagerFichier(c);
+                break;
+            case 4: break;          
         }
         
+    }
+
+    //TODO faire la fonction qui partage un fichier
+
+    public static void partagerFichier(Client c){
+        int choix;
+        FichierImageDAO imgDAO=new FichierImageDAO(PhotoNum.conn);
+        List<FichierImage> imageClient=imgDAO.readAllByClient(c);
+        if(imageClient.size()>0){
+            System.out.println("Vos fichiers d'image : ");
+            for(int i=1;i<=imageClient.size();i++){
+                System.out.println(i+". "+imageClient.get(i-1).getChemin());
+            }
+            choix=LectureClavier.lireEntier("\nchoissisez quel fichier voulez-vous partager ? ");
+            while(!(choix>0 && choix<=imageClient.size())){
+                System.out.println("\nvous n'avez pas choissi un image existantes, veuillez recommencer");
+                System.out.println("Vos fichiers d'image : ");
+                for(int i=1;i<=imageClient.size();i++){
+                    System.out.println(i+". "+imageClient.get(i-1).toString());
+                }
+                choix=LectureClavier.lireEntier("choissisez quel fichier voulez-vous paratger ? ");
+            }
+            if(LectureClavier.lireOuiNon("êtes vous sur de vouloir le partager (o/n)")){
+                imageClient.get(choix-1).setEstPartage(true);
+                if(imgDAO.update(imageClient.get(choix-1))){
+                     System.out.println("votre fichier est maintenant partager");
+                }else{
+                    System.out.println("votre fichier n'a pas pu etre partager veuillez reessayer");
+                }
+            }else{
+                System.out.println("pas de souci votre image n'a pas été partager :) ");
+            }
+            if(LectureClavier.lireOuiNon("\nvoulez vous partager une autre image ? (o/n) ")){
+                partagerFichier(c);
+            }
+        }else{
+            System.out.println(" vous n'avez aucun fichier , donc vous ne pouvez pas en partager");
+        }
+
     }
 
     public static void ajouterFichierImage(Client c){
@@ -59,7 +100,7 @@ public class InterfaceFichier {
                 System.out.println("\nvous n'avez pas choissi un image existantes, veuillez recommencer");
                 System.out.println("Vos fichiers d'image : ");
                 for(int i=1;i<=imageClient.size();i++){
-                    System.out.println(i+". "+imageClient.get(i-1).getChemin());
+                    System.out.println(i+". "+imageClient.get(i-1).toString());
                 }
                 choix=LectureClavier.lireEntier("choissisez quel photos vous voulez supprimez ? ");
             }
