@@ -113,7 +113,7 @@ public class ProduitDAO extends DAO<Produit>{
 			PreparedStatement requete = this.connect.prepareStatement(
 				"DELETE FROM LesProduits WHERE reference = ?"
 			);
-			requete.setInt(1, obj.getReference());
+			requete.setString(1, obj.getReference());
 			int reussi = requete.executeUpdate();
 			requete.close();
 			return reussi == 1;
