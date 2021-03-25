@@ -107,9 +107,10 @@ public class PhotoDAO extends DAO<Photo>{
 			{
 				Photo res = new Photo(
 						result.getString("chemin"));
-				requete_select.close();
+				res.setIdPhoto(result.getInt("idPhoto"));
 				tab.add(res);
 			}
+			requete_select.close();
 			return tab;
 		} catch (SQLException e) {
 			e.printStackTrace();
