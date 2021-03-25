@@ -4,8 +4,8 @@ package photonum.objects;
 public class PhotoAlbum extends Photo {
 	private String texteDescriptif;
 
-	public PhotoAlbum(String chemin, String textDescriptif) {
-		super(chemin);
+	public PhotoAlbum(String chemin, String mailClient, String textDescriptif) {
+		super(chemin, mailClient);
 		setTexteDescriptif(textDescriptif);
 	}
 

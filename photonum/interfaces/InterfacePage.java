@@ -42,7 +42,7 @@ public class InterfacePage {
 		int choix = LectureClavier.lireEntier("Oui/Non");
 		String chemin;
 		if(choix==1) {
-			Photo photo = new Photo("");
+			Photo photo = new Photo("",client.getMail());
 			for(boolean b = true; b; b = 1 != LectureClavier.lireEntier("quitter ou continuer")) {
 				System.out.println("Rentrez le chemin de votre photo");
 				chemin = LectureClavier.lireChaine();
@@ -92,7 +92,7 @@ public class InterfacePage {
 		int choix = LectureClavier.lireEntier("Oui/Non");
 		String chemin;
 		if(choix==1) {
-			Photo photo = new Photo("");
+			Photo photo = new Photo("",client.getMail());
 			for(boolean b = true; b; b = 1 != LectureClavier.lireEntier("quitter ou continuer")) {
 				System.out.println("Rentrez le chemin de votre photo");
 				chemin = LectureClavier.lireChaine();

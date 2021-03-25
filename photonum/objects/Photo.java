@@ -4,9 +4,11 @@ public class Photo  {
 
 	private int idPhoto;
 	private String chemin;
+	private String mailClient;
 	
-	public Photo(String chemin) {
+	public Photo(String chemin, String mailClient) {
 		setIdPhoto(-1);
+		this.mailClient = mailClient;
 		this.chemin = chemin;
 	}
 	
@@ -34,4 +36,13 @@ public class Photo  {
 	public void setChemin(String chemin) {
 		this.chemin = chemin;
 	}
+
+	public String getMailClient() {
+		return mailClient;
+	}
+
+	public void setMailClient(String mailClient) {
+		this.mailClient = mailClient;
+	}
+	
 }

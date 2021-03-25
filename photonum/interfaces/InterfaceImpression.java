@@ -84,7 +84,7 @@ public class InterfaceImpression {
 		System.out.println("Vous allez ici créer votre Tirage.\nVous allez donc créer des photos spécifiques aux tirages");
 		List<PhotoTirage> photos = new ArrayList<>();
 		String chemin;
-		PhotoTirage photo = new PhotoTirage("", 0);
+		PhotoTirage photo = new PhotoTirage("", client.getMail(), 0);
 		int nbFois;
 		for(boolean b = true; b; b = 1 != LectureClavier.lireEntier("quitter ou continuer")) {
 			System.out.println("Rentrez le chemin de votre photo");

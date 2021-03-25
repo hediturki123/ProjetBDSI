@@ -20,10 +20,11 @@ public class PhotoDAO extends DAO<Photo>{
 	public boolean create(Photo obj) {
 		try {
 			PreparedStatement requete_imp = this.connect.prepareStatement(
-					"INSERT INTO LesPhotos VALUES (?,?)");
+					"INSERT INTO LesPhotos VALUES (?,?,?)");
 			obj.setIdPhoto(lastId()+1);
 			requete_imp.setInt(1, obj.getIdPhoto());
 			requete_imp.setString(2, obj.getChemin());
+			requete_imp.setString(3, obj.getMailClient());
 			boolean b = requete_imp.execute();
 			requete_imp.close();
 			return b;
@@ -43,7 +44,8 @@ public class PhotoDAO extends DAO<Photo>{
 			if(result.next())
 			{
 				res = new Photo(
-						result.getString("chemin"));
+						result.getString("chemin"),
+						result.getString("mailClient"));
 				res.setIdPhoto(result.getInt("idPhoto"));
 			}
 			else {
@@ -63,9 +65,11 @@ public class PhotoDAO extends DAO<Photo>{
 			PreparedStatement requete_update = this.connect.prepareStatement(
 					"UPDATE LesPhotos SET"
 					+ "idPhoto=?,"
-					+ "chemin=?");
+					+ "chemin=?,"
+					+ "mailClient=?");
 			requete_update.setInt(1, obj.getIdPhoto());
 			requete_update.setString(2, obj.getChemin());
+			requete_update.setString(3, obj.getMailClient());
 			boolean b = requete_update.execute();
 			requete_update.close();
 			return b;
@@ -79,10 +83,8 @@ public class PhotoDAO extends DAO<Photo>{
 	public boolean delete(Photo obj) {
 		try {
 			PreparedStatement requete_delete = this.connect.prepareStatement(
-					"DELETE FROM LesPhotos WHERE idPhoto=?"
-					+ "AND chemin=?");
+					"DELETE FROM LesPhotos WHERE idPhoto=?");
 			requete_delete.setInt(1, obj.getIdPhoto());
-			requete_delete.setString(2, obj.getChemin());
 			boolean b = requete_delete.execute();
 			requete_delete.close();
 			return b;
@@ -93,6 +95,25 @@ public class PhotoDAO extends DAO<Photo>{
 	}
 
 	public List<Photo> readAllPhotosByClient(String mail){
+		try {
+			PreparedStatement requete_select = this.connect.prepareStatement("SELECT * FROM LesPhotos WHERE mailClient=?");
+			requete_select.setString(1, mail);
+			
+			ResultSet result = requete_select.executeQuery();
+			ArrayList<Photo> tab  = new ArrayList<Photo>();
+			while(result.next())
+			{
+				Photo res = new Photo(
+						result.getString("chemin"),
+						result.getString("mailClient"));
+				res.setIdPhoto(result.getInt("idPhoto"));
+				tab.add(res);
+			}
+			requete_select.close();
+			return tab;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
@@ -106,7 +127,8 @@ public class PhotoDAO extends DAO<Photo>{
 			while(result.next())
 			{
 				Photo res = new Photo(
-						result.getString("chemin"));
+						result.getString("chemin"),
+						result.getString("mailClient"));
 				res.setIdPhoto(result.getInt("idPhoto"));
 				tab.add(res);
 			}

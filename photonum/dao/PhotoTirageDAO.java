@@ -23,12 +23,24 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 			PreparedStatement requeteCreate=this.connect.prepareStatement(
 				"INSERT INTO LesPhotosTirees VALUES (?,?)"
 			);
+			PreparedStatement requeteCreate2=this.connect.prepareStatement(
+					"INSERT INTO LesPhotos VALUES (?,?,?)");
+			
 			obj.setIdPhoto(lastId()+1);
 			requeteCreate.setInt(1,obj.getIdPhoto());
 			requeteCreate.setInt(2,obj.getNbFoisTiree());
-			int reussi=requeteCreate.executeUpdate();
+			
+			requeteCreate2.setInt(1, obj.getIdPhoto());
+			requeteCreate2.setString(2, obj.getChemin());
+			requeteCreate2.setString(3, obj.getMailClient());
+			
+			int reussi1=requeteCreate.executeUpdate();
+			int reussi2=requeteCreate2.executeUpdate();
+			
 			requeteCreate.close();
-			return reussi==1;
+			requeteCreate2.close();
+			
+			return reussi1==1 && reussi2==1;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -38,7 +50,7 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 	@Override
 	public PhotoTirage read(Object obj) {
 		try {
-			PreparedStatement requete_select = this.connect.prepareStatement("SELECT * FROM LesPhotosTirees WHERE idPhoto=?");
+			PreparedStatement requete_select = this.connect.prepareStatement("SELECT * FROM LesPhotosTirees NATURAL JOIN LesPhotos WHERE idPhoto=?");
 			requete_select.setInt(1, (int)obj);
 			
 			ResultSet result = requete_select.executeQuery();
@@ -46,6 +58,7 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 			{
 				PhotoTirage res = new PhotoTirage(
 						result.getString("chemin"),
+						result.getString("mailClient"),
 						result.getInt("nbPhotoTirees"));
 				requete_select.close();
 				return res;
@@ -59,7 +72,7 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 	@Override
 	public List<PhotoTirage> readAll() {
 		try {
-			PreparedStatement requete_select = this.connect.prepareStatement("SELECT * FROM LesPhotosTirees");
+			PreparedStatement requete_select = this.connect.prepareStatement("SELECT * FROM LesPhotosTirees NATURAL JOIN LesPhotos");
 			
 			ResultSet result = requete_select.executeQuery();
 			ArrayList<PhotoTirage> tab  = new ArrayList<PhotoTirage>();
@@ -67,6 +80,7 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 			{
 				PhotoTirage res = new PhotoTirage(
 						result.getString("chemin"),
+						result.getString("mailClient"),
 						result.getInt("nbPhotoTirees"));
 				requete_select.close();
 				tab.add(res);
@@ -84,14 +98,27 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 			PreparedStatement requete_update = this.connect.prepareStatement(
 					"UPDATE LesPhotosTirees SET"
 					+ "idPhoto=?,"
-					+ "chemin=?,"
 					+ "nbPhotoTirees=?");
+			PreparedStatement requete_update2 = this.connect.prepareStatement(
+					"UPDATE LesPhotos SET"
+					+ "idPhoto=?,"
+					+ "chemin=?,"
+					+ "mailClient=?");
+			
 			requete_update.setInt(1, obj.getIdPhoto());
-			requete_update.setString(2, obj.getChemin());
-			requete_update.setInt(3, obj.getNbFoisTiree());
-			boolean b = requete_update.execute();
+			requete_update.setInt(2, obj.getNbFoisTiree());
+			
+			requete_update2.setInt(1, obj.getIdPhoto());
+			requete_update2.setString(2, obj.getChemin());
+			requete_update2.setString(3, obj.getMailClient());
+			
+			boolean b1 = requete_update.execute();
+			boolean b2 = requete_update2.execute();
+			
 			requete_update.close();
-			return b;
+			requete_update2.close();
+			
+			return b1 && b2;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -103,10 +130,19 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 		try {
 			PreparedStatement requete_delete = this.connect.prepareStatement(
 					"DELETE FROM LesPhotosTirees WHERE idPhoto=?");
+			PreparedStatement requete_delete2 = this.connect.prepareStatement(
+					"DELETE FROM LesPhotos WHERE idPhoto=?");
+			
 			requete_delete.setInt(1, obj.getIdPhoto());
-			boolean b = requete_delete.execute();
+			requete_delete2.setInt(1, obj.getIdPhoto());
+			
+			boolean b1 = requete_delete.execute();
+			boolean b2 = requete_delete2.execute();
+			
 			requete_delete.close();
-			return b;
+			requete_delete2.close();
+			
+			return b1 && b2;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -115,7 +151,7 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 
 	private int lastId() {
 		try {
-			PreparedStatement requete_last = PhotoNum.conn.prepareStatement("SELECT max(idPhoto) FROM LesPhotosTirees");
+			PreparedStatement requete_last = PhotoNum.conn.prepareStatement("SELECT max(idPhoto) FROM LesPhotos");
 			ResultSet res = requete_last.executeQuery();
 			if(res.next()) {
 				return res.getInt("idPhoto");
