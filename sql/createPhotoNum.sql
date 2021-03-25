@@ -123,7 +123,7 @@ CREATE TABLE LesPhotosAlbums (
 );
 
 CREATE VIEW LesCommandesPrix AS
-	SELECT idCommande, sum(prix * quantite * CASE WHEN code IS NULL THEN 1 ELSE 0.95 END) AS prixTotal
+	SELECT idCommande, sum(prix * quantite * CASE WHEN codePromo IS NULL THEN 1 ELSE 0.95 END) AS prixTotal
 	FROM LesCommandes
 	NATURAL JOIN LesArticles
 	NATURAL JOIN LesImpressions

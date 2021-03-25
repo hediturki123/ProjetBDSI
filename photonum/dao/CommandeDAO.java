@@ -19,7 +19,6 @@ public class CommandeDAO extends DAO<Commande>{
 
 	@Override
 	public boolean create(Commande cmd) {
-		boolean reussi = false;
 		try {
 			PreparedStatement requete = this.connect.prepareStatement(
 				"INSERT INTO LesCommandes VALUES (?, ?, ?, ?, ?, ?)"
@@ -31,20 +30,20 @@ public class CommandeDAO extends DAO<Commande>{
 			requete.setBoolean(4, cmd.getEstLivreChezClient());
 			requete.setString(5, cmd.getStatus().getString());
 			requete.setString(6, cmd.getCodePromo());
-			reussi = requete.execute();
+			int reussi = requete.executeUpdate();
 			requete.close();
+			return reussi == 1;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return reussi;
+		return false;
 	}
 
 	@Override
 	public Commande read(Object id) {
 		try {
 			int identifiant = (int) id;
-			Commande c=null;
-			StatutCommande statut;
+			Commande c = null;
 			PreparedStatement requete = this.connect.prepareStatement(
 				"SELECT * FROM LesCommandes WHERE idCommande = ?"
 			);
@@ -184,8 +183,8 @@ public class CommandeDAO extends DAO<Commande>{
 			ResultSet resultat = requete.executeQuery();
 
 			while(resultat.next()) {
-				Commande co = new Commande(
-					0, resultat.getString("mail"),
+				Commande co = new Commande(resultat.getInt("idCommande")
+					, resultat.getString("mail"),
 					resultat.getDate("dateCommande"),
 					resultat.getBoolean("estLivreChezClient"),
 					StatutCommande.fromString(resultat.getString("status")),
@@ -214,4 +213,26 @@ public class CommandeDAO extends DAO<Commande>{
 		}
 		return 0;
 	}
+
+	public int getCommandePrixTotal(Commande commande) {
+		try {
+			PreparedStatement requete = this.connect.prepareStatement(
+				"SELECT * FROM LesCommandesPrix WHERE idCommande = ?"
+			);
+			requete.setInt(1, commande.getIdCommande());
+			ResultSet resultat = requete.executeQuery();
+
+			if (resultat.next()) {
+				resultat.getInt("prixTotal");
+			}
+			requete.close();
+			return resultat.getInt("prixTotal");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+
 }

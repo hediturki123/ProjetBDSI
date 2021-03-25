@@ -12,8 +12,10 @@ public class Commande {
 	private StatutCommande status;
 	private String codePromo;
 
-	public Commande() {}
-
+	public Commande(){
+		
+	}
+	
 	public Commande(int idCommande, String mail, Date dateCommande, boolean estLivreChezClient, StatutCommande status, String codePromo) {
 		this.idCommande = idCommande;
 		this.mail = mail;
@@ -77,7 +79,7 @@ public class Commande {
 
 	@Override
 	public String toString() {
-		String s = String.join(" ; ",
+		String s = String.join(" | ",
 			idCommande+"",
 			mail,
 			new SimpleDateFormat("dd/MM/yyyy").format(dateCommande),
@@ -87,4 +89,10 @@ public class Commande {
 		);
 		return s;
 	}
+
+
+	public void genererFacture(int id) {
+		
+	}
+
 }

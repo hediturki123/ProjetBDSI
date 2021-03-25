@@ -24,23 +24,23 @@ public class InterfaceImpression {
 		}
 		switch(choix) {
 		case 1:
-			imp.setType("tirage");
+			imp.setType(TypeImpression.TIRAGE);
 			createTirage(imp,client);
 			break;
 		case 2:
-			imp.setType("album");
+			imp.setType(TypeImpression.ALBUM);
 			createAlbum(imp,client);
 			break;
 		case 3:
-			imp.setType("calendrier");
+			imp.setType(TypeImpression.CALENDRIER);
 			createCalendrier(imp,client);
 			break;
 		case 4:
-			imp.setType("cadre");
+			imp.setType(TypeImpression.CADRE);
 			createCadre(imp,client);
 			break;
 		default:
-			imp.setType("tirage");
+			imp.setType(TypeImpression.TIRAGE);
 			createTirage(imp,client);
 			break;
 		}
@@ -128,26 +128,19 @@ public class InterfaceImpression {
 	public static void interfaceVueImpression(Client client) {
 		System.out.println("Voici toutes vos impressions (du compte): "+client.getMail());
 		ImpressionDAO impressionDAO = new ImpressionDAO(PhotoNum.conn);
-		
+
 		List<Impression> list = impressionDAO.readAllByClient(client);
 		if(list.size() != 0) {
-			int i = 1;
-			int choix;
-			for(Impression imp: list) {
-				System.out.println(i+". Le titre de l'impression est: "+imp.getTitre());
-				System.out.println("Voulez voir les details de l'impression?\n1. Oui\n2. Non");
-				choix = LectureClavier.lireEntier("Oui/Non");
-				while(choix != 1 && choix != 2) {
-					System.out.println("Choisissez 1 ou 2.");
-					choix = LectureClavier.lireEntier("Oui/Non");
-				}
-				if(choix==1) {
-					imp.toString();
-				}
-				i++;
+			for(Impression i : list){
+				System.out.println();
 			}
+			int choix;	
 		}else {
 			System.out.println("Vous n'avez pas d'impressions.");
 		}
+	}
+
+	public static void menuImpression(Client c){
+
 	}
 }
