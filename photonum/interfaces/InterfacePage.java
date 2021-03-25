@@ -40,7 +40,7 @@ public class InterfacePage {
 				System.out.println("Rentrez le chemin de votre photo");
 				chemin = LectureClavier.lireChaine();
 				
-				resultat.add(InterfacePhoto.creationPhoto(p.getIdPage(),chemin,client));
+				resultat.add(InterfacePhoto.creationPhoto(p.getIdPage(),chemin));
 				System.out.println("Selectionnez 1 pour quitter et un autre nombre pour continuer la création de pages");
 			}
 		}
@@ -49,6 +49,9 @@ public class InterfacePage {
 		System.out.println("Rentrez votre mise en forme");
 		String mef = LectureClavier.lireChaine();
 		p.setMiseEnForme(mef);
+		
+		DAO<Page> pageDAO = new PageDAO(PhotoNum.conn);
+		pageDAO.create(p);
 		
 		return p;
 	}

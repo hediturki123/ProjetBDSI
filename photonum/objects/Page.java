@@ -13,22 +13,11 @@ public class Page{
 	private List<Photo> photos;
 	
 	public Page(int idImpression, String miseEnForme) {
-		setIdPage(lastId()+1);
+		setIdPage(-1);
 		setAll(idImpression, miseEnForme);
 	}
 	
-	public static int lastId() {
-		try {
-			PreparedStatement requete_last = PhotoNum.conn.prepareStatement("SELECT max(idPage) FROM LesPages");
-			ResultSet res = requete_last.executeQuery();
-			if(res.next()) {
-				return res.getInt("idPage");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return 0;
-	}
+	
 
 	
 
@@ -39,7 +28,7 @@ public class Page{
 		return idPage;
 	}
 
-	private void setIdPage(int idPage) {
+	public void setIdPage(int idPage) {
 		this.idPage = idPage;
 	}
 

@@ -18,29 +18,15 @@ public class Impression{
 	private List<PhotoTirage> photosTirage;
 	
 	public Impression() {
-		setIdImpression(lastId()+1);
+		setIdImpression(-1);
 	}
 	
 	public Impression(String reference, String type, String titre) {
-		setIdImpression(lastId()+1);
+		setIdImpression(-1);
 		setReference(reference);
 		setType(type);
 		setTitre(titre);
 		this.pages = new ArrayList<>();
-	}
-
-	public static int lastId() {
-		try {
-			PreparedStatement requete_last = PhotoNum.conn.prepareStatement("SELECT max(idImpression) FROM LesImpressions");
-			ResultSet res = requete_last.executeQuery();
-			if(res.next()) {
-				return res.getInt("idPage");
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return 0;
 	}
 
 	/*** getters and setters ***/
@@ -48,7 +34,7 @@ public class Impression{
 		return idImpression;
 	}
 
-	private void setIdImpression(int idImpression) {
+	public void setIdImpression(int idImpression) {
 		this.idImpression = idImpression;
 	}
 

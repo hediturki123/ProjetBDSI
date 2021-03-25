@@ -1,12 +1,13 @@
 package photonum.objects;
 
 
-public class PhotoParPage extends Photo {
+public class PhotoParPage{
 	private int idPage;
-
-	public PhotoParPage(String chemin, int idPage) {
-		super(chemin);
+	private int idPhoto;
+	
+	public PhotoParPage(int idPhoto, int idPage) {
 		setIdPage(idPage);
+		setIdPhoto(idPhoto);
 	}
 
 
@@ -16,6 +17,14 @@ public class PhotoParPage extends Photo {
 
 	public void setIdPage(int idPage) {
 		this.idPage = idPage;
+	}
+
+	public int getIdPhoto() {
+		return idPhoto;
+	}
+
+	public void setIdPhoto(int idPhoto) {
+		this.idPhoto = idPhoto;
 	}
 
 

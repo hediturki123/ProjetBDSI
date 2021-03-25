@@ -84,7 +84,7 @@ public class InterfaceImpression {
 			System.out.println("Rentrez le nombre de fois que vous voulez cette photo");
 			nbFois = LectureClavier.lireEntier("1, 2, 3, 4, ...");
 			
-			photos.add(InterfacePhoto.creationPhotoTirage(impression.getIdImpression(), chemin, nbFois, client));
+			photos.add(InterfacePhoto.creationPhotoTirage(chemin, nbFois));
 			System.out.println("Selectionnez 1 pour quitter et un autre nombre pour continuer la création de pages");
 		}
 		impression.setPhotosTirage(photos);
