@@ -7,11 +7,6 @@ import photonum.dao.PhotoTirageDAO;
 import photonum.objects.*;
 
 public class InterfacePhoto {
-
-	public static Photo creationPhotoDepuisImage(String path)
-	{
-		return null;
-	}
 	
 	public static void creationPhotoTirage(String chemin ,int nbFois, PhotoTirage photo) {
 		DAO<PhotoTirage> photoDAO = new PhotoTirageDAO(PhotoNum.conn);

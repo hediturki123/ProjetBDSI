@@ -53,7 +53,7 @@ public class InterfaceImpression {
 		List<Page> pages = new ArrayList<>();
 		pages.add(p);
 		impression.setPages(pages);
-		createImpression(impression);
+		createImpression(impression,client);
 	}
 
 	private void createCalendrier(Impression impression, Client client) {
@@ -65,7 +65,7 @@ public class InterfaceImpression {
 			pages.add(p);
 		}
 		impression.setPages(pages);
-		createImpression(impression);
+		createImpression(impression,client);
 	}
 
 	private void createAlbum(Impression impression, Client client) {
@@ -78,7 +78,7 @@ public class InterfaceImpression {
 			System.out.println("Selectionnez 1 pour quitter et un autre nombre pour continuer la création de pages");
 		}
 		impression.setPages(pages);
-		createImpression(impression);
+		createImpression(impression,client);
 	}
 
 	private void createTirage(Impression impression, Client client) {
@@ -98,16 +98,18 @@ public class InterfaceImpression {
 			System.out.println("Selectionnez 1 pour quitter et un autre nombre pour continuer la création de pages");
 		}
 		impression.setPhotosTirage(photos);
-		createImpression(impression);
+		createImpression(impression,client);
 	}
 	
-	private void createImpression(Impression impression) {
+	private void createImpression(Impression impression, Client client) {
 		System.out.println("Vous devez maintenant sélectioner le format de votre "+impression.getType()+".");
 		String format = LectureClavier.lireChaine();
 		System.out.println("Vous devez maintenant sélectioner la qualité de votre "+impression.getType()+".");
 		String qualite = LectureClavier.lireChaine();
 		impression.setReference(format + qualite);
-
+		
+		impression.setMailClient(client.getMail());
+		
 		System.out.println("Choisissez maintenant le titre de votre "+impression.getType()+".");
 		impression.setTitre(LectureClavier.lireChaine());
 		
@@ -122,7 +124,29 @@ public class InterfaceImpression {
 		}
 	}
 	
+	//Affiche toutes les impressions du client, peut selectionner une impression pour avoir du detail
 	public static void interfaceVueImpression(Client client) {
+		System.out.println("Voici toutes vos impressions (du compte): "+client.getMail());
+		ImpressionDAO impressionDAO = new ImpressionDAO(PhotoNum.conn);
+		
+		List<Impression> list = impressionDAO.readAllByClient(client);
+		int i = 1;
+		int choix;
+		for(Impression imp: list) {
+			System.out.println(i+". Le titre de l'impression est: "+imp.getTitre());
+			System.out.println("Voulez voir les details de l'impression?\n1. Oui\n2. Non");
+			choix = LectureClavier.lireEntier("Oui/Non");
+			while(choix != 1 && choix != 2) {
+				System.out.println("Choisissez 1 ou 2.");
+				choix = LectureClavier.lireEntier("Oui/Non");
+			}
+			if(choix==1) {
+				imp.toString();
+			}
+			i++;
+		}
+		
+		
 		
 	}
 }
