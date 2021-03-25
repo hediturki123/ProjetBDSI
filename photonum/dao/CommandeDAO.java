@@ -6,7 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+import photonum.objects.Client;
+import photonum.PhotoNum;
 import photonum.objects.Commande;
 import photonum.objects.StatutCommande;
 
@@ -16,25 +17,25 @@ public class CommandeDAO extends DAO<Commande>{
 	}
 
 	@Override
-	public boolean create(Commande obj) {
+	public boolean create(Commande cmd) {
 		try {
 			PreparedStatement requete = this.connect.prepareStatement(
-				"INSERT INTO LesCommandes VALUES (?, ?, ?, ?, ?)"
+				"INSERT INTO LesCommandes VALUES (?, ?, ?, ?, ?, ?)"
 			);
-			requete.setString(1, obj.getMail());
-			requete.setDate(2, obj.getDateCommande());
-			requete.setBoolean(3, obj.getEstLivreChezClient());
-			
-			switch(obj.getStatus()) {
-				case EN_COURS :
-					requete.setString(4, "enCours");
-				case PRETE_ENVOI :
-					requete.setString(4, "preteEnvoi");
-				case ENVOYEE :
-					requete.setString(4, "envoyee");
+			cmd.setIdCommande(getLastId()+1);
+			requete.setInt(1, cmd.getIdCommande());
+			requete.setString(2, cmd.getMail());
+			requete.setDate(3, cmd.getDateCommande());
+			requete.setBoolean(4, cmd.getEstLivreChezClient());
+
+			switch(cmd.getStatus()) {
+				case EN_COURS: requete.setString(5, "enCours"); break;
+				case PRETE_ENVOI:
+					requete.setString(5, "preteEnvoi"); break;
+				case ENVOYEE: requete.setString(5, "envoyee"); break;
 			}
 
-			requete.setString(5, obj.getCodePromo());
+			requete.setString(6, cmd.getCodePromo());
 
 			boolean reussi = requete.execute();
 			requete.close();
@@ -67,11 +68,11 @@ public class CommandeDAO extends DAO<Commande>{
 					case "envoyee":statut=StatutCommande.ENVOYEE;
 					default :
 					statut=StatutCommande.EN_COURS;
-					
 				}
 				c = new Commande(
+					resultat.getInt("idCommande"),
 					resultat.getString("mail"),
-					resultat.getDate("date"),
+					resultat.getDate("dateCommande"),
 					resultat.getBoolean("estLivreChezClient"),
 					statut,
 					resultat.getString("codePromo")
@@ -89,17 +90,17 @@ public class CommandeDAO extends DAO<Commande>{
 
 	@Override
 	public List<Commande> readAll() {
-		
+
 		List<Commande> commandes = new ArrayList<Commande>();
-		
+
 		try {
 			PreparedStatement requete = this.connect.prepareStatement(
 				"SELECT * FROM LesCommandes"
 			);
 			ResultSet resultat = requete.executeQuery();
-			
+
 			while (resultat.next()) {
-				
+
 				StatutCommande statut;
 				switch(resultat.getString("status")) {
 					case "enCours":
@@ -117,6 +118,7 @@ public class CommandeDAO extends DAO<Commande>{
 				}
 
 				commandes.add(new Commande(
+					resultat.getInt("idCommande"),
 					resultat.getString("mail"),
 					resultat.getDate("dateCommande"),
 					resultat.getBoolean("estLivreChezClient"),
@@ -142,15 +144,15 @@ public class CommandeDAO extends DAO<Commande>{
 			PreparedStatement requete = this.connect.prepareStatement(
 				"UPDATE LesCommandes SET status = ? WHERE idCommande = ?"
 			);
-			requete.setInt(1, obj.getIdCommande());
+			requete.setInt(2, obj.getIdCommande());
 
 			switch(obj.getStatus()) {
 				case EN_COURS :
-					requete.setString(2, "enCours");
+					requete.setString(1, "enCours");
 				case PRETE_ENVOI :
-					requete.setString(2, "preteEnvoi");
+					requete.setString(1, "preteEnvoi");
 				case ENVOYEE :
-					requete.setString(2, "envoyee");
+					requete.setString(1, "envoyee");
 			}
 
 			int reussi = requete.executeUpdate();
@@ -209,14 +211,62 @@ public class CommandeDAO extends DAO<Commande>{
 						break;
 				}
 
-				Commande c = new Commande(
+				commande.add(new Commande (
+					resultat.getInt("idCommande"),
 					resultat.getString("mail"),
 					resultat.getDate("dateCommande"),
 					resultat.getBoolean("estLivreChezClient"),
 					statut,
 					resultat.getString("codePromo")
+				));
+			}
+			requete.close();
+			return commande;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	public List<Commande> readAllByClient(Client c) {
+
+		List<Commande> commande = new ArrayList<Commande>();
+
+		try {
+
+			PreparedStatement requete = this.connect.prepareStatement(
+				"SELECT * FROM LesCommandes WHERE mail=?"
+			);
+			requete.setString(1, c.getMail());
+			ResultSet resultat = requete.executeQuery();
+
+			while(resultat.next()) {
+				StatutCommande statut;
+				switch(resultat.getString("status")) {
+					case "enCours":
+						statut = StatutCommande.EN_COURS;
+						break;
+					case "preteEnvoi" :
+						statut = StatutCommande.PRETE_ENVOI;
+						break;
+					case "envoyee" :
+						statut = StatutCommande.ENVOYEE;
+						break;
+					default :
+						statut = null;
+						break;
+				}
+
+				Commande co = new Commande(
+					0, resultat.getString("mail"),
+					resultat.getDate("dateCommande"),
+					resultat.getBoolean("estLivreChezClient"),
+					statut,
+					resultat.getString("codePromo")
 				);
-				commande.add(c);
+				commande.add(co);
 			}
 
 			return commande;
@@ -226,5 +276,17 @@ public class CommandeDAO extends DAO<Commande>{
 		}
 
 		return null;
+	}
+	public int getLastId() {
+		try {
+			PreparedStatement requete_last = PhotoNum.conn.prepareStatement("SELECT max(idCommande) FROM LesCommandes");
+			ResultSet res = requete_last.executeQuery();
+			if(res.next()) {
+				return res.getInt("idCommande");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 }

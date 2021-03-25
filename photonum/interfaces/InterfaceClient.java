@@ -110,7 +110,8 @@ public static void menuInfo(Client c){
 		"2. Mes Codes promos\n"+
 		"3. Mes Commandes\n" +
 		"4. Mes Impression\n" +
-		"5. Mes Images Partagées"
+		"5. Mes Images Partagées\n"+
+		"6. Retour au menu"
 	);
 	while(!(choix>0 && choix<6)){
 		choix=LectureClavier.lireEntier(
@@ -118,7 +119,8 @@ public static void menuInfo(Client c){
 		"2. Mes Codes promos\n"+
 		"3. Mes Commandes\n" +
 		"4. Mes Impression\n" +
-		"5. Mes Images Partagées\n"
+		"5. Mes Images Partagées\n"+
+		"6. Retour au menu"
 	);
 	}
 	switch(choix){	
@@ -128,9 +130,11 @@ public static void menuInfo(Client c){
 				break;
 		case 3 :InterfaceCommande.affichageCommande(c);
 				break;
-		case 4 ://InterfaceImpression.interfaceVueImpression(c);
+		case 4 :InterfaceImpression.interfaceVueImpression(c);
 				break;
-		case 5 :
+		case 5 :InterfaceFichier.afficherImagesPartage(c);
+				break;
+		case 6:break;
  
 	}
  }

@@ -82,5 +82,14 @@ public class InterfaceFichier {
         
     }
 
+    public static void afficherImagesPartage(Client c){
+        FichierImageDAO imageDAO=new FichierImageDAO(PhotoNum.conn);
+        List<FichierImage> imagePartageClient= imageDAO.readAllByClient(c,true);
+        System.out.println("\nVos images partagé sont : ");
+        for(int i=1;i<=imagePartageClient.size();i++){
+            System.out.println(i+". "+imagePartageClient.get(i-1).getChemin());
+        }
+    }
+
 
 }
