@@ -139,4 +139,8 @@ public class InterfaceImpression {
 			System.out.println("Vous n'avez pas d'impressions.");
 		}
 	}
+
+	public static void menuImpression(Client c){
+
+	}
 }
