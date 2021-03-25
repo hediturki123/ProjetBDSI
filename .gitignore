@@ -8,3 +8,6 @@
 
 # Infos de connexion
 BD.properties
+
+# MAC
+/.DS_Store
