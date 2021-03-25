@@ -12,6 +12,10 @@ public class Commande {
 	private StatutCommande status;
 	private String codePromo;
 
+	public Commande(){
+		
+	}
+	
 	public Commande(int idCommande, String mail, Date dateCommande, boolean estLivreChezClient, StatutCommande status, String codePromo) {
 		this.idCommande = idCommande;
 		this.mail = mail;

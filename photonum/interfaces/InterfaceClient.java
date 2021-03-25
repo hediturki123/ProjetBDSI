@@ -6,6 +6,7 @@ import photonum.utils.*;
 import photonum.objects.*;
 
 public class InterfaceClient  {
+	private static ClientDAO clientDao=new ClientDAO(PhotoNum.conn);
     
     public static void interfaceConnexion(){
 		int choix=LectureClavier.lireEntier("1 . se connecter ? \n2. creer un nouveau compte ?\n3. retour ");
@@ -24,7 +25,6 @@ public class InterfaceClient  {
 	}
     
     public static void connexion(){
-		ClientDAO c=new ClientDAO(PhotoNum.conn);
 		Client clientCourant;
 		System.out.println("veuillez entrez votre adresse mail");
 		String mailConnexion=LectureClavier.lireChaine();
@@ -34,7 +34,7 @@ public class InterfaceClient  {
         args[0]=mailConnexion;
 	    args[1]=mdpconnexion;
         
-		while((clientCourant=c.read(args))==null){
+		while((clientCourant=clientDao.read(args))==null){
 			System.err.println("\nmot de passe/ identifiant incorrect");
 			System.out.println("veuillez entrez votre adresse mail");
 			mailConnexion=LectureClavier.lireChaine();
@@ -72,7 +72,6 @@ public class InterfaceClient  {
 		System.out.println("veuillez entrez votre pays ");
 		String pays=LectureClavier.lireChaine();
 
-		ClientDAO clientDao=new ClientDAO(PhotoNum.conn);
 		Client c = new Client(mail, nom, prenom, mdp, numeroRue, nomRue, ville, cp, pays);
 	
 		if(clientDao.create(c)){
@@ -86,7 +85,7 @@ public class InterfaceClient  {
     
     //ici dans cette fonction mmettre les fonctionnalité du client et l'envoyer dans les bonne interface
     public static void menu(Client c){
-		int choix=LectureClavier.lireEntier("\n1. Afficher mes informations  \n2. Gerer les fichiers \n3. \n4. \n5. Se deconnecter");
+		int choix=LectureClavier.lireEntier("\n1. Afficher mes informations  \n2. Gerer les fichiers \n3. Gerer une impression \n4. \n5. Se deconnecter");
 		while(choix!=5){
 			switch (choix){
 				case 1:menuInfo(c);
