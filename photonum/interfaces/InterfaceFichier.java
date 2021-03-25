@@ -12,16 +12,17 @@ import photonum.dao.FichierImageDAO;
 public class InterfaceFichier {
     
     public static void interfaceDemandeFichier(Client c){
-        int choix=LectureClavier.lireEntier("\n1. Rajouter une image\n2. Supprimer une image");
-        while(choix!=1 && choix!=2){
+        int choix=LectureClavier.lireEntier("\n1. Rajouter une image\n2. Supprimer une image\n3. Revenir au menu");
+        while(choix!=1 && choix!=2 && choix!=3){
             System.err.println("votre entrez n'est pas valide");
-            choix=LectureClavier.lireEntier("\n1. Rajouter une image\n2. Supprimer une image");
+            choix=LectureClavier.lireEntier("\n1. Rajouter une image\n2. Supprimer une image\n3. Revenir au menu");
         }
         switch(choix){
             case 1:ajouterFichierImage(c);
                 break;
             case 2:supprimerFichierImage(c);
-                break;           
+                break;
+            case 3:break;           
         }
         
     }
@@ -54,7 +55,7 @@ public class InterfaceFichier {
             }
             choix=LectureClavier.lireEntier("\nchoissisez quel photos vous voulez supprimez ? ");
 
-            while(choix<1 && choix>imageClient.size()){
+            while(!(choix>0 && choix<=imageClient.size())){
                 System.out.println("\nvous n'avez pas choissi un image existantes, veuillez recommencer");
                 System.out.println("Vos fichiers d'image : ");
                 for(int i=1;i<=imageClient.size();i++){

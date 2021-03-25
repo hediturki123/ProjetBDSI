@@ -8,15 +8,18 @@ import photonum.objects.*;
 public class InterfaceClient  {
     
     public static void interfaceConnexion(){
-		int choix=LectureClavier.lireEntier("1 . se connecter ? \n2. creer un nouveau compte ? ");
-		while(choix !=1 && choix!=2){
+		int choix=LectureClavier.lireEntier("1 . se connecter ? \n2. creer un nouveau compte ?\n3. retour ");
+		while(choix !=1 && choix!=2 && choix!=3){
 			System.out.println("vous devez choisir entre 1 ou 2 !");
 			choix=LectureClavier.lireEntier("1 . se connecter ? \n2. creer un nouveau compte ? ");
 		}
-		if(choix==1){
-			connexion();
-		}else{
-			creationCompte();
+		switch(choix){
+			case 1:connexion();
+					break;
+			case 2:creationCompte();
+					break;
+			case 3:
+				break;
 		}
 	}
     

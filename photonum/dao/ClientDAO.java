@@ -33,7 +33,7 @@ public class ClientDAO extends DAO<Client> {
 			requeteAjout.setInt(8,obj.getCp());
 			requeteAjout.setString(9, obj.getPays());
 
-			 int reussi=requeteAjout.executeUpdate();
+			int reussi=requeteAjout.executeUpdate();
 			requeteAjout.close();
 			return reussi==1;
 		} catch (SQLException e) {

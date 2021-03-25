@@ -102,8 +102,12 @@ public class Client {
 
 		@Override
 		public String toString() {
-			return "Client [cp=" + cp + ", mail=" + mail + ", mdp=" + mdp + ", nom=" + nom + ", nomRue=" + nomRue
-					+ ", numeroRue=" + numeroRue + ", pays=" + pays + ", prenom=" + prenom + ", ville=" + ville + "]";
+			String descriptif="vos informations :"+
+			"mail = "+mail+
+			"\nnom ="+nom+
+			"\nprenom =" + prenom +
+			"\nadresse = "+numeroRue +" "+nomRue+" "+ville +" "+cp+" "+pays;
+			return descriptif;
 		}
 	
 }

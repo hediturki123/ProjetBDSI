@@ -88,6 +88,7 @@ public class LectureClavier {
             return null;
         }
     }
+
     
     /**
      * lecture au clavier d'un reel simple precision (float)
