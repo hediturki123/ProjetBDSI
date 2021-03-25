@@ -9,8 +9,8 @@ import photonum.utils.*;
 
 public class InterfaceImpression {
 
-	private ImpressionDAO impDAO;
-	public void interfaceCreationImpression(Client client) {
+	private static ImpressionDAO impDAO;
+	public static void interfaceCreationImpression(Client client) {
 		Impression imp = new Impression();
 		impDAO = new ImpressionDAO(PhotoNum.conn);
 		impDAO.create(imp);
@@ -46,7 +46,7 @@ public class InterfaceImpression {
 		}
 	}
 	
-	private void createCadre(Impression impression, Client client) {
+	private static void createCadre(Impression impression, Client client) {
 		System.out.println("Vous allez ici créer votre cadre.\nVous devez donc créer une unique page.");
 		Page p = new Page(impression.getIdImpression(),"");
 		InterfacePage.interfaceCreationPage(impression.getIdImpression(),client,p);
@@ -56,7 +56,7 @@ public class InterfaceImpression {
 		createImpression(impression,client);
 	}
 
-	private void createCalendrier(Impression impression, Client client) {
+	private static void createCalendrier(Impression impression, Client client) {
 		System.out.println("Vous allez ici créer votre Calendrier.\nVous devez donc créer 12 pages.");
 		List<Page> pages = new ArrayList<>();
 		Page p = new Page(impression.getIdImpression(),"");
@@ -68,7 +68,7 @@ public class InterfaceImpression {
 		createImpression(impression,client);
 	}
 
-	private void createAlbum(Impression impression, Client client) {
+	private static void createAlbum(Impression impression, Client client) {
 		System.out.println("Vous allez ici créer votre Album.\nVous pouvez donc créer le nombre de pages que vous voulez.");
 		List<Page> pages = new ArrayList<>();
 		Page p = new Page(impression.getIdImpression(),"");
@@ -81,7 +81,7 @@ public class InterfaceImpression {
 		createImpression(impression,client);
 	}
 
-	private void createTirage(Impression impression, Client client) {
+	private static void createTirage(Impression impression, Client client) {
 		System.out.println("Vous allez ici créer votre Tirage.\nVous allez donc créer des photos spécifiques aux tirages");
 		List<PhotoTirage> photos = new ArrayList<>();
 		String chemin;
@@ -101,7 +101,7 @@ public class InterfaceImpression {
 		createImpression(impression,client);
 	}
 	
-	private void createImpression(Impression impression, Client client) {
+	private static void createImpression(Impression impression, Client client) {
 		System.out.println("Vous devez maintenant sélectioner le format de votre "+impression.getType()+".");
 		String format = LectureClavier.lireChaine();
 		System.out.println("Vous devez maintenant sélectioner la qualité de votre "+impression.getType()+".");
@@ -140,7 +140,38 @@ public class InterfaceImpression {
 		}
 	}
 
-	public static void menuImpression(Client c){
+	public static void menuImpression(Client client){
+		System.out.println("Que voulez vous faire?");
+		System.out.println("1. Visualiser vos impressions");
+		System.out.println("2. Créer une impression");
+		System.out.println("3. Modifier une impression");
+		System.out.println("4. Supprimer une impression");
+		
+		int choix = LectureClavier.lireEntier("1, 2, 3 ou 4?");
+		switch(choix) {
+		case 1:
+			interfaceVueImpression(client);
+			break;
+		case 2:
+			interfaceCreationImpression(client);
+			break;
+		case 3:
+			interfaceModificationImpression(client);
+			break;
+		case 4:
+			interfaceSuppressionImpression(client);
+			break;
+		default:
+			break;	
+		}
+	}
 
+	public static void interfaceSuppressionImpression(Client client) {
+		System.out.println("");
+	}
+
+	public static void interfaceModificationImpression(Client client) {
+		// TODO Auto-generated method stub
+		
 	}
 }
