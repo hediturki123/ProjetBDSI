@@ -140,4 +140,31 @@ public class FichierImageDAO extends DAO<FichierImage> {
 		}
 		return null;
 	}
+
+	public List<FichierImage> readAllByClient(Client c){
+		ArrayList<FichierImage> tabImg=new ArrayList<>();
+		try {
+			PreparedStatement requeteAll=this.connect.prepareStatement(
+				"SELECT * FROM LesFichiersImage where mailProprio=?"
+			);
+			requeteAll.setString(1,c.getMail());
+			ResultSet resultat=requeteAll.executeQuery();
+			while(resultat.next()){
+				tabImg.add(
+					new FichierImage(
+						resultat.getString("chemin"),
+						resultat.getString("mailProprio"),
+						resultat.getString("infoPVD"),
+						resultat.getInt("resolution"),
+						resultat.getBoolean("estPartage"),
+						resultat.getDate("dateUpload"))
+				);
+			}
+			requeteAll.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return tabImg;
+	}
 }
+

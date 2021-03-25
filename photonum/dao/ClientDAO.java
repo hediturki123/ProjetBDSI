@@ -33,9 +33,9 @@ public class ClientDAO extends DAO<Client> {
 			requeteAjout.setInt(8,obj.getCp());
 			requeteAjout.setString(9, obj.getPays());
 
-			boolean reussi=requeteAjout.execute();
+			 int reussi=requeteAjout.executeUpdate();
 			requeteAjout.close();
-			return reussi;
+			return reussi==1;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

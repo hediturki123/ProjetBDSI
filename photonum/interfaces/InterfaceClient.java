@@ -2,7 +2,6 @@ package photonum.interfaces;
 
 import photonum.*;
 import photonum.dao.ClientDAO;
-import photonum.dao.DAO;
 import photonum.utils.*;
 import photonum.objects.*;
 
@@ -23,17 +22,17 @@ public class InterfaceClient  {
     
     public static void connexion(){
 		ClientDAO c=new ClientDAO(PhotoNum.conn);
-
+		Client clientCourant;
 		System.out.println("veuillez entrez votre adresse mail");
 		String mailConnexion=LectureClavier.lireChaine();
 		System.out.println("veuillez entrez votre mot de passe");
 		String mdpconnexion=LectureClavier.lireChaine();
         String [] args= new String[2];
         args[0]=mailConnexion;
-		args[1]=mdpconnexion;
-		Client clientCourant;
+	    args[1]=mdpconnexion;
+        
 		while((clientCourant=c.read(args))==null){
-			System.err.println("mot de passe/ identifiant incorrect");
+			System.err.println("\nmot de passe/ identifiant incorrect");
 			System.out.println("veuillez entrez votre adresse mail");
 			mailConnexion=LectureClavier.lireChaine();
 			System.out.println("veuillez entrez votre mot de passe");
@@ -70,7 +69,7 @@ public class InterfaceClient  {
 		System.out.println("veuillez entrez votre pays ");
 		String pays=LectureClavier.lireChaine();
 
-		DAO<Client> clientDao=new ClientDAO(PhotoNum.conn);
+		ClientDAO clientDao=new ClientDAO(PhotoNum.conn);
 		Client c = new Client(mail, nom, prenom, mdp, numeroRue, nomRue, ville, cp, pays);
 	
 		if(clientDao.create(c)){
@@ -84,7 +83,7 @@ public class InterfaceClient  {
     
     //ici dans cette fonction mmettre les fonctionnalité du client et l'envoyer dans les bonne interface
     public static void menu(Client c){
-		int choix=LectureClavier.lireEntier("1. Afficher mes informations  \n2. Telecharger un fichier \n3. \n4. \n5. Se deconnecter");
+		int choix=LectureClavier.lireEntier("\n1. Afficher mes informations  \n2. Gerer les fichiers \n3. \n4. \n5. Se deconnecter");
 		while(choix!=5){
 			switch (choix){
 				case 1:afficherInfo(c);
@@ -97,12 +96,10 @@ public class InterfaceClient  {
 				default:System.out.println("Veuilllez choisir entre 1,2,3,4,5 ! ");
 						choix=LectureClavier.lireEntier("Alors ?");
             }
-            choix=LectureClavier.lireEntier("1. Afficher mes informations  \n2. Impression \n3. \n4. \n 5. Se deconnecter");
+            choix=LectureClavier.lireEntier("\n1. Afficher mes informations  \n2. Gerer les fichiers \n3. \n4. \n5. Se deconnecter");
 		}
 		System.out.println("Merci de votre visite !");
- 
 	}
-
 public static void afficherInfo(Client c){
 	System.out.println(c.toString());
 }

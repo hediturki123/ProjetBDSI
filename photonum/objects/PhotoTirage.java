@@ -1,7 +1,5 @@
 package photonum.objects;
 
-import java.sql.Connection;
-
 public class PhotoTirage extends Photo {
 	public PhotoTirage(int idPhoto, String chemin) {
 		super(idPhoto, chemin);
