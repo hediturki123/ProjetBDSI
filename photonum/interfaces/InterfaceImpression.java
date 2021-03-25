@@ -9,10 +9,9 @@ import photonum.utils.*;
 
 public class InterfaceImpression {
 
-	private static ImpressionDAO impDAO;
+	private static ImpressionDAO impDAO = new ImpressionDAO(PhotoNum.conn);
 	public static void interfaceCreationImpression(Client client) {
 		Impression imp = new Impression();
-		impDAO = new ImpressionDAO(PhotoNum.conn);
 		impDAO.create(imp);
 		
 		System.out.println("Quel type d'impression voulez-vous créer?");
@@ -126,9 +125,8 @@ public class InterfaceImpression {
 	
 	//Affiche toutes les impressions du client, peut selectionner une impression pour avoir du detail
 	public static void interfaceVueImpression(Client client) {
-		ImpressionDAO impressionDAO = new ImpressionDAO(PhotoNum.conn);
 
-		List<Impression> list = impressionDAO.readAllByClient(client);
+		List<Impression> list = impDAO.readAllByClient(client);
 		if(list.size() != 0) {
 			System.out.println("Voici toutes vos impressions (du compte): "+client.getMail());
 			int choix=-1;
@@ -179,11 +177,61 @@ public class InterfaceImpression {
 	}
 
 	public static void interfaceSuppressionImpression(Client client) {
-		System.out.println("");
+		
+		List<Impression> list = impDAO.readAllByClient(client);
+		if(list.size() != 0) {
+			System.out.println("Voici toutes vos impressions (du compte): "+client.getMail());
+			int choix=-1;
+			while(choix!=0){
+				while(!(choix>0 && choix<=list.size())){
+					for(int i=1;i<=list.size();i++){
+						System.out.println(i+". "+list.get(i-1).getTitre());
+					}
+					choix=LectureClavier.lireEntier(
+						"Choisissez une impression que vous voulez supprimer\n"+
+						"ou taper sur 0"
+					);
+				}
+				if(choix!=0)impDAO.delete(list.get(choix-1));
+			}
+			if(LectureClavier.lireOuiNon("Voulez vous supprimer une autre impression ? (o/n)")){
+				interfaceSuppressionImpression(client);
+			}
+		}else {
+			System.out.println("Vous n'avez pas d'impressions.");
+		}
 	}
 
 	public static void interfaceModificationImpression(Client client) {
-		// TODO Auto-generated method stub
+		List<Impression> list = impDAO.readAllByClient(client);
+		if(list.size() != 0) {
+			System.out.println("Voici toutes vos impressions (du compte): "+client.getMail());
+			int choix=-1;
+			while(choix!=0){
+				while(!(choix>0 && choix<=list.size())){
+					for(int i=1;i<=list.size();i++){
+						System.out.println(i+". "+list.get(i-1).getTitre());
+					}
+					choix=LectureClavier.lireEntier(
+						"Choisissez une impression que vous voulez modifier\n"+
+						"ou taper sur 0"
+					);
+				}
+				System.out.println("Quel est le nouveau titre?");
+				String titre = LectureClavier.lireChaine();
+				System.out.println("Quel est la nouvelle référence");
+				String reference = LectureClavier.lireChaine();
+				
+				list.get(choix-1).setTitre(titre);
+				list.get(choix-1).setReference(reference);
+				if(choix!=0)impDAO.update(list.get(choix-1));
+			}
+			if(LectureClavier.lireOuiNon("Voulez vous modifier une autre impression ? (o/n)")){
+				interfaceModificationImpression(client);
+			}
+		}else {
+			System.out.println("Vous n'avez pas d'impressions.");
+		}
 		
 	}
 }
