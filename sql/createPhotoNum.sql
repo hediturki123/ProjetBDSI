@@ -20,6 +20,17 @@ CREATE TABLE LesCodesPromo (
 	constraint frClientCP foreign key (mail) references LesClients(mail)
 );
 
+CREATE TABLE LesAdressesDeLivraison (
+	mailClient varchar(80) not null,
+	numeroRue number(4) not null,
+	nomRue varchar2(80) not null,
+	ville varchar2(30) not null,
+	cp number(5) not null,
+	pays varchar2(30) not null,
+	constraint priA1 primary key (mailClient,numeroRue,nomRue,ville,cp,pays),
+	constraint frClientAdresse foreign key (mailClient) references LesClients(mail)
+);
+
 CREATE TABLE LesCommandes (
 	idCommande number(3),
 	mail varchar2(80) not null,
@@ -35,19 +46,8 @@ CREATE TABLE LesCommandes (
 	constraint priCO1 primary key (idCommande),
 	constraint frClientCom foreign key (mail) references LesClients(mail),
 	constraint frCodeProm foreign key (codePromo) references LesCodesPromo(code),
-	constraint frAdrLivr foreign (mail,numeroRue,nomRue,ville,cp,pays) references LesAdressesDeLivraison(mailClient,numeroRue,nomRue,ville,cp,pays);
+	constraint frAdrLivr foreign key (mail,numeroRue,nomRue,ville,cp,pays) references LesAdressesDeLivraison(mailClient,numeroRue,nomRue,ville,cp,pays),
 	constraint ckStat check (status in ('enCours','preteEnvoi','envoyee'))
-);
-
-CREATE TABLE LesAdressesDeLivraison (
-	mailClient varchar(80) not null,
-	numeroRue number(4) not null,
-	nomRue varchar2(80) not null,
-	ville varchar2(30) not null,
-	cp number(5) not null,
-	pays varchar2(30) not null,
-	constraint priA1 primary key (mailClient,numeroRue,nomRue,ville,cp,pays),
-	constraint frClientAdresse foreign key (mailClient) references LesClients(mail)
 );
 
 CREATE TABLE LesProduits (
@@ -93,7 +93,7 @@ CREATE TABLE LesPhotos (
 	chemin varchar2(80) not null,
 	mailClient varchar2(80) not null,
 	constraint priPho1 primary key (idPhoto),
-	constraint frPhoFichier foreign key (chemin) references LesFichiersImage(chemin)
+	constraint frPhoFichier foreign key (chemin) references LesFichiersImage(chemin),
 	constraint frMailClient foreign key (mailClient) references LesClients(mail)
 );
 

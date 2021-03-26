@@ -1,5 +1,5 @@
 DROP VIEW LesCommandesPrix;
-DROP TABLE LesPhotosAlbums;
+DROP TABLE LesPhotosAlbum;
 DROP TABLE LesPhotosTirees;
 DROP TABLE LesArticles;
 DROP TABLE LesPhotosParPages;
@@ -8,7 +8,7 @@ DROP TABLE LesPages;
 DROP TABLE LesImpressions;
 DROP TABLE LesFichiersImage;
 DROP TABLE LesProduits;
-DROP TABLE LesAdressesDeLivraison;
 DROP TABLE LesCommandes;
+DROP TABLE LesAdressesDeLivraison;
 DROP TABLE LesCodesPromo;
 DROP TABLE LesClients;
