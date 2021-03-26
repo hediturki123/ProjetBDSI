@@ -39,12 +39,12 @@ public class PhotoAlbumDAO extends DAO<PhotoAlbum>{
 			requete_imp2.setString(2, obj.getChemin());
 			requete_imp2.setString(3, obj.getMailClient());
 			
-			boolean b1 = requete_imp.executeUpdate();
-			boolean b2 = requete_imp2.executeUpdate();
+			int resultat1=requete_imp.executeUpdate();
+			int result2=requete_imp2.executeUpdate();
 			
 			requete_imp.close();
 			requete_imp2.close();
-			return b1 && b2;
+			return resultat1==1 && result2==1;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
