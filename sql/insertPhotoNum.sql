@@ -49,7 +49,7 @@ INSERT INTO LesCommandes VALUES (14, 'pierre@gmail.com', '02-MAR-21', 1, 'preteE
 INSERT INTO LesCommandes VALUES (15, 'pierre@gmail.com', '03-MAR-21', 1, 'enCours', null, 12, 'rue Turki', 'Grenoble', 38100, 'France');
 
 
-INSERT INTO LesCommandes VALUES (16, 'hedigmail.com', '30-MAR-21', 1, 'preteEnvoi', null, 12, 'rue Bruyere', 'Grenoble', 38100, 'France');
+INSERT INTO LesCommandes VALUES (16, 'hedi@gmail.com', '30-MAR-21', 1, 'preteEnvoi', null, 12, 'rue Bruyere', 'Grenoble', 38100, 'France');
 INSERT INTO LesCommandes VALUES (17, 'hedi@gmail.com', '31-MAR-21', 1, 'enCours', null, 12, 'rue Bruyere', 'Grenoble', 38100, 'France');
 INSERT INTO LesCommandes VALUES (18, 'hedi@gmail.com', '01-MAR-21', 1, 'enCours', null, 12, 'rue Bruyere', 'Grenoble', 38100, 'France');
 INSERT INTO LesCommandes VALUES (19, 'hedi@gmail.com', '02-MAR-21', 1, 'preteEnvoi', null, 12, 'rue Bruyere', 'Grenoble', 38100, 'France');
