@@ -89,18 +89,19 @@ public class ImpressionDAO extends DAO<Impression> {
 	public boolean update(Impression obj) {
 		try {
 			PreparedStatement requete_update = this.connect.prepareStatement(
-					"UPDATE LesImpressions SET"
-					+ "idImpression = ?,"
-					+ "mailClient = ?,"
-					+ "reference = ?,"
-					+ "type = ?,"
-					+ "titre = ?"
+					"UPDATE LesImpressions SET "
+					+ "mailClient = ?, "
+					+ "reference = ?, "
+					+ "type = ?, "
+					+ "titre = ? "
+					+ "WHERE idImpression = ?"
 				);
-			requete_update.setInt(1, obj.getIdImpression());
-			requete_update.setString(2, obj.getMailClient());
-			requete_update.setString(3, obj.getReference());
-			requete_update.setString(4, obj.getType().getString());
-			requete_update.setString(5, obj.getTitre());
+			
+			requete_update.setString(1, obj.getMailClient());
+			requete_update.setString(2, obj.getReference());
+			requete_update.setString(3, obj.getType().getString());
+			requete_update.setString(4, obj.getTitre());
+			requete_update.setInt(5, obj.getIdImpression());
 			int resultat = requete_update.executeUpdate();
 			requete_update.close();
 			return resultat == 1;

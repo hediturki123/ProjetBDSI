@@ -89,7 +89,7 @@ public class ProduitDAO extends DAO<Produit>{
 
 			while (resultat.next()) {
 				produits.add(new Produit(
-					resultat.getString("requete"),
+					resultat.getString("reference"),
 					resultat.getFloat("prix"),
 					resultat.getInt("stock")
 				));
