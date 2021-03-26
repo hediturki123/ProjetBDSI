@@ -1,5 +1,4 @@
 package photonum.objects;
-
 import photonum.PhotoNum;
 import photonum.dao.ClientDAO;
 
@@ -92,4 +91,5 @@ public class Adresse {
 	public Client getClient() {
 		return CL_DAO.read(mailClient);
 	}
+
 }
