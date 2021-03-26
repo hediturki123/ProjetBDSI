@@ -280,10 +280,10 @@ public class CommandeDAO extends DAO<Commande>{
 	public double getPrixTotal(int id) {
 		double prix = 0.0;
 		try {
-			PreparedStatement pstmt = PhotoNum.conn.prepareStatement("SELECT prix FROM LesCommandesPrix WHERE idCommande=?");
+			PreparedStatement pstmt = PhotoNum.conn.prepareStatement("SELECT prixTotal FROM LesCommandesPrix WHERE idCommande=?");
 			pstmt.setInt(1, id);
 			ResultSet res = pstmt.executeQuery();
-			if (res.next()) prix = res.getDouble("prix");
+			if (res.next()) prix = res.getDouble("prixTotal");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
