@@ -56,8 +56,8 @@ public class InterfaceFichier {
             boolean choisi=false;
             while (choix!=last && !choisi) {  
                 String message="Vos fichiers d'image : \n";
-                 for (int i = 1; i <= imageClient.size(); i++) {
-                    message+="\t"+i + ". " + imageClient.get(i - 1).getChemin()+"\n";
+                 for (int i = 1; i <= imagesClient.size(); i++) {
+                    message+="\t"+i + ". " + imagesClient.get(i - 1).getChemin()+"\n";
                 }
                 message+="\t"+last+". Sortir";
                 message+="\nchoissisez quel fichier voulez-vous paratger ? ";
