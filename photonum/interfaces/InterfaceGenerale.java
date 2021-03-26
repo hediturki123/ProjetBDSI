@@ -4,10 +4,10 @@ import photonum.utils.LectureClavier;
 
 
 /**
- * cette class permet de demarrer le menu de l'application 
+ * cette class permet de demarrer le menu de l'application
  */
 public class InterfaceGenerale {
-    
+
     /**
      * Demarrage du menu de l'application
      * sous cette forme :

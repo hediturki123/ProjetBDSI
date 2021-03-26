@@ -242,7 +242,7 @@ public class FichierImageDAO extends DAO<FichierImage> {
 	 * et si oui alors elle supprime les fichier de la BD
 	 * @return <b>boolean</b> la procédure <b>expi_img_proc</b> a bien fonctionnée
 	 */
-	public boolean cleanExpiredImages() {
+	public static boolean cleanExpiredImages() {
 		boolean success = false;
 		try {
 			CallableStatement cstmt = PhotoNum.conn.prepareCall("{call expi_img_proc}");
