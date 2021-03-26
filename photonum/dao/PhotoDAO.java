@@ -178,7 +178,7 @@ public class PhotoDAO extends DAO<Photo>{
 			PreparedStatement requete_last = PhotoNum.conn.prepareStatement("SELECT max(idPhoto) FROM LesPhotos");
 			ResultSet res = requete_last.executeQuery();
 			if(res.next()) {
-				return res.getInt("idPhoto");
+				return res.getInt(1);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

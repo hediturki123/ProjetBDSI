@@ -22,7 +22,7 @@ public class Impression{
 	private final static ClientDAO CL_DAO = new ClientDAO(PhotoNum.conn);
 
 	public Impression() {
-		setIdImpression(-1);
+		setIdImpression(25);
 	}
 
 	public Impression(int idImpression, String mailClient ,String reference, TypeImpression type, String titre) {

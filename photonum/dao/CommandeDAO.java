@@ -268,29 +268,13 @@ public class CommandeDAO extends DAO<Commande>{
 		try {
 			PreparedStatement requete_last = this.connect.prepareStatement("SELECT max(idCommande) FROM LesCommandes");
 			ResultSet res = requete_last.executeQuery();
-			if (res.next()) id =  res.getInt("idCommande");
+			if(res.next()) {
+				return res.getInt(1);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return id;
-	}
-
-	/**
-	 * Récupère le prix calculé d'une commande.
-	 * @param id Identifiant de la commande dont on veut le prix.
-	 * @return Prix total de la commande.
-	 */
-	public double getPrixTotal(int id) {
-		double prix = 0.0;
-		try {
-			PreparedStatement pstmt = PhotoNum.conn.prepareStatement("SELECT prixTotal FROM LesCommandesPrix WHERE idCommande=?");
-			pstmt.setInt(1, id);
-			ResultSet res = pstmt.executeQuery();
-			if (res.next()) prix = res.getDouble("prixTotal");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return prix;
+		return 0;
 	}
 
 	/**
