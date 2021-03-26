@@ -219,4 +219,22 @@ public class Commande {
 	public boolean mettreAJour() {
 		return CM_DAO.update(this);
 	}
+
+	/**
+	 * Récupère une commande depuis la base de données.
+	 * @param id Identifiant de la commande à récupérer.
+	 * @return Une commande.
+	 */
+	public static Commande get(int id) {
+		return CM_DAO.read(id);
+	}
+
+	/**
+	 * Récupère la liste des commandes ayant le statut indiqué.
+	 * @param sc Un statut de commande (EN_COURS, PRETE_ENVOI, ENVOYEE).
+	 * @return Liste de commandes.
+	 */
+	public static List<Commande> getByStatus(StatutCommande sc) {
+		return CM_DAO.readAllByStatus(sc);
+	}
 }

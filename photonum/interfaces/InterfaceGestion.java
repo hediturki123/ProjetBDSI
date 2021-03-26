@@ -2,8 +2,6 @@ package photonum.interfaces;
 
 import java.util.List;
 
-import photonum.PhotoNum;
-import photonum.dao.CommandeDAO;
 import photonum.dao.FichierImageDAO;
 import photonum.objects.Commande;
 import photonum.objects.StatutCommande;
@@ -13,9 +11,6 @@ import photonum.utils.*;
  * cette classe permet l'interaction de l'utilisateur avec la partie gestion de l'application
  */
 public class InterfaceGestion {
-
-    private final static CommandeDAO commandeDAO = new CommandeDAO(PhotoNum.conn);
-    private final static FichierImageDAO fichierImageDAO = new FichierImageDAO(PhotoNum.conn);
 
     /**
      * permet de passer toutes les commande du status <b>PRETE_ENVOI</b> à <b>ENVOYEE</b>
@@ -27,7 +22,7 @@ public class InterfaceGestion {
             for (Commande c : cmds) {
                 if (c.getStatus() == StatutCommande.PRETE_ENVOI) {
                     c.setStatus(StatutCommande.ENVOYEE);
-                    if (commandeDAO.update(c)) {
+                    if (c.mettreAJour()) {
                         genererFacture(c);
                         i++;
                     }
@@ -44,11 +39,11 @@ public class InterfaceGestion {
      * @param id de la commande à passer du status <b>PRETE_ENVOI</b> à <b>ENVOYEE</b>
      */
     private static void envoyerUneCommande(int id) {
-        Commande commande = commandeDAO.read(id);
-        if (commande.getStatus() == StatutCommande.PRETE_ENVOI) {
-            commande.setStatus(StatutCommande.ENVOYEE);
-            if (commandeDAO.update(commande)) {
-                genererFacture(commande);
+        Commande cmd = Commande.get(id);
+        if (cmd.getStatus() == StatutCommande.PRETE_ENVOI) {
+            cmd.setStatus(StatutCommande.ENVOYEE);
+            if (cmd.mettreAJour()) {
+                genererFacture(cmd);
                 System.out.println("La commande n°"+id+" a bien été envoyée !");
             } else {
                 System.out.println("La commande n°"+id+" n'a pas pu être envoyée.");
@@ -62,7 +57,7 @@ public class InterfaceGestion {
      * permet d'afficher toutes les {@link Commande} avec le status <b>PRETE_ENVOI</b>
      */
     private static void afficherCommandesPretes() {
-        List<Commande> cmds = commandeDAO.readAllByStatus(StatutCommande.PRETE_ENVOI);
+        List<Commande> cmds = Commande.getByStatus(StatutCommande.PRETE_ENVOI);
         if (cmds.size() > 0) {
             System.out.println("ID | Compte | Date | Livraison | Statut | Code promo");
             cmds.forEach(c -> System.out.println(c.toString()));
@@ -101,7 +96,7 @@ public class InterfaceGestion {
                     afficherCommandesPretes();
                     break;
                 case 2:
-                    envoyerToutesCommandes(commandeDAO.readAllByStatus(StatutCommande.PRETE_ENVOI));
+                    envoyerToutesCommandes(Commande.getByStatus(StatutCommande.PRETE_ENVOI));
                     break;
                 case 3:
                     System.out.println("Entrez l'identifiant d'une commande à envoyer :");
@@ -109,7 +104,7 @@ public class InterfaceGestion {
                     envoyerUneCommande(id);
                     break;
                 case 4:
-                    if (fichierImageDAO.cleanExpiredImages())
+                    if (FichierImageDAO.cleanExpiredImages())
                         System.out.println("Les images inutilisées depuis plus de 10 jours ont été supprimées !");
                     else System.out.println("Les images inutilisées n'ont pas pu être supprimées...");
                 case 5:
