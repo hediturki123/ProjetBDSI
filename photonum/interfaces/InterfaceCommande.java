@@ -21,6 +21,10 @@ import photonum.utils.LectureClavier;
 public class InterfaceCommande {
     private static CommandeDAO cmdDao=new CommandeDAO(PhotoNum.conn);
     //TODO creation commande
+    /**
+     * Permet de demarrer la creation d'une commande
+     * @param c le {@link Client} courant
+     */
     public static void creationCommande(Client c){
         Commande cmd=new Commande();
         cmd.setIdCommande(cmdDao.getLastId()+1);
@@ -28,7 +32,11 @@ public class InterfaceCommande {
         choixImpression(c, cmd);
 
     }
-
+    /**
+     * permet de choissir les {@link Article} d'une commande
+     * @param c le {@link Client} courant
+     * @param cmd la {@link Commande} courante
+     */
     public static void choixImpression(Client c,Commande cmd){
         ImpressionDAO impDao=new ImpressionDAO(PhotoNum.conn);
         List<Impression> impressionClient=impDao.readAllByClient(c);
@@ -58,7 +66,12 @@ public class InterfaceCommande {
 		}
         
     }
-
+    /**
+     * 
+     * @param c le {@link Client} courant
+     * @param cmd la {@link Commande} courante
+     * @param articles la List&lt;{@link Article}&gt; des {@link Article} de la commande cmd
+     */
     public static void livraison(Client c,Commande cmd,List<Article> articles){
         Adresse addr =new Adresse();    
         if(LectureClavier.lireOuiNon("Voulez vous être livrée chez vous")){
@@ -72,7 +85,12 @@ public class InterfaceCommande {
         ValidationCommande(c, cmd, articles);
     }
 
-
+    /**
+     * Etape de validation de la commande  
+     * @param c le {@link Client} courant
+     * @param cmd la {@link Commande} courante
+     * @param articles la List&lt;{@link Article}&gt; des {@link Article} de la commande cmd
+     */
     public static void ValidationCommande(Client c,Commande cmd,List<Article> articles){
         ArticleDAO articleDAO=new ArticleDAO(PhotoNum.conn);
         System.out.println("voici le descriptif de votre commande :");
@@ -105,7 +123,7 @@ public class InterfaceCommande {
             switch(choix){
                 case 1: choixImpression(c, cmd);
                         break;
-                case 2:utilisationCodePromo(c, cmd, articles);
+                case 2:InterfaceCodePromo.utilisationCodePromo(c, cmd, articles);
                         break;
                 case 3:livraison(c, cmd, articles);
                         break;

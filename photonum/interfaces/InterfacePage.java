@@ -7,9 +7,17 @@ import photonum.PhotoNum;
 import photonum.dao.*;
 import photonum.objects.*;
 import photonum.utils.LectureClavier;
-
+/**
+ * cette class permet de faire l'interaction avec l'utilisateur pour des {@link Page}
+ */
 public class InterfacePage {
 
+	/**
+	 * 
+	 * @param idImpression d'une {@link Impression} pour laquel nous voulon creer une {@link Page}
+	 * @param client le {@link Client} courant 
+	 * @param page La {@link Page} courante 
+	 */
 	public static void interfaceCreationPage(int idImpression, Client client,Page page) {
 		System.out.println("Vous allez ici créer une page pour votre impression.");
 		PhotoDAO dao = new PhotoDAO(PhotoNum.conn);
@@ -60,6 +68,12 @@ public class InterfacePage {
 		pageDAO.update(page);
 	}
 	
+	/**
+	 * 
+	 * @param idImpression une {@link Impression} pour laquel nous voulons creer une {@link photo}
+	 * @param client
+	 * @param page
+	 */
 	public static void interfaceCreationPageAlbum(int idImpression, Client client, Page page) {
 		System.out.println("Vous allez ici créer une page pour votre impression.");
 		PhotoDAO dao = new PhotoDAO(PhotoNum.conn);

@@ -19,7 +19,10 @@ public class InterfaceCodePromo {
 
     public static CodePromoDAO cpDao=new CodePromoDAO(PhotoNum.conn);
     
-    
+    /**
+     * Presente tous les {@link CodePromo} actif du client 
+     * @param c le {@link Client}
+     */    
     public static void PresentationCodePromo(Client c){
         List<CodePromo> codeClients=cpDao.readAllByClient(c.getMail(),false);
         if(codeClients.size()!=0){
@@ -31,7 +34,12 @@ public class InterfaceCodePromo {
             System.out.println("Désolé mais vous n'avez aucun code promo ....\n");
         }
     }
-
+    /**
+     * permet lors d'une commande de demander au client courant si il veut utiliser un {@link CodePromo}
+     * @param c le {@link Client} courant 
+     * @param cmd la {@link Commande} courante
+     * @param articles List&lt;{@link Article}&gt; les articles de la commande cmd
+     */
     public static void  utilisationCodePromo(Client c, Commande cmd,List<Article> articles){
         List<CodePromo> cpDispo=cpDao.readAllByClient(c.getMail(), false);
         CodePromo cpUtiliser=new CodePromo();

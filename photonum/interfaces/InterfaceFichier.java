@@ -11,6 +11,19 @@ import photonum.dao.FichierImageDAO;
 
 public class InterfaceFichier {
     
+    /**
+     * permet de demarrer le menu de gestion des fichiers
+     * qui se presente de la maniere suivante
+     * <h3>Exemple</h3>
+     * <table>
+	 		<tr><td>"--- Menu Fichier ---"</td></tr>
+	 		<tr><td>1. Rajouter une imager</td></tr>
+			<tr><td>2. Supprimer une image</td></tr>
+            <tr><td>3. Partager une image</td></tr>
+            <tr><td>4. Revenir au menu</td></tr>
+	* </table>
+     * @param c le {@link Client} courant
+     */
     public static void interfaceDemandeFichier(Client c){
         int choix=LectureClavier.lireEntier("\n1. Rajouter une image\n2. Supprimer une image\n3. Partager une image\n4. Revenir au menu");
         while(choix!=1 && choix!=2 && choix!=3 && choix!=4){
@@ -29,8 +42,10 @@ public class InterfaceFichier {
         
     }
 
-    //TODO faire la fonction qui partage un fichier
-
+    /**
+     * Permet au client de choisir dans ses {@link FichierImage} les quels partager
+     * @param c le {@link Client} courant 
+     */
     public static void partagerFichier(Client c){
         int choix;
         FichierImageDAO imgDAO=new FichierImageDAO(PhotoNum.conn);
@@ -67,7 +82,10 @@ public class InterfaceFichier {
         }
 
     }
-
+    /**
+     * Permet au client d'ajouter un {@link FichierImage}
+     * @param c le {@link Client} courant 
+     */
     public static void ajouterFichierImage(Client c){
         FichierImage img;
         System.out.println("\ndonnez moi le chemin du fichier");
@@ -84,7 +102,10 @@ public class InterfaceFichier {
         FichierImageDAO imgDAO = new FichierImageDAO(PhotoNum.conn);
         imgDAO.create(img);
     }
-
+    /**
+     * Permet au client de supprimer un {@link FichierImage}
+     * @param c le {@link Client} courant 
+     */
     public static void supprimerFichierImage(Client c){
         int choix;
         FichierImageDAO imgDAO=new FichierImageDAO(PhotoNum.conn);
@@ -122,7 +143,10 @@ public class InterfaceFichier {
 
         
     }
-
+    /**
+     * Permet au client d'afficher les {@link FichierImage} Partager
+     * @param c le {@link Client} courant 
+     */
     public static void afficherImagesPartage(Client c){
         FichierImageDAO imageDAO=new FichierImageDAO(PhotoNum.conn);
         List<FichierImage> imagePartageClient= imageDAO.readAllByClient(c,true);

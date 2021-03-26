@@ -9,6 +9,9 @@ import photonum.dao.ProduitDAO;
 import photonum.objects.*;
 import photonum.utils.*;
 
+/**
+ * cette class permet de faire l'interaction avec l'utilisateur pour les {@link Impression}
+ */
 public class InterfaceImpression {
 
 	private static ImpressionDAO impDAO = new ImpressionDAO(PhotoNum.conn);

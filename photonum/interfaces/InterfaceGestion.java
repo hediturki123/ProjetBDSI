@@ -8,11 +8,18 @@ import photonum.objects.Commande;
 import photonum.objects.StatutCommande;
 import photonum.utils.*;
 
+
+/**
+ * cette class permet l'interaction de l'utilisateur avec la partie gestion de l'application
+ */
 public class InterfaceGestion {
 
     private final static CommandeDAO commandeDAO = new CommandeDAO(PhotoNum.conn);
     private final static FichierImageDAO fichierImageDAO = new FichierImageDAO(PhotoNum.conn);
-
+    /**
+     * permet de passer toutes les commande du status <b>PRETE_ENVOI</b> à <b>ENVOYEE</b>
+     * @param cmds la List<{@link Commande}> de toutes les commande à passer du status <b>PRETE_ENVOI</b> à <b>ENVOYEE</b>
+     */
     private static void envoyerToutesCommandes(List<Commande> cmds) {
         if (cmds.size() > 0) {
             int i = 0;
@@ -27,7 +34,10 @@ public class InterfaceGestion {
             System.out.println("Il n'y a aucune commande à envoyer.");
         }
     }
-
+    /**
+     * permet de passer commande {@value id} du status <b>PRETE_ENVOI</b> à <b>ENVOYEE</b>
+     * @param id de la commande à passer du status <b>PRETE_ENVOI</b> à <b>ENVOYEE</b>
+     */
     private static void envoyerUneCommande(int id) {
         Commande commande = commandeDAO.read(id);
         if (commande.getStatus() == StatutCommande.PRETE_ENVOI) {
@@ -41,7 +51,9 @@ public class InterfaceGestion {
             System.out.println("La commande n°"+id+" n'est pas encore prête ou a déjà été envoyée.");
         }
     }
-
+    /**
+     * permet d'afficher toutes les {@link Commande} avec le status <b>PRETE_ENVOI</b>
+     */
     private static void afficherCommandesPretes() {
         List<Commande> cmds = commandeDAO.readAllByStatus(StatutCommande.PRETE_ENVOI);
         if (cmds.size() > 0) {
@@ -51,7 +63,20 @@ public class InterfaceGestion {
             System.out.println("Aucune commande à envoyer.");
         }
     }
-
+    /**
+     * permet de demarrer le menu de l'interface de gestion 
+     * sous la forme :
+     * <h3>Exemple</h3>
+     * <table>
+	 		<tr><td>--- Gestion de l'application ---</td></tr>
+	 		<tr><td>1. Afficher les commandes prêtes à l'envoi</td></tr>
+			<tr><td>2. Envoyer toutes les commandes prêtes à l'envoi</td></tr>
+            <tr><td>3. Envoyer une commande</td></tr>
+            <tr><td>4. Supprimer les images inutilisées</td></tr>
+            <tr><td>5. Retour au menu principal</td></tr>
+	* </table>
+     * 
+     */
     public static void menuPrincipal() {
         int choix = -1;
         while(choix != 5) {
