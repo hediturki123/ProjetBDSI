@@ -54,13 +54,13 @@ public class InterfaceFichier {
         if (imagesClient.size() > 0) {
             int last=imagesClient.size()+1;
             boolean choisi=false;
-            while (choix!=last && !choisi) {
-                String message="Vos images : ";
+            while (choix!=last && !choisi) {  
+                String message="Vos fichiers d'image : \n";
                  for (int i = 1; i <= imagesClient.size(); i++) {
                     message+="\t"+i + ". " + imagesClient.get(i - 1).getChemin()+"\n";
                 }
                 message+="\t"+last+". Sortir";
-                message+="Quel fichier voulez-vous partager ? ";
+                message+="\nchoissisez quel fichier voulez-vous paratger ? ";
                 choix=LectureClavier.lireEntier(message);
 
                 if(choix<0 || choix>last){

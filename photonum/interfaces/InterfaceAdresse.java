@@ -46,7 +46,12 @@ public class InterfaceAdresse {
 		System.out.println("Pays :");
         String pays=LectureClavier.lireChaine();
 
-        a = new Adresse(mailClient, numeroRue, nomRue, ville, cp, pays);
+        a.setCp(cp);
+        a.setMailClient(mailClient);
+        a.setNomRue(nomRue);
+        a.setNumeroRue(numeroRue);
+        a.setPays(pays);
+        a.setVille(ville);
         System.out.println(">>> Nouvelle adresse créée avec succès !");
     }
 
@@ -70,7 +75,14 @@ public class InterfaceAdresse {
                 }
                 choix = LectureClavier.lireEntier("À quelle adresse de livraison voulez-vous envoyer votre commande ? ");
             }
-            addr = addrLivraison.get(choix - 1);
+            Adresse a = addrLivraison.get(choix - 1);
+        addr.setCp(a.getCp());
+        addr.setMailClient(a.getMailClient());
+        addr.setNomRue(a.getNomRue());
+        addr.setNumeroRue(a.getNumeroRue());
+        addr.setPays(a.getPays());
+        addr.setVille(a.getVille());
+
         } else {
             System.out.println("Vous n'avez aucune adresse de livraison. Créez-en une maintenant !");
             creerAdresse(c.getMail(), addr);

@@ -84,6 +84,8 @@ public class InterfaceCommande {
      * @param articles la List&lt;{@link Article}&gt; des {@link Article} de la commande cmd
      */
     public static void validationCommande(Client c, Commande cmd, List<Article> articles){
+        cmd.setDateCommande(Date.valueOf(LocalDate.now()));
+        cmd.setStatus(StatutCommande.EN_COURS);
         System.out.println("voici le descriptif de votre commande :");
         System.out.println(cmd.toString());
         System.out.println("Details de vos articles :");
@@ -91,8 +93,6 @@ public class InterfaceCommande {
             System.out.println("\t" + a.factureString());
         }
         if (LectureClavier.lireOuiNon("Valider la commande ? (o/n)")) {
-            cmd.setDateCommande(Date.valueOf(LocalDate.now()));
-            cmd.setStatus(StatutCommande.EN_COURS);
             if (cmd.nouvelleCommande()) {
                 cmd.ajouterArticles(articles);
                 System.out.println(

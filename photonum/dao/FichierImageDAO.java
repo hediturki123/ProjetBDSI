@@ -129,15 +129,16 @@ public class FichierImageDAO extends DAO<FichierImage> {
 	public boolean delete(FichierImage obj) {
 		try {
 			PreparedStatement requeteSuppr=this.connect.prepareStatement(
-				"DELETE FROM lesFichiersImage where mailProprio=? and chemin=?");
+				"DELETE FROM lesFichiersImage where mailProprio=? and chemin=? and estPartage=?");
 				requeteSuppr.setString(1, obj.getMailProprio());
 				requeteSuppr.setString(2, obj.getChemin());
+				requeteSuppr.setBoolean(3, false);
 			int reussi=requeteSuppr.executeUpdate();
 			requeteSuppr.close();
 			return reussi==1;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Impossible de delete la car le fichier images  depend d'une phot ou est partagé");
 		}
 		return false;
 	}

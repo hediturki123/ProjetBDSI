@@ -115,13 +115,13 @@ public class ImpressionDAO extends DAO<Impression> {
 	public boolean delete(Impression obj) {//TODO verifier la suppression 
 		try {
 			PreparedStatement requete_delete = this.connect.prepareStatement(
-					"DELETE FROM LesImpressions WHERE idImpression = ? and idImpression NOT IN (Select IdImpression FROM LesImpressions natural join LesArticles natural join LesCommandes where status='envoyee')");
+					"DELETE FROM LesImpressions WHERE idImpression = ?");
 			requete_delete.setInt(1, obj.getIdImpression());
 			int b = requete_delete.executeUpdate();
 			requete_delete.close();
 			return b == 1;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Impossible car votre impression depend d'une commande");
 		}
 		return false;
 	}
