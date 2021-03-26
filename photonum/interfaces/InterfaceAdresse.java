@@ -8,17 +8,17 @@ import photonum.objects.Adresse;
 import photonum.objects.Client;
 import photonum.utils.LectureClavier;
 
-
 /**
  * cette class permet toutes les interaction avec un utilisateur
  * cela concerne ici que les Adresses de livraison
  */
 public class InterfaceAdresse {
 
+    private static AdresseDAO addrDao = new AdresseDAO(PhotoNum.conn);
 
     /***
      * Cette fonction vas permettre de demander à l'utilsateur de rentrer toutes les infos d'une adresse
-    
+
       <h3>Exemple :</h3>
 	 * <table>
 	 		<tr><td>veuillez entrez votre numero de rue</td></tr>
@@ -35,7 +35,6 @@ public class InterfaceAdresse {
      * @param mailClient
      * @param a une reference d'{@link Adresse}
      */
-
     public static void creerAdresse(String mailClient,Adresse a){
         int numeroRue=LectureClavier.lireEntier("veuillez entrez votre numero de rue");
 
@@ -49,10 +48,10 @@ public class InterfaceAdresse {
 
 		System.out.println("veuillez entrez votre pays ");
         String pays=LectureClavier.lireChaine();
-        
-        a=new Adresse(mailClient, numeroRue, nomRue, ville, cp, pays);
 
+        a = new Adresse(mailClient, numeroRue, nomRue, ville, cp, pays);
     }
+
     /**
      * permet a l'utilisateur lors de ça commande de choisir sont adresse de livraison
      * <ul>
@@ -64,20 +63,20 @@ public class InterfaceAdresse {
      * @param addr
      */
     public static void choixAdresseLivraison(Client c,Adresse addr){
-        AdresseDAO addrDao=new AdresseDAO(PhotoNum.conn);
-        List<Adresse> addrLivraison=addrDao.readAllByClient(c);
-        if(addrLivraison.size()>0){
-            int choix=-1;
-            while(!(choix>0 && choix<=addrLivraison.size())){
+        List<Adresse> addrLivraison = addrDao.readAllByClient(c);
+        if (addrLivraison.size() > 0) {
+            int choix = -1;
+            while (!(choix > 0 && choix <= addrLivraison.size())) {
                 System.out.println("vos adresse de livraison :");
-                for(int i=1;i<=addrLivraison.size();i++){
-                    System.out.println(i+". adresse n°"+i+" ="+addrLivraison.get(i-1).toString());
+                for (int i = 1; i <= addrLivraison.size(); i++) {
+                    System.out.println(i + ". adresse n°" + i + " =" + addrLivraison.get(i - 1).toString());
                 }
-                choix=LectureClavier.lireEntier("A quel adresse de livraison voulez vous envoyer votre commande ? ");
+                choix = LectureClavier.lireEntier("A quel adresse de livraison voulez vous envoyer votre commande ? ");
             }
-            addr=addrLivraison.get(choix-1);
-        }else{
-            System.out.println("vous n'avez aucune adresse de livraison creer en une maintenant \n\nveuillez remplir les champs :");
+            addr = addrLivraison.get(choix - 1);
+        } else {
+            System.out.println(
+                    "vous n'avez aucune adresse de livraison creer en une maintenant \n\nveuillez remplir les champs :");
             creerAdresse(c.getMail(), addr);
             addrDao.create(addr);
         }

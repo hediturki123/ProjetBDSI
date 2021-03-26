@@ -1,4 +1,5 @@
 package photonum.interfaces;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +16,11 @@ import photonum.utils.*;
 public class InterfaceImpression {
 
 	private static ImpressionDAO impDAO = new ImpressionDAO(PhotoNum.conn);
+
 	public static void interfaceCreationImpression(Client client) {
 		Impression imp = new Impression();
 		impDAO.create(imp);
-		
+
 		System.out.println("Quel type d'impression voulez-vous créer?");
 		System.out.println("1. Tirage\n2. Album\n3. Calendrier\n4. Cadre\n5.");
 		int choix = LectureClavier.lireEntier("1, 2, 3 ou 4?");
@@ -49,7 +51,7 @@ public class InterfaceImpression {
 			break;
 		}
 	}
-	
+
 	private static void createCadre(Impression impression, Client client) {
 		System.out.println("Vous allez ici créer votre cadre.\nVous devez donc créer une unique page.");
 		Page p = new Page(impression.getIdImpression(),"");
@@ -94,7 +96,7 @@ public class InterfaceImpression {
 		for(boolean b = true; b; b = 1 != LectureClavier.lireEntier("quitter ou continuer")) {
 			System.out.println("Rentrez le chemin de votre photo");
 			chemin = LectureClavier.lireChaine();
-			
+
 			System.out.println("Rentrez le nombre de fois que vous voulez cette photo");
 			nbFois = LectureClavier.lireEntier("1, 2, 3, 4, ...");
 			InterfacePhoto.creationPhotoTirage(chemin, nbFois,photo);
@@ -104,7 +106,7 @@ public class InterfaceImpression {
 		impression.setPhotosTirage(photos);
 		createImpression(impression,client);
 	}
-	
+
 	private static void createImpression(Impression impression, Client client) {
 		DAO<Produit> prodDAO = new ProduitDAO(PhotoNum.conn);
 		List<Produit> listProd = prodDAO.readAll();
@@ -122,14 +124,14 @@ public class InterfaceImpression {
 				);
 		}
 		impression.setReference(listProd.get(choix-1).getReference());
-		
+
 		impression.setMailClient(client.getMail());
-		
+
 		System.out.println("Choisissez maintenant le titre de votre "+impression.getType()+".");
 		impression.setTitre(LectureClavier.lireChaine());
-		
+
 		boolean reussi = impDAO.update(impression);
-		if(reussi) 
+		if(reussi)
 		{
 			System.out.println("Votre "+impression.getType()+" a bien été créé.");
 		}
@@ -138,7 +140,7 @@ public class InterfaceImpression {
 			System.out.println("Une erreur est survenue, votre "+impression.getType()+" n'a pas pu être créé. Veuillez réessayer.");
 		}
 	}
-	
+
 	//Affiche toutes les impressions du client, peut selectionner une impression pour avoir du detail
 	public static void interfaceVueImpression(Client client) {
 
@@ -167,33 +169,29 @@ public class InterfaceImpression {
 	}
 
 	public static void menuImpression(Client client){
-		System.out.println("Que voulez vous faire?");
-		System.out.println("1. Visualiser vos impressions");
-		System.out.println("2. Créer une impression");
-		System.out.println("3. Modifier une impression");
-		System.out.println("4. Supprimer une impression");
-		
-		int choix = LectureClavier.lireEntier("1, 2, 3 ou 4?");
-		switch(choix) {
-		case 1:
-			interfaceVueImpression(client);
-			break;
-		case 2:
-			interfaceCreationImpression(client);
-			break;
-		case 3:
-			interfaceModificationImpression(client);
-			break;
-		case 4:
-			interfaceSuppressionImpression(client);
-			break;
-		default:
-			break;	
+		int choix = -1;
+		while (choix != 5) {
+			choix = LectureClavier.lireEntier(
+				"--- Mes impressions ---\n"+
+				"\t1. Visualiser vos impressions\n"+
+				"\t2. Créer une impression\n"+
+				"\t3. Modifier une impression\n"+
+				"\t4. Supprimer une impression\n"+
+				"\t5. Retour au menu précédent"+
+				"> "
+			);
+			switch (choix) {
+				case 1: interfaceVueImpression(client); break;
+				case 2: interfaceCreationImpression(client); break;
+				case 3: interfaceModificationImpression(client); break;
+				case 4: interfaceSuppressionImpression(client); break;
+				default: System.err.println("Veuillez indiquer un nombre entre 1 et 3."); break;
+			}
 		}
 	}
 
 	public static void interfaceSuppressionImpression(Client client) {
-		
+
 		List<Impression> list = impDAO.readAllByClient(client);
 		if(list.size() != 0) {
 			System.out.println("Voici toutes vos impressions (du compte): "+client.getMail());
@@ -237,7 +235,7 @@ public class InterfaceImpression {
 				String titre = LectureClavier.lireChaine();
 				System.out.println("Quel est la nouvelle référence");
 				String reference = LectureClavier.lireChaine();
-				
+
 				list.get(choix-1).setTitre(titre);
 				list.get(choix-1).setReference(reference);
 				if(choix!=0)impDAO.update(list.get(choix-1));
@@ -248,6 +246,6 @@ public class InterfaceImpression {
 		}else {
 			System.out.println("Vous n'avez pas d'impressions.");
 		}
-		
+
 	}
 }

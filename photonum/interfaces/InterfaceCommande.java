@@ -17,20 +17,20 @@ import photonum.dao.ProduitDAO;
 import photonum.objects.*;
 import photonum.utils.LectureClavier;
 
-
 public class InterfaceCommande {
     private static CommandeDAO cmdDao=new CommandeDAO(PhotoNum.conn);
+    private static ImpressionDAO impDao = new ImpressionDAO(PhotoNum.conn);
+    private static ArticleDAO articleDAO = new ArticleDAO(PhotoNum.conn);
     //TODO creation commande
     /**
      * Permet de demarrer la creation d'une commande
      * @param c le {@link Client} courant
      */
-    public static void creationCommande(Client c){
-        Commande cmd=new Commande();
-        cmd.setIdCommande(cmdDao.getLastId()+1);
+    public static void creationCommande(Client c) {
+        Commande cmd = new Commande();
+        cmd.setIdCommande(cmdDao.getLastId() + 1);
         cmd.setMail(c.getMail());
         choixImpression(c, cmd);
-
     }
     /**
      * permet de choissir les {@link Article} d'une commande
@@ -46,25 +46,21 @@ public class InterfaceCommande {
             while(choix!=0){
                 while(!(choix>0 && choix<=impressionClient.size())){
                     System.out.println("choissiez l'impression");
-                    for(int i=1;i<=impressionClient.size();i++) {
-                        System.out.println(i+". "+impressionClient.get(i-1).getTitre());
+                    for (int i = 1; i <= impressionClient.size(); i++) {
+                        System.out.println(i + ". " + impressionClient.get(i - 1).getTitre());
                     }
-                    choix=LectureClavier.lireEntier(
-                            "choisissez une impression pour la voir plus en detail dans la liste ci-dessus \n"+
-                            "ou taper sur 0"
-                    );
+                    choix = LectureClavier.lireEntier(
+                            "choisissez une impression pour la voir plus en detail dans la liste ci-dessus \n"
+                                    + "ou taper sur 0");
                 }
-                articleChoisi.add(
-                    new Article(cmd.getIdCommande(),
-                    impressionClient.get(choix-1).getIdImpression(),
-                    LectureClavier.lireEntier("Quantite : "))
-                );
+                articleChoisi.add(new Article(cmd.getIdCommande(), impressionClient.get(choix - 1).getIdImpression(),
+                        LectureClavier.lireEntier("Quantite : ")));
             }
-            InterfaceCodePromo.utilisationCodePromo(c,cmd,articleChoisi);
-		}else {
-			System.out.println("Vous n'avez pas d'impressions.");
-		}
-        
+            InterfaceCodePromo.utilisationCodePromo(c, cmd, articleChoisi);
+        } else {
+            System.out.println("Vous n'avez pas d'impressions.");
+        }
+
     }
     /**
      * 
@@ -94,31 +90,30 @@ public class InterfaceCommande {
     public static void ValidationCommande(Client c,Commande cmd,List<Article> articles){
         ArticleDAO articleDAO=new ArticleDAO(PhotoNum.conn);
         System.out.println("voici le descriptif de votre commande :");
-        System.out.println("    "+cmd.toString());
+        System.out.println("    " + cmd.toString());
         System.out.println("    Details de vos articles :");
-        for(Article a :articles){
-            System.out.println("        "+a.toString());
+        for (Article a : articles) {
+            System.out.println("        " + a.toString());
         }
 
-        if(LectureClavier.lireOuiNon("valider la commande ? (o/n)")){
+        if (LectureClavier.lireOuiNon("valider la commande ? (o/n)")) {
             cmd.setDateCommande(Date.valueOf(LocalDate.now()));
-            if(cmdDao.create(cmd)){
-                for(Article a:articles)articleDAO.create(a);
-                System.out.println("Votre commande n°"+cmd.getIdCommande()+" a bien été enregistrer , Merci de votre confiance !");
-            }else{
-                System.out.println("desolée mais votre commande n'a pas pus etre enregistrer , veuillez recommencer  !");
+            if (cmdDao.create(cmd)) {
+                for (Article a : articles)
+                    articleDAO.create(a);
+                System.out.println("Votre commande n°" + cmd.getIdCommande()
+                        + " a bien été enregistrer , Merci de votre confiance !");
+            } else {
+                System.out
+                        .println("desolée mais votre commande n'a pas pus etre enregistrer , veuillez recommencer  !");
             }
-        }else{
-            int choix=-1;
-            while(!(choix>0 && choix<=4)){
-                choix=LectureClavier.lireEntier(
-                "Voulez vous revenir a une etape ou quitter ? "+
-                "\n(attention reneir a une etape vous oblige a faire les suivantes)"+
-                "\n1. Choisir les Impressions"+
-                "\n2. Choisir le CodePromo"+
-                "\n3. Changer l'adresse de livraison"+
-                "\n4. Abandonner\n"
-                );
+        } else {
+            int choix = -1;
+            while (!(choix > 0 && choix <= 4)) {
+                choix = LectureClavier.lireEntier("Voulez vous revenir a une etape ou quitter ? "
+                        + "\n(attention reneir a une etape vous oblige a faire les suivantes)"
+                        + "\n1. Choisir les Impressions" + "\n2. Choisir le CodePromo"
+                        + "\n3. Changer l'adresse de livraison" + "\n4. Abandonner\n");
             }
             switch(choix){
                 case 1: choixImpression(c, cmd);
@@ -132,64 +127,47 @@ public class InterfaceCommande {
         }
     }
 
-
-
-
-
-
-
-
-
-    public static void affichageCommande(Client c){
+    public static void affichageCommande(Client c) {
         List<Commande> commandesClient = cmdDao.readAllByClient(c);
-        if(commandesClient.size()!=0){
+        if (commandesClient.size() != 0) {
             System.out.println("Voici toutes vos commandes :");
-            for(int i=1;i<=commandesClient.size();i++){
-                System.out.println(i+". "+commandesClient.get(i-1).toString());
+            for (int i = 1; i <= commandesClient.size(); i++) {
+                System.out.println(i + ". " + commandesClient.get(i - 1).toString());
             }
-            int choix=LectureClavier.lireEntier(
-                "si vous voulez plus de detail sur une commande\n"+ 
-                "choissiez une commande dans la liste ci-dessus\n"+
-                "sinon taper 0"
-                );
-            while(choix!=0){
-                    while(!(choix>0 && choix<=commandesClient.size())){
-                        System.out.println("\nvous n'avez pas mis un numero de commande valide\n");
-                        System.out.println("Voici toutes vos commandes :");
-                        for(int i=1;i<=commandesClient.size();i++){
-                            System.out.println(i+". "+commandesClient.get(i-1).toString());
-                        }
-                        choix=LectureClavier.lireEntier(
-                            "si vous voulez plus de detail sur une commande\n"+ 
-                            "choissiez une commande dans la liste ci-dessus\n"+
-                            "sinon taper 0"
-                            );
+            int choix = LectureClavier.lireEntier("si vous voulez plus de detail sur une commande\n"
+                    + "choissiez une commande dans la liste ci-dessus\n" + "sinon taper 0");
+            while (choix != 0) {
+                while (!(choix > 0 && choix <= commandesClient.size())) {
+                    System.out.println("\nvous n'avez pas mis un numero de commande valide\n");
+                    System.out.println("Voici toutes vos commandes :");
+                    for (int i = 1; i <= commandesClient.size(); i++) {
+                        System.out.println(i + ". " + commandesClient.get(i - 1).toString());
                     }
-                afficherDetailCommande(commandesClient.get(choix-1));
+                    choix = LectureClavier.lireEntier("si vous voulez plus de detail sur une commande\n"
+                            + "choissiez une commande dans la liste ci-dessus\n" + "sinon taper 0");
+                }
+                afficherDetailCommande(commandesClient.get(choix - 1));
 
                 System.out.println("Voici toutes vos commandes :");
-                for(int i=1;i<=commandesClient.size();i++){
-                    System.out.println(i+". "+commandesClient.get(i-1).toString());
+                for (int i = 1; i <= commandesClient.size(); i++) {
+                    System.out.println(i + ". " + commandesClient.get(i - 1).toString());
                 }
-                choix=LectureClavier.lireEntier(
-                            "si vous voulez plus de detail sur une commande\n"+ 
-                            "choissiez une commande dans la liste ci-dessus\n"+
-                            "sinon taper 0"
-                            );
+                choix = LectureClavier.lireEntier("si vous voulez plus de detail sur une commande\n"
+                        + "choissiez une commande dans la liste ci-dessus\n" + "sinon taper 0");
             }
-        }else{
+        } else {
             System.out.println("Désolé mais vous n'avez pas fait encore de commande \n");
         }
     }
-    public static void afficherDetailCommande(Commande c){
-        ArticleDAO artDao=new ArticleDAO(PhotoNum.conn);
-        List<Article> tabArticles = artDao.readAllByCommande(c);
+
+    public static void afficherDetailCommande(Commande c) {
+        List<Article> tabArticles = articleDAO.readAllByCommande(c);
         System.out.println("\n\nLes details de votre commande :");
-        if(tabArticles.size()>0){
-            for(int i=1;i<=tabArticles.size();i++){
-                System.out.println("    "+tabArticles.get(i-1).toString());
+        if (tabArticles.size() > 0) {
+            for (int i = 1; i <= tabArticles.size(); i++) {
+                System.out.println("    " + tabArticles.get(i - 1).toString());
             }
-        }else{
+        } else {
             System.out.println("    aucun article dans votre commande !\n");
         }
     }

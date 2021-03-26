@@ -11,7 +11,7 @@ import photonum.utils.LectureClavier;
  * cette class permet de faire l'interaction avec l'utilisateur pour des {@link Page}
  */
 public class InterfacePage {
-
+	private static PhotoDAO dao = new PhotoDAO(PhotoNum.conn);
 	/**
 	 * 
 	 * @param idImpression d'une {@link Impression} pour laquel nous voulon creer une {@link Page}
@@ -20,11 +20,11 @@ public class InterfacePage {
 	 */
 	public static void interfaceCreationPage(int idImpression, Client client,Page page) {
 		System.out.println("Vous allez ici créer une page pour votre impression.");
-		PhotoDAO dao = new PhotoDAO(PhotoNum.conn);
+
 		List<Photo> resultat = new ArrayList<>();
-		
+
 		List<Photo> photosExi = dao.readAllPhotosByClient(client.getMail());
-		
+
 		if(photosExi.size()!=0) {
 			System.out.println("Votre liste de photo:");
 			for(Photo photo: photosExi) {
@@ -44,8 +44,8 @@ public class InterfacePage {
 		}
 		DAO<Page> pageDAO = new PageDAO(PhotoNum.conn);
 		pageDAO.create(page);
-		
-		
+
+
 		System.out.println("Voulez vous créer des photos à mettre dans votre page?");
 		int choix = LectureClavier.lireEntier("Oui/Non");
 		String chemin;
@@ -60,11 +60,11 @@ public class InterfacePage {
 			}
 		}
 		page.setPhotos(resultat);
-		
+
 		System.out.println("Rentrez votre mise en forme");
 		String mef = LectureClavier.lireChaine();
 		page.setMiseEnForme(mef);
-		
+
 		pageDAO.update(page);
 	}
 	
@@ -76,11 +76,10 @@ public class InterfacePage {
 	 */
 	public static void interfaceCreationPageAlbum(int idImpression, Client client, Page page) {
 		System.out.println("Vous allez ici créer une page pour votre impression.");
-		PhotoDAO dao = new PhotoDAO(PhotoNum.conn);
 		List<Photo> resultat = new ArrayList<>();
-		
+
 		List<Photo> photosExi = dao.readAllPhotosByClient(client.getMail());
-		
+
 		if(photosExi.size()!=0) {
 			System.out.println("Votre liste de photo:");
 			for(Photo photo: photosExi) {
@@ -100,8 +99,8 @@ public class InterfacePage {
 		}
 		DAO<Page> pageDAO = new PageDAO(PhotoNum.conn);
 		pageDAO.create(page);
-		
-		
+
+
 		System.out.println("Voulez vous créer des photos à mettre dans votre page?");
 		int choix = LectureClavier.lireEntier("Oui/Non");
 		String chemin;
@@ -116,11 +115,11 @@ public class InterfacePage {
 			}
 		}
 		page.setPhotos(resultat);
-		
+
 		System.out.println("Rentrez votre mise en forme");
 		String mef = LectureClavier.lireChaine();
 		page.setMiseEnForme(mef);
-		
+
 		pageDAO.update(page);
 	}
 }
