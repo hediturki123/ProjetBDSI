@@ -22,8 +22,8 @@ public class Commande {
 	private int codePostal;
 	private String pays;
 
-	private final static ArticleDAO A_DAO = new ArticleDAO(PhotoNum.conn);
-	private final static CommandeDAO C_DAO = new CommandeDAO(PhotoNum.conn);
+	private final static ArticleDAO AT_DAO = new ArticleDAO(PhotoNum.conn);
+	private final static CommandeDAO CM_DAO = new CommandeDAO(PhotoNum.conn);
 
 	public Commande() {}
 
@@ -138,30 +138,40 @@ public class Commande {
 		this.pays = pays;
 	}
 
+	public void setAdresseLivraison(Adresse a) {
+		setAdresseLivraison(
+			a.getNumeroRue(),
+			a.getNomRue(),
+			a.getVille(),
+			a.getCp(),
+			a.getPays()
+		);
+	}
+
 	public List<Article> getArticles() {
-		return A_DAO.readAllByCommande(this);
+		return AT_DAO.readAllByCommande(this);
 	}
 
 	public Article getArticle(int index) {
-		return A_DAO.readAllByCommande(this).get(index);
+		return AT_DAO.readAllByCommande(this).get(index);
 	}
 
 	public void ajouterArticles(List<Article> articles) {
 		articles.forEach(a -> {
-			A_DAO.create(a);
+			AT_DAO.create(a);
 		});
 	}
 
 	public void ajouterArticle(Article a) {
-		A_DAO.create(a);
+		AT_DAO.create(a);
 	}
 
 	public void ajouterArticle(int idImpression, int quantite) {
-		A_DAO.create(new Article(this.idCommande, idImpression, quantite));
+		AT_DAO.create(new Article(this.idCommande, idImpression, quantite));
 	}
 
 	public double getPrixTotal() {
-		return C_DAO.getPrix(this.idCommande);
+		return CM_DAO.getPrix(this.idCommande);
 	}
 
 	@Override
@@ -192,5 +202,21 @@ public class Commande {
 		f += "PRIX HT : "+(PRIX_TOTAL*0.8)+"€ / PRIX TTC : "+PRIX_TOTAL+"€";
 
 		return f;
+	}
+
+	/**
+	 * Crée une nouvelle commande dans la base de données.
+	 * @return <b>true</b> si la création de la commande a réussi ; <b>false</b> sinon.
+	 */
+	public boolean nouvelleCommande() {
+		return CM_DAO.create(this);
+	}
+
+	/**
+	 * Met à jour la commande dans la base de données.
+	 * @return <b>true</b> si la mise à jour de la commande s'est bien passée ; <b>false</b> sinon.
+	 */
+	public boolean mettreAJour() {
+		return CM_DAO.update(this);
 	}
 }

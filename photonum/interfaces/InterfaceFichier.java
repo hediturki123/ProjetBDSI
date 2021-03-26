@@ -52,7 +52,7 @@ public class InterfaceFichier {
      */
     public static void partagerFichier(Client c){
         int choix;
-        List<FichierImage> imageClient=imgDAO.readAllByClient(c);
+        List<FichierImage> imageClient= c.getImages();
 
         if (imageClient.size() > 0) {
             System.out.println("Vos fichiers d'image : ");

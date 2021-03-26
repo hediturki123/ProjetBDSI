@@ -13,11 +13,11 @@ import photonum.objects.Commande;
 import photonum.objects.StatutCommande;
 
 public class CommandeDAO extends DAO<Commande>{
+
 	/**
 	 * construit un CommandeDAO avec la connexions à la BD
 	 * @param conn
 	 */
-
 	public CommandeDAO(Connection conn) {
 		super(conn);
 	}
@@ -55,10 +55,10 @@ public class CommandeDAO extends DAO<Commande>{
 	}
 
 	/**
-	 * 
+	 *
 	 * @param id un <b>Int</b> correspondant a <b>IdCommande</b>
 	 * @return La {@link Commande} correpondant à <b>IdCommande</b>
-	 * @exception SQLException;	 
+	 * @exception SQLException;
 	 * */
 	@Override
 	public Commande read(Object id) {
@@ -176,7 +176,7 @@ public class CommandeDAO extends DAO<Commande>{
 	}
 
 	/**
-	 * @param sc Le {@link StatutCommande}(<b>EN_COURS,PRETE_ENVOI,ENVOYEE</b>) 
+	 * @param sc Le {@link StatutCommande}(<b>EN_COURS,PRETE_ENVOI,ENVOYEE</b>)
 	 * @return <b>List&lt;{@link Commande}&gt; </b> la liste de toutes les  commande de la base en fonction de leut statut
 	 * @exception SQLException;
 	 */
@@ -218,7 +218,7 @@ public class CommandeDAO extends DAO<Commande>{
 	}
 
 	/**
-	 * @param c un {@link Client} pour trouver ces articles correspondant 
+	 * @param c un {@link Client} pour trouver ces articles correspondant
 	 * @return <b>List&lt;{@link Commande}&gt; </b> la liste de toutes les commandes de la base en fonction du client
 	 * @exception SQLException;
 	 */
@@ -263,10 +263,10 @@ public class CommandeDAO extends DAO<Commande>{
 	 * cette fonction permet de recuperer le dernier id pour pouvoir creer une nouvelle commande(AUTO_INCREMENT)
 	 * @return un <b>Int</b> correpondant au dernier id dans la table LesCommandes
 	 */
-	public int getLastId() {
+	public static int getLastId() {
 		int id = 0;
 		try {
-			PreparedStatement requete_last = this.connect.prepareStatement("SELECT max(idCommande) FROM LesCommandes");
+			PreparedStatement requete_last = PhotoNum.conn.prepareStatement("SELECT max(idCommande) FROM LesCommandes");
 			ResultSet res = requete_last.executeQuery();
 			if (res.next()) {
 				id = res.getInt(1);

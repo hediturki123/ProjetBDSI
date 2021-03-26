@@ -2,8 +2,6 @@ package photonum.interfaces;
 
 import java.util.function.UnaryOperator;
 
-import photonum.*;
-import photonum.dao.ClientDAO;
 import photonum.utils.*;
 import photonum.objects.*;
 
@@ -11,8 +9,6 @@ import photonum.objects.*;
  * Cette interface permet toutes les interactions avec un {@link Client}
  */
 public class InterfaceClient  {
-
-	private static ClientDAO clientDao = new ClientDAO(PhotoNum.conn);
 
 	/**
 	 * on demarre le menu de l'interface client
@@ -73,17 +69,16 @@ public class InterfaceClient  {
 
 		UnaryOperator<Client> connect = c -> {
 			System.out.println("Mail :");
-			String mailConnexion = LectureClavier.lireChaine();
+			String mail = LectureClavier.lireChaine();
 			System.out.println("Mot de passe :");
-			String mdpConnexion = LectureClavier.lireChaine();
-			String[] args = { mailConnexion, mdpConnexion };
-			return clientDao.read(args);
+			String mdp = LectureClavier.lireChaine();
+			return Client.connexion(mail, mdp);
 		};
 		clientCourant = connect.apply(null);
-		int essai = 3;
-		while (clientCourant == null && essai > 0) {
-			System.err.println(">>> Mot de passe ou identifiant incorrect ! \nIl vous reste " + essai + " essais");
-			essai--;
+		int essais = 3;
+		while (clientCourant == null && essais > 0) {
+			essais--;
+			System.err.println(">>> Mot de passe ou identifiant incorrect ! ("+ essais + " essais restants)");
 			clientCourant = connect.apply(null);
 
 		}
@@ -91,7 +86,7 @@ public class InterfaceClient  {
 			System.out.println(">>> Connexion réussie !");
 			menu(clientCourant);
 		} else {
-			System.out.println(">>> Veuillez vous connectez ulterieurment");
+			System.out.println(">>> Réessayez de vous connecter ultérieurement.");
 		}
     }
 
@@ -123,37 +118,39 @@ public class InterfaceClient  {
 	<h4>Probleme</h4>
 	 */
     private static void creationCompte(){
-		System.out.println("Veuillez entrer votre adresse mail :");
+		System.out.println(">>> Veuillez remplir les champs suivants s'il vous plaît.");
+		System.out.println("Adresse mail :");
 		String mail = LectureClavier.lireChaine();
 
-		System.out.println("Veuillez entrer votre mdp :");
+		System.out.println("Mot de passe :");
 		String mdp = LectureClavier.lireChaine();
 
-		System.out.println("Veuillez entrer votre nom :");
+		System.out.println("Nom de famille :");
 		String nom = LectureClavier.lireChaine();
 
-		System.out.println("Veuillez entrer votre prenom :");
+		System.out.println("Prénom :");
 		String prenom = LectureClavier.lireChaine();
 
-		int numeroRue = LectureClavier.lireEntier("veuillez entrez votre numero de rue");
+		int numeroRue = LectureClavier.lireEntier("Numéro de rue :");
 
-		System.out.println("veuillez entrez votre rue");
+		System.out.println("Intitulé de la rue (rue de la Pomme, avenue des Poires...) :");
 		String nomRue = LectureClavier.lireChaine();
 
-		System.out.println("veuillez entrez votre ville");
+		System.out.println("Ville :");
 		String ville = LectureClavier.lireChaine();
 
-		int cp = LectureClavier.lireEntier("veuillez entrez votre code postal");
+		int cp = LectureClavier.lireEntier("Code postal :");
 
-		System.out.println("veuillez entrez votre pays ");
+		System.out.println("Pays :");
 		String pays = LectureClavier.lireChaine();
 
-		Client c = new Client(mail, nom, prenom, mdp, numeroRue, nomRue, ville, cp, pays, true);
+		Client c = new Client(mail, nom, prenom, mdp, numeroRue, nomRue, ville, cp, pays);
 
-		if (clientDao.create(c)) {
+		if (c.nouveauCompte()) {
+			System.out.println(">>> Compte créé avec succès !");
 			menu(c);
 		} else {
-			System.out.println("Quelque chose s'est mal passé lors de la création du compte...");
+			System.out.println(">>> Quelque chose s'est mal passé lors de la création du compte...");
 		}
 	}
 
@@ -171,7 +168,6 @@ public class InterfaceClient  {
 	* </table>
 	 * @param c le {@link Client} courant
 	 */
-    // TODO ici dans cette fonction mettre les fonctionnalité du client et l'envoyer dans les bonnes interface
     public static void menu(Client c) {
 		int choix = -1;
 		while (choix != 5) {
@@ -202,16 +198,16 @@ public class InterfaceClient  {
 	 *  Le menu ce presente de la maniere suivante :
 	 * <h3>Exemple :</h3>
 	 * <table>
-				<tr><td>--- Menu Visualisation ---</td></tr>
-				<tr><td>1. Mes informations personnelles</td></tr>
-				<tr><td>2. Mes Codes promos </td></tr>
-				<tr><td>3. Mes Commandes </td></tr>
-				<tr><td>4. Mes Impressions</td></tr>
-				<tr><td>5. Mes Images Partagées</td></tr>
-				<tr><td>6. Retour au menu</td></tr>
-		* </table>
-	* @param c le {@link Client} courant
-	*/
+	 *		<tr><td>--- Menu Visualisation ---</td></tr>
+	 *		<tr><td>1. Mes informations personnelles</td></tr>
+	 *		<tr><td>2. Mes Codes promos </td></tr>
+	 *		<tr><td>3. Mes Commandes </td></tr>
+	 *		<tr><td>4. Mes Impressions</td></tr>
+	 *		<tr><td>5. Mes Images Partagées</td></tr>
+	 *		<tr><td>6. Retour au menu</td></tr>
+	 * </table>
+	 * @param c le {@link Client} courant
+	 */
 	public static void menuInfo(Client c){
 		int choix = -1;
 		while (choix != 6) {

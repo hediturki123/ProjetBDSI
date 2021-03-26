@@ -2,8 +2,6 @@ package photonum.interfaces;
 
 import java.util.List;
 
-import photonum.PhotoNum;
-import photonum.dao.CodePromoDAO;
 import photonum.objects.Article;
 import photonum.objects.Client;
 import photonum.objects.CodePromo;
@@ -16,14 +14,12 @@ import photonum.utils.LectureClavier;
  */
 public class InterfaceCodePromo {
 
-    public static CodePromoDAO cpDao = new CodePromoDAO(PhotoNum.conn);
-
     /**
      * Presente tous les {@link CodePromo} actif du client
      * @param c le {@link Client}
      */
     public static void PresentationCodePromo(Client c) {
-        List<CodePromo> codeClients = cpDao.readAllByClient(c.getMail(), false);
+        List<CodePromo> codeClients = c.getCodesPromo(false);
         if (codeClients.size() != 0) {
             System.out.println("voici vos codes promo toujours actif :");
             for (int i = 1; i <= codeClients.size(); i++) {
@@ -43,8 +39,8 @@ public class InterfaceCodePromo {
      * @param modif un boolean<pre>True si on est en train de modifier une commande </pre> <pre>False sinon </pre>
      */
     public static void  utilisationCodePromo(Client c, Commande cmd, List<Article> articles, boolean modif) {
-        List<CodePromo> cpDispo = cpDao.readAllByClient(c.getMail(), false);
-        CodePromo cpUtiliser = new CodePromo();
+        List<CodePromo> cpDispo = c.getCodesPromo(false);
+        CodePromo cpUtilise = new CodePromo();
         if (LectureClavier.lireOuiNon("voulez vous utiliser un code promo ? (o/n)")) {
             if (cpDispo.size() > 0) {
                 int choix = -1;
@@ -55,7 +51,7 @@ public class InterfaceCodePromo {
                     }
                     choix = LectureClavier.lireEntier(" choissisez dans la liste ci-dessus");
                 }
-                cpUtiliser = new CodePromo(cpDispo.get(choix - 1).getMailClient(), cpDispo.get(choix - 1).getCode(),
+                cpUtilise = new CodePromo(cpDispo.get(choix - 1).getMailClient(), cpDispo.get(choix - 1).getCode(),
                         cpDispo.get(choix - 1).estUtilise());
             } else {
                 System.out.println("Sha !! pas assez bon client pour avoir un code promo baltringue !!");
@@ -63,7 +59,7 @@ public class InterfaceCodePromo {
         } else {
             System.out.println("pas de souci , mais tant pis pour vous SHA !");
         }
-        cmd.setCodePromo(cpUtiliser.getCode());
+        cmd.setCodePromo(cpUtilise.getCode());
         if(modif)InterfaceCommande.validationCommande(c, cmd, articles);else InterfaceCommande.livraison(c, cmd, articles,false);
     }
 }

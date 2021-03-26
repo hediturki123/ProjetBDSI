@@ -5,8 +5,7 @@ public class Produit {
     private double prix;
     private int stock;
 
-    public Produit() {
-    }
+    public Produit() {}
 
     public Produit(String reference, double prix, int stock) {
         this.reference = reference;
