@@ -11,21 +11,18 @@ import photonum.utils.LectureClavier;
  * cette class permet de faire l'interaction avec l'utilisateur pour des {@link Page}
  */
 public class InterfacePage {
-	private static PhotoDAO dao = new PhotoDAO(PhotoNum.conn);
-	private static PhotoAlbumDAO albumDAO = new PhotoAlbumDAO(PhotoNum.conn);
-	private static FichierImageDAO fichierImageDAO = new FichierImageDAO(PhotoNum.conn);
+
 	/**
-	 * 
 	 * @param idImpression d'une {@link Impression} pour laquel nous voulon creer une {@link Page}
-	 * @param client le {@link Client} courant 
-	 * @param page La {@link Page} courante 
+	 * @param client le {@link Client} courant
+	 * @param page La {@link Page} courante
 	 */
 	public static void interfaceCreationPage(int idImpression, Client client,Page page) {
 		System.out.println("Vous allez ici créer une page pour votre impression.");
 
 		List<Photo> resultat = new ArrayList<>();
 
-		List<Photo> photosExi = dao.readAllPhotosByClient(client.getMail());
+		List<Photo> photosExi = client.getPhotos();
 
 		if(photosExi.size()!=0) {
 			System.out.println("Votre liste de photo:");
@@ -53,7 +50,7 @@ public class InterfacePage {
 
 		System.out.println("Voulez vous créer des photos à mettre dans votre page?");
 		int choix = LectureClavier.lireEntier("1.Oui/2.Non");
-		List<FichierImage> listImg = fichierImageDAO.readAllByClient(client);
+		List<FichierImage> listImg = client.getImages();
 		if(listImg.size()!=0){
 			if(choix == 1) {
 				Photo photo = new Photo("",client.getMail());
@@ -64,7 +61,7 @@ public class InterfacePage {
 					System.out.println(i + ". " + img.getChemin());
 					i++;
 				}
-				
+
 				int choix2;
 
 				for(boolean b = true; b; b = 1 != LectureClavier.lireEntier("1.quitter ou 2.continuer")) {
@@ -91,11 +88,11 @@ public class InterfacePage {
 			page=null;
 
 		}
-		
+
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param idImpression une {@link Impression} pour laquel nous voulons creer une {@link photo}
 	 * @param client
 	 * @param page
@@ -105,7 +102,7 @@ public class InterfacePage {
 
 		List<Photo> resultat = new ArrayList<>();
 
-		List<PhotoAlbum> photosExi = albumDAO.readAllPhotosAlbumByClient(client.getMail());
+		List<PhotoAlbum> photosExi = client.getPhotosAlbum();
 
 		if(photosExi.size()!=0) {
 			System.out.println("Votre liste de photo:");
@@ -124,7 +121,7 @@ public class InterfacePage {
 				}
 				resultat.add(photosExi.get(choix-1));
 			}
-			
+
 		}else {
 			System.out.println("Vous n'avez pas de photos.");
 		}
@@ -134,7 +131,7 @@ public class InterfacePage {
 
 		System.out.println("Voulez vous créer des photos à mettre dans votre page?");
 		int choix = LectureClavier.lireEntier("1.Oui/2.Non");
-		List<FichierImage> listImg = fichierImageDAO.readAllByClient(client);
+		List<FichierImage> listImg = client.getImages();
 		if(listImg.size()!=0){
 			if(choix == 1) {
 				PhotoAlbum photo = new PhotoAlbum("",client.getMail(),"");
@@ -144,7 +141,7 @@ public class InterfacePage {
 				{
 					System.out.println(i + ". " + img.getChemin());
 				}
-				
+
 				int choix2;
 
 				for(boolean b = true; b; b = 1 != LectureClavier.lireEntier("1.quitter ou 2.continuer")) {

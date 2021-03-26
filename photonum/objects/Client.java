@@ -9,6 +9,8 @@ import photonum.dao.CodePromoDAO;
 import photonum.dao.CommandeDAO;
 import photonum.dao.FichierImageDAO;
 import photonum.dao.ImpressionDAO;
+import photonum.dao.PhotoAlbumDAO;
+import photonum.dao.PhotoDAO;
 import photonum.dao.PhotoTirageDAO;
 
 public class Client {
@@ -31,6 +33,8 @@ public class Client {
 	private final static CodePromoDAO CP_DAO = new CodePromoDAO(PhotoNum.conn);
 	private final static FichierImageDAO FI_DAO = new FichierImageDAO(PhotoNum.conn);
 	private final static PhotoTirageDAO PT_DAO = new PhotoTirageDAO(PhotoNum.conn);
+	private final static PhotoDAO PH_DAO = new PhotoDAO(PhotoNum.conn);
+	private final static PhotoAlbumDAO PA_DAO = new PhotoAlbumDAO(PhotoNum.conn);
 
     public Client(String mail, String nom, String prenom, String mdp, int numeroRue, String nomRue,
 			String ville, int cp, String pays, boolean actif) {
@@ -231,6 +235,16 @@ public class Client {
 	public List<PhotoTirage> getPhotosTirage() {
 		return PT_DAO.readAllPhotosTirageByClient(this);
 	}
+	
+
+	public List<Photo> getPhotos() {
+		return PH_DAO.readAllPhotosByClient(mail);
+	}
+
+	public List<PhotoAlbum> getPhotosAlbum() {
+		return PA_DAO.readAllPhotosAlbumByClient(mail);
+	}
+
 	/**
 	 * permet de regarder si l'adresse du client est deja dans la base de donnée pour eviter la redondances de sont adresse 
 	 * @param a une {@link Adresse} qui sera l'adresse des client 

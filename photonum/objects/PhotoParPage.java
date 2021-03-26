@@ -3,6 +3,7 @@ package photonum.objects;
 import photonum.PhotoNum;
 import photonum.dao.PageDAO;
 import photonum.dao.PhotoDAO;
+import photonum.dao.PhotoParPageDAO;
 
 public class PhotoParPage{
 	private int idPage;
@@ -10,6 +11,7 @@ public class PhotoParPage{
 
 	private final static PhotoDAO PH_DAO = new PhotoDAO(PhotoNum.conn);
 	private final static PageDAO PG_DAO = new PageDAO(PhotoNum.conn);
+	private final static PhotoParPageDAO PP_DAO = new PhotoParPageDAO(PhotoNum.conn);
 
 	public PhotoParPage(int idPhoto, int idPage) {
 		setIdPage(idPage);
@@ -40,4 +42,7 @@ public class PhotoParPage{
 		return PG_DAO.read(idPage);
 	}
 
+	public boolean associerPhotoPage() {
+		return PP_DAO.create(this);
+	}
 }
