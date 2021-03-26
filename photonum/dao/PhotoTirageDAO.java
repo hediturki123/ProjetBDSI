@@ -173,7 +173,7 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 		return false;
 	}
 
-	public static List<PhotoTirage> readAllPhotosTirageByClient(Client client){
+	public List<PhotoTirage> readAllPhotosTirageByClient(Client client){
 		try {
 			PreparedStatement requete_select = PhotoNum.conn.prepareStatement("SELECT * FROM LesPhotosTirees NATURAL JOIN LesPhotos WHERE mailClient=?");
 			requete_select.setString(1, client.getMail());
