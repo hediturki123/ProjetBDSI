@@ -1,6 +1,4 @@
 package photonum.interfaces;
-
-import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 import photonum.*;
@@ -42,13 +40,10 @@ public class InterfaceClient  {
 				"> "
 			);
 			switch (choix) {
-				case 1:
-					connexion(); break;
-				case 2:
-					creationCompte(); break;
-				case 3:
-				default:
-					break;
+				case 1: connexion(); break;
+				case 2: creationCompte(); break;
+				case 3: break;
+				default: System.err.println("Veuillez indiquer un nombre entre 1 et 3."); break;
 			}
 		}
 	}
@@ -175,95 +170,69 @@ public class InterfaceClient  {
 	 */
     // TODO ici dans cette fonction mettre les fonctionnalité du client et l'envoyer dans les bonne interface
     public static void menu(Client c) {
-		int choix=LectureClavier.lireEntier(
-			"--- Menu Client ---\n" +
-			"\t1. Afficher mes informations\n" +
-			"\t2. Gérer les fichiers \n" +
-			"\t3. Gérer une impression \n" +
-			"\t4. Passer une commande\n" +
-			"\t5. Se deconnecter\n" +
-			"> "
-		);
-		while(choix!=5){
-			switch (choix){
-				case 1:menuInfo(c);
-					break;
-				case 2:InterfaceFichier.interfaceDemandeFichier(c);
-					break;
-				case 3:InterfaceImpression.menuImpression(c);
-					break;
-				case 4:InterfaceCommande.creationCommande(c);
-					break;
-				default:System.out.println("Veuilllez choisir entre 1,2,3,4,5 ! ");
-						choix=LectureClavier.lireEntier("Alors ?");
+		int choix = -1;
+		while (choix != 5) {
+			choix=LectureClavier.lireEntier(
+				"--- Menu Client ---\n" +
+				"\t1. Afficher mes infos\n" +
+				"\t2. Gérer les fichiers \n" +
+				"\t3. Gérer une impressions \n" +
+				"\t4. Passer une commande\n" +
+				"\t5. Se deconnecter\n" +
+				"> "
+			);
+			switch (choix) {
+				case 1: menuInfo(c); break;
+				case 2: InterfaceFichier.interfaceDemandeFichier(c); break;
+				case 3: InterfaceImpression.menuImpression(c); break;
+				case 4: InterfaceCommande.creationCommande(c); break;
+				case 5: break;
+				default: System.err.println("Veuillez indiquer un nombre entre 1 et 5."); break;
             }
-            choix=LectureClavier.lireEntier("\n1. Afficher mes informations  \n2. Gerer les fichiers \n3. Gerer une impression \n4. Commander \n5. Se deconnecter");
 		}
 		System.out.println("Merci d'utiliser nos services !");
 	}
 
 
-
-/**
- * Permet d'avoir le menu de visualisations des imformation client(info,code pormo, commandes, impression, image partagé)
- *  Le menu ce presente de la maniere suivante :
- * <h3>Exemple :</h3>
- * <table>
-	 		<tr><td>--- Menu Visualisation ---</td></tr>
-	 		<tr><td>1. Mes informations personnelles</td></tr>
-			<tr><td>2. Mes Codes promos </td></tr>
-			<tr><td>3. Mes Commandes </td></tr>
-			<tr><td>4. Mes Impressions</td></tr>
-			<tr><td>5. Mes Images Partagées</td></tr>
-			<tr><td>6. Retour au menu</td></tr>
-	* </table>
- * @param c le {@link Client} courant
- */
-public static void menuInfo(Client c){
-	System.out.println("que voulez vous faire ?");
-	int choix=LectureClavier.lireEntier(
-		"1. Mes informations personnelles\n"+
-		"2. Mes Codes promos\n"+
-		"3. Mes Commandes\n" +
-		"4. Mes Impression\n" +
-		"5. Mes Images Partagées\n"+
-		"6. Retour au menu"
-	);
-
-	//ici faire boucler dans le
-	while(choix!=6){
-		while(!(choix>0 && choix<6)){
-			choix=LectureClavier.lireEntier(
-			"1. Mes informations personnelles\n"+
-			"2. Mes Codes promos\n"+
-			"3. Mes Commandes\n" +
-			"4. Mes Impression\n" +
-			"5. Mes Images Partagées\n"+
-			"6. Retour au menu");
-		};
+	/**
+	 * Permet d'avoir le menu de visualisations des imformation client(info,code pormo, commandes, impression, image partagé)
+	 *  Le menu ce presente de la maniere suivante :
+	 * <h3>Exemple :</h3>
+	 * <table>
+				<tr><td>--- Menu Visualisation ---</td></tr>
+				<tr><td>1. Mes informations personnelles</td></tr>
+				<tr><td>2. Mes Codes promos </td></tr>
+				<tr><td>3. Mes Commandes </td></tr>
+				<tr><td>4. Mes Impressions</td></tr>
+				<tr><td>5. Mes Images Partagées</td></tr>
+				<tr><td>6. Retour au menu</td></tr>
+		* </table>
+	* @param c le {@link Client} courant
+	*/
+	public static void menuInfo(Client c){
+		int choix = -1;
+		while (choix != 6) {
+			choix = LectureClavier.lireEntier(
+				"--- Mon compte ---\n" +
+				"\t1. Mes Infos\n"+
+				"\t2. Mes Codes Promo\n"+
+				"\t3. Mes Commandes\n" +
+				"\t4. Mes Impressions\n" +
+				"\t5. Mes Images Partagées\n"+
+				"\t6. Retour au menu\n" +
+				"> "
+			);
 			switch(choix){
-				case 1 :afficherInfo(c);
-					break;
-				case 2 :InterfaceCodePromo.PresentationCodePromo(c);
-					break;
-				case 3 :InterfaceCommande.affichageCommande(c);
-					break;
-				case 4 :InterfaceImpression.interfaceVueImpression(c);
-					break;
-				case 5 :InterfaceFichier.afficherImagesPartage(c);
-					break;
-				case 6:break;
-
+				case 1: afficherInfo(c); break;
+				case 2: InterfaceCodePromo.PresentationCodePromo(c); break;
+				case 3: InterfaceCommande.affichageCommande(c); break;
+				case 4: InterfaceImpression.interfaceVueImpression(c); break;
+				case 5: InterfaceFichier.afficherImagesPartage(c); break;
+				case 6: break;
+				default: System.err.println("Veuillez indiquer un nombre entre 1 et 6."); break;
 			}
-			choix=LectureClavier.lireEntier(
-				"1. Mes informations personnelles\n"+
-				"2. Mes Codes promos\n"+
-				"3. Mes Commandes\n" +
-				"4. Mes Impression\n" +
-				"5. Mes Images Partagées\n"+
-				"6. Retour au menu");
+		}
 	}
-}
 
 /**
  * Affiche les informations du client à travers son toString();

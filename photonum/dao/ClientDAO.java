@@ -31,7 +31,7 @@ public class ClientDAO extends DAO<Client> {
 
 		try {
 			PreparedStatement requeteAjout=this.connect.prepareStatement(
-				"INSERT INTO LesClients VALUES (?,?,?,?,?,?,?,?,?)"
+				"INSERT INTO LesClients VALUES (?,?,?,?,?,?,?,?,?,?)"
 			);
 			requeteAjout.setString(1, obj.getMail());
 			requeteAjout.setString(2, obj.getNom());
@@ -42,7 +42,7 @@ public class ClientDAO extends DAO<Client> {
 			requeteAjout.setString(7, obj.getVille());
 			requeteAjout.setInt(8,obj.getCp());
 			requeteAjout.setString(9, obj.getPays());
-
+			requeteAjout.setBoolean(10, obj.isActif());
 			int reussi=requeteAjout.executeUpdate();
 			requeteAjout.close();
 			return reussi==1;
@@ -55,10 +55,9 @@ public class ClientDAO extends DAO<Client> {
 	/**
 	 * 	nous permet de connecter un {@link Client}  et de recuperer ces infos.
 	 * @param id un <b>String[2]</b> contenant <b>mail</b> et <b>mdp</b>
-	 * @return le {@link Client}  connecter
-	 * @exception SQLException;	 
+	 * @return le {@link Client}  connecté
+	 * @exception SQLException
 	 * */
-
 	@Override
 	public Client read(Object obj) {
 		try {
