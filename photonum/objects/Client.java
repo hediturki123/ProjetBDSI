@@ -9,6 +9,7 @@ import photonum.dao.CodePromoDAO;
 import photonum.dao.CommandeDAO;
 import photonum.dao.FichierImageDAO;
 import photonum.dao.ImpressionDAO;
+import photonum.dao.PhotoTirageDAO;
 
 public class Client {
 
@@ -29,6 +30,7 @@ public class Client {
 	private final static CommandeDAO CM_DAO = new CommandeDAO(PhotoNum.conn);
 	private final static CodePromoDAO CP_DAO = new CodePromoDAO(PhotoNum.conn);
 	private final static FichierImageDAO FI_DAO = new FichierImageDAO(PhotoNum.conn);
+	private final static PhotoTirageDAO PT_DAO = new PhotoTirageDAO(PhotoNum.conn);
 
     public Client(String mail, String nom, String prenom, String mdp, int numeroRue, String nomRue,
 			String ville, int cp, String pays, boolean actif) {
@@ -221,5 +223,9 @@ public class Client {
 	 */
 	public List<FichierImage> getImages(boolean partages) {
 		return FI_DAO.readAllByClient(this, partages);
+	}
+
+	public List<PhotoTirage> getPhotosTirage() {
+		return PT_DAO.readAllPhotosTirageByClient(this);
 	}
 }

@@ -3,11 +3,6 @@ package photonum.interfaces;
 import java.util.ArrayList;
 import java.util.List;
 
-import photonum.PhotoNum;
-import photonum.dao.FichierImageDAO;
-import photonum.dao.ImpressionDAO;
-import photonum.dao.ProduitDAO;
-import photonum.dao.PhotoTirageDAO;
 import photonum.objects.*;
 import photonum.utils.*;
 
@@ -15,12 +10,6 @@ import photonum.utils.*;
  * cette class permet de faire l'interaction avec l'utilisateur pour les {@link Impression}
  */
 public class InterfaceImpression {
-
-	private static ImpressionDAO impressionDAO = new ImpressionDAO(PhotoNum.conn);
-	private static ProduitDAO produitDAO = new ProduitDAO(PhotoNum.conn);
-	private static FichierImageDAO fichierImageDAO = new FichierImageDAO(PhotoNum.conn);
-	private static PhotoTirageDAO photoTirageDAO = new PhotoTirageDAO(PhotoNum.conn);
-
 
 	public static void interfaceCreationImpression(Client client) {
 
@@ -36,7 +25,7 @@ public class InterfaceImpression {
 		String reference = "reference1";
 		impression.setReference(reference);
 		impression.setType(TypeImpression.TIRAGE);
-		impressionDAO.create(impression);
+		impression.nouvelleImpression();
 		switch(choix) {
 		case 1:
 			impression.setType(TypeImpression.TIRAGE);
@@ -60,17 +49,17 @@ public class InterfaceImpression {
 			break;
 		}
 
-		
+
 	}
-	
-	
+
+
 	private static void createCadre(Impression impression, Client client) {
 		System.out.println("Vous allez ici créer votre cadre.\nVous devez donc créer une unique page.");
 		Page page = new Page(impression.getIdImpression(), "");
 		InterfacePage.interfaceCreationPage(impression.getIdImpression(), client, page);
 		List<Page> pages = new ArrayList<>();
 		pages.add(page);
-		impression.setPages(pages);
+		impression.ajoutPages(pages);
 		createImpression(impression, client);
 	}
 
@@ -87,7 +76,7 @@ public class InterfaceImpression {
 		}
 		if(b && page!=null)
 		{
-			impression.setPages(pages);
+			impression.ajoutPages(pages);
 			createImpression(impression,client);
 		}
 		else if(!b && page==null){
@@ -106,27 +95,27 @@ public class InterfaceImpression {
 			pages.add(p);
 			System.out.println("Selectionnez 1 pour quitter et un autre nombre pour continuer la création de pages");
 		}
-		impression.setPages(pages);
+		impression.ajoutPages(pages);
 		createImpression(impression,client);
 	}
 
 	private static void createTirage(Impression impression, Client client) {
 		System.out.println("Vous allez ici créer votre Tirage.\nVous allez donc créer des photos spécifiques aux tirages");
 		List<PhotoTirage> photos = new ArrayList<>();
-		List<PhotoTirage> photosExi = photoTirageDAO.readAllPhotosTirageByClient(client);
+		List<PhotoTirage> photosExi = client.getPhotosTirage();
 		int i = 1;
 		if(photosExi.size() != 0) {
-			
+
 			System.out.println("Votre liste de photo:");
-			
+
 			for(PhotoTirage photo: photosExi) {
 				System.out.println("\t" + i + ". Vous avez cette photo: " + photo.toString());
 				i++;
 			}
-			
+
 			System.out.println("Selectionnez la photo que vous voulez ajouter à votre Tirage");
 			int choix = LectureClavier.lireEntier("0 Pour quitter, un autre nombre pour selectionner la photo liée");
-			
+
 			while(choix!=0)
 			{
 				if(choix <= photosExi.size())
@@ -135,7 +124,7 @@ public class InterfaceImpression {
 					System.out.println("La photo numéro " + choix + " a bien été ajoutée.");
 				}
 				choix = LectureClavier.lireEntier("0 Pour quitter, un autre nombre pour selectionner la photo liée");
-			}	
+			}
 		}
 		else{
 			System.out.println("Vous n'avez pas de photos Tirage.");
@@ -143,21 +132,21 @@ public class InterfaceImpression {
 
 		System.out.println("Voulez vous créer des photos Tirage?");
 		int choix2 = LectureClavier.lireEntier("1.Oui\n2.Non");
-		
+
 		if(choix2==1){
 			PhotoTirage photo = new PhotoTirage("", client.getMail(), 0, impression.getIdImpression());
 			int nbFois;
 			int j = 1;
-			List<FichierImage> listImg = fichierImageDAO.readAllByClient(client);
+			List<FichierImage> listImg = client.getImages();
 			if(listImg.size() != 0){
-			
+
 				System.out.println("Vos fichiers images disponibles:");
 				for(FichierImage img : listImg)
 				{
 					System.out.println("\t" + j + ". " + img.getChemin());
 					j++;
 				}
-				
+
 				int choix3;
 
 				for(boolean b = true; b; b = 1 != LectureClavier.lireEntier("1.quitter ou 2.continuer")) {
@@ -175,26 +164,25 @@ public class InterfaceImpression {
 					}
 					InterfacePhoto.creationPhotoTirage(listImg.get(choix3-1).getChemin(), nbFois, photo);
 					photos.add(photo);
-					
 				}
 			}
 			else{
 				System.out.println("Vous n'avez pas de fichier Image.");
 			}
 		}
-		
-		impression.setPhotosTirage(photos);
+
+		impression.ajoutPhotosTirage(photos);
 		createImpression(impression,client);
 	}
 
 	private static void createImpression(Impression impression, Client client) {
-		
+
 		if(impression.getType() == TypeImpression.TIRAGE)
 		{
 			List<PhotoTirage> listPhoto = impression.getPhotosTirage();
 			if(listPhoto.size() != 0)
 			{
-				List<Produit> listProd = produitDAO.readAll();
+				List<Produit> listProd = Produit.getAll();
 
 
 				int i = 1;
@@ -216,7 +204,7 @@ public class InterfaceImpression {
 				impression.setMailClient(client.getMail());
 				System.out.println("Choisissez maintenant le titre de votre " + impression.getType() + ".");
 				impression.setTitre(LectureClavier.lireChaine());
-				boolean reussi = impressionDAO.update(impression);
+				boolean reussi =impression.mettreAJour();
 
 				if(reussi) {
 					System.out.println("Votre " + impression.getType() + " a bien été créé.");
@@ -230,7 +218,7 @@ public class InterfaceImpression {
 			List<Page> listPage = impression.getPages();
 			if(listPage.size() != 0){
 				if(listPage.get(0).getPhotos() != null && listPage.get(0).getPhotos().size() != 0) {
-					List<Produit> listProd = produitDAO.readAll();
+					List<Produit> listProd = Produit.getAll();
 
 					int i = 1;
 					for(Produit prod : listProd) {
@@ -251,7 +239,7 @@ public class InterfaceImpression {
 					impression.setMailClient(client.getMail());
 					System.out.println("Choisissez maintenant le titre de votre " + impression.getType() + ".");
 					impression.setTitre(LectureClavier.lireChaine());
-					boolean reussi = impressionDAO.update(impression);
+					boolean reussi = impression.mettreAJour();
 
 					if(reussi) {
 						System.out.println("Votre " + impression.getType() + " a bien été créé.");
@@ -266,7 +254,7 @@ public class InterfaceImpression {
 	//Affiche toutes les impressions du client, peut selectionner une impression pour avoir du detail
 	public static void interfaceVueImpression(Client client) {
 
-		List<Impression> list = impressionDAO.readAllByClient(client);
+		List<Impression> list = client.getImpressions();
 		if(list.size() != 0) {
 			System.out.println("Voici toutes vos impressions (du compte): "+client.getMail());
 			int choix=-1;
@@ -318,7 +306,7 @@ public class InterfaceImpression {
 
 	public static void interfaceSuppressionImpression(Client client) {
 
-		List<Impression> list = impressionDAO.readAllByClient(client);
+		List<Impression> list = client.getImpressions();
 		if(list.size() != 0) {
 			System.out.println("Voici toutes vos impressions (du compte): "+client.getMail());
 			int choix=-1;
@@ -335,7 +323,7 @@ public class InterfaceImpression {
 						System.out.println("vous n'avez pas choisi une impression ");
 					}else if (choix!=last){
 						if(LectureClavier.lireOuiNon("Etes vous sûr de supprimer cette impression ? (o/n)")){
-							supprimer=impressionDAO.delete(list.get(choix-1));
+							supprimer = list.get(choix-1).supprimer();
 						}
 					}
 			}
@@ -348,7 +336,7 @@ public class InterfaceImpression {
 	}
 
 	public static void interfaceModificationImpression(Client client) {
-		List<Impression> list = impressionDAO.readAllByClient(client);
+		List<Impression> list = client.getImpressions();
 		if(list.size() != 0) {
 			System.out.println("Voici toutes vos impressions (du compte): "+client.getMail());
 			int choix=-1;
@@ -367,8 +355,8 @@ public class InterfaceImpression {
 						System.out.println("Quel est le nouveau titre?");
 						String titre = LectureClavier.lireChaine();
 						System.out.println("Quel est la nouvelle référence");
-						
-						List<Produit> listProd = produitDAO.readAll();
+
+						List<Produit> listProd = Produit.getAll();
 						int i = 1;
 						for(Produit prod : listProd) {
 							System.out.println(i + ". " + prod.toString());
@@ -383,10 +371,10 @@ public class InterfaceImpression {
 									"Choisissez une reference pour votre impression\n"
 								);
 						}
-						
+
 						list.get(choix-1).setTitre(titre);
 						list.get(choix-1).setReference(listProd.get(choix1-1).getReference());
-						impressionDAO.update(list.get(choix-1));
+						list.get(choix-1).mettreAJour();
 					}
 			}
 		}else {

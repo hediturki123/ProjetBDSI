@@ -1,9 +1,16 @@
 package photonum.objects;
 
+import java.util.List;
+
+import photonum.PhotoNum;
+import photonum.dao.ProduitDAO;
+
 public class Produit {
     private String reference;
     private double prix;
     private int stock;
+
+    private final static ProduitDAO PD_DAO = new ProduitDAO(PhotoNum.conn);
 
     public Produit() {}
 
@@ -46,5 +53,8 @@ public class Produit {
             "}";
     }
 
+    public static List<Produit> getAll() {
+        return PD_DAO.readAll();
+    }
 
 }

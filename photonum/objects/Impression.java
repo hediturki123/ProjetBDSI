@@ -1,10 +1,10 @@
 package photonum.objects;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import photonum.PhotoNum;
 import photonum.dao.ClientDAO;
+import photonum.dao.ImpressionDAO;
 import photonum.dao.PageDAO;
 import photonum.dao.PhotoTirageDAO;
 import photonum.dao.ProduitDAO;
@@ -16,15 +16,12 @@ public class Impression{
 	private String reference;
 	private TypeImpression type;
 	private String titre;
-	@SuppressWarnings("unused")
-	private List<Page> pages;
-	@SuppressWarnings("unused")
-	private List<PhotoTirage> photosTirage;
 
 	private final static PhotoTirageDAO PT_DAO = new PhotoTirageDAO(PhotoNum.conn);
 	private final static ProduitDAO PR_DAO = new ProduitDAO(PhotoNum.conn);
 	private final static ClientDAO CL_DAO = new ClientDAO(PhotoNum.conn);
 	private final static PageDAO PA_DAO = new PageDAO(PhotoNum.conn);
+	private final static ImpressionDAO IP_DAO = new ImpressionDAO(PhotoNum.conn);
 
 	public Impression() {
 		setIdImpression(25);
@@ -36,7 +33,6 @@ public class Impression{
 		setReference(reference);
 		setType(type);
 		setTitre(titre);
-		this.pages = new ArrayList<>();
 	}
 
 	@Override
@@ -97,16 +93,8 @@ public class Impression{
 		return PA_DAO.readAllByImpression(this);
 	}
 
-	public void setPages(List<Page> pages) {
-		this.pages = pages;
-	}
-
 	public List<PhotoTirage> getPhotosTirage() {
 		return PT_DAO.readAllPhotoTirageByImpression(this);
-	}
-
-	public void setPhotosTirage(List<PhotoTirage> photosTirage) {
-		this.photosTirage = photosTirage;
 	}
 
 	public String getMailClient() {
@@ -124,4 +112,30 @@ public class Impression{
 	public Client getProprietaire() {
 		return CL_DAO.read(mailClient);
 	}
+
+	public void ajoutPages(List<Page> pages) {
+		for (Page p : pages) {
+			PA_DAO.create(p);
+		}
+	}
+
+	public boolean nouvelleImpression() {
+		return IP_DAO.create(this);
+	}
+
+	public boolean mettreAJour() {
+		return IP_DAO.update(this);
+	}
+
+	public boolean supprimer() {
+		return IP_DAO.delete(this);
+	}
+
+	public void ajoutPhotosTirage(List<PhotoTirage> photos) {
+		for (PhotoTirage p : photos) {
+			PT_DAO.create(p);
+		}
+	}
+
+
 }
