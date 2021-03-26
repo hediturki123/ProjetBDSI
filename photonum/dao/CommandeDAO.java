@@ -131,6 +131,7 @@ public class CommandeDAO extends DAO<Commande>{
 		}
 		return commandes;
 	}
+
 	/**
 	 * @param obj une {@link Commande} à update dans la BD
 	 * @return <b>boolean</b> l'action c'est bien passée
@@ -152,6 +153,7 @@ public class CommandeDAO extends DAO<Commande>{
 		}
 		return reussi;
 	}
+
 	/**
 	 * @param obj une {@link Commande} à delete dans la BD
 	 * @return <b>boolean</b> l'action c'est bien passée
@@ -214,6 +216,7 @@ public class CommandeDAO extends DAO<Commande>{
 
 		return null;
 	}
+
 	/**
 	 * @param c un {@link Client} pour trouver ces articles correspondant 
 	 * @return <b>List&lt;{@link Commande}&gt; </b> la liste de toutes les commandes de la base en fonction du client
@@ -255,21 +258,21 @@ public class CommandeDAO extends DAO<Commande>{
 
 		return null;
 	}
+
 	/**
 	 * cette fonction permet de recuperer le dernier id pour pouvoir creer une nouvelle commande(AUTO_INCREMENT)
 	 * @return un <b>Int</b> correpondant au dernier id dans la table LesCommandes
 	 */
 	public int getLastId() {
+		int id = 0;
 		try {
 			PreparedStatement requete_last = this.connect.prepareStatement("SELECT max(idCommande) FROM LesCommandes");
 			ResultSet res = requete_last.executeQuery();
-			if(res.next()) {
-				return res.getInt("idCommande");
-			}
+			if (res.next()) id =  res.getInt("idCommande");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return 0;
+		return id;
 	}
 
 	/**
@@ -280,10 +283,10 @@ public class CommandeDAO extends DAO<Commande>{
 	public double getPrixTotal(int id) {
 		double prix = 0.0;
 		try {
-			PreparedStatement pstmt = PhotoNum.conn.prepareStatement("SELECT prix FROM LesCommandesPrix WHERE idCommande=?");
+			PreparedStatement pstmt = PhotoNum.conn.prepareStatement("SELECT prixTotal FROM LesCommandesPrix WHERE idCommande=?");
 			pstmt.setInt(1, id);
 			ResultSet res = pstmt.executeQuery();
-			if (res.next()) prix = res.getDouble("prix");
+			if (res.next()) prix = res.getDouble("prixTotal");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
