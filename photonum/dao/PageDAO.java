@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import photonum.PhotoNum;
+import photonum.objects.Impression;
 import photonum.objects.Page;
 
 public class PageDAO extends DAO<Page>{
@@ -137,6 +138,30 @@ public class PageDAO extends DAO<Page>{
 			PreparedStatement requeteAll=this.connect.prepareStatement(
 				"select * from LesPages"
 			);
+			ResultSet resultat=requeteAll.executeQuery();
+			while(resultat.next()){
+				Page p = new Page(
+					resultat.getInt("idImpression"),
+					resultat.getString("miseEnForme")
+				);
+				p.setIdPage(resultat.getInt("idPage"));
+				tab.add(p);
+			}
+			requeteAll.close();
+			return tab;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public List<Page> readAllByImpression(Impression impression){
+		ArrayList<Page> tab = new ArrayList<>();
+		try {
+			PreparedStatement requeteAll=this.connect.prepareStatement(
+				"select * from LesPages WHERE idImpression = ?"
+			);
+			requeteAll.setInt(1, impression.getIdImpression());
 			ResultSet resultat=requeteAll.executeQuery();
 			while(resultat.next()){
 				Page p = new Page(

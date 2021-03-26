@@ -1,7 +1,6 @@
 package photonum.interfaces;
 
 import photonum.PhotoNum;
-import photonum.dao.FichierImageDAO;
 import photonum.dao.PhotoDAO;
 import photonum.dao.PhotoParPageDAO;
 import photonum.dao.PhotoTirageDAO;
