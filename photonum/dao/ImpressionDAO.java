@@ -85,18 +85,19 @@ public class ImpressionDAO extends DAO<Impression> {
 	public boolean update(Impression obj) {
 		try {
 			PreparedStatement requete_update = this.connect.prepareStatement(
-					"UPDATE LesImpressions SET"
-					+ "idImpression = ?,"
-					+ "mailClient = ?,"
-					+ "reference = ?,"
-					+ "type = ?,"
-					+ "titre = ?"
+					"UPDATE LesImpressions SET "
+					+ "mailClient = ?, "
+					+ "reference = ?, "
+					+ "type = ?, "
+					+ "titre = ? "
+					+ "WHERE idImpression = ?"
 				);
-			requete_update.setInt(1, obj.getIdImpression());
-			requete_update.setString(2, obj.getMailClient());
-			requete_update.setString(3, obj.getReference());
-			requete_update.setString(4, obj.getType().getString());
-			requete_update.setString(5, obj.getTitre());
+			
+			requete_update.setString(1, obj.getMailClient());
+			requete_update.setString(2, obj.getReference());
+			requete_update.setString(3, obj.getType().getString());
+			requete_update.setString(4, obj.getTitre());
+			requete_update.setInt(5, obj.getIdImpression());
 			int resultat = requete_update.executeUpdate();
 			requete_update.close();
 			return resultat == 1;
@@ -111,10 +112,10 @@ public class ImpressionDAO extends DAO<Impression> {
 	 * @exception SQLException;
 	 */
 	@Override
-	public boolean delete(Impression obj) {
+	public boolean delete(Impression obj) {//TODO verifier la suppression 
 		try {
 			PreparedStatement requete_delete = this.connect.prepareStatement(
-					"DELETE FROM LesImpressions WHERE idImpression = ?");
+					"DELETE FROM LesImpressions WHERE idImpression = ? and idImpression NOT IN (Select IdImpression FROM LesImpressions natural join LesArticles natural join LesCommandes where status='envoyee')");
 			requete_delete.setInt(1, obj.getIdImpression());
 			int b = requete_delete.executeUpdate();
 			requete_delete.close();

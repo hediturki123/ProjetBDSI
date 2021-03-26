@@ -50,9 +50,9 @@ public class InterfaceCommande {
                         LectureClavier.lireEntier("Quantité : ")
                     ));
                 }
+                if (!modif) InterfaceCodePromo.utilisationCodePromo(c, cmd, articleChoisi,false);
+                else validationCommande(c, cmd, articleChoisi);
             }
-            if (modif) InterfaceCodePromo.utilisationCodePromo(c, cmd, articleChoisi, false);
-            else validationCommande(c, cmd, articleChoisi);
         } else {
             System.out.println("Vous n'avez pas d'impression.");
         }
@@ -149,6 +149,8 @@ public class InterfaceCommande {
             }
             int choix = LectureClavier.lireEntier("si vous voulez plus de detail sur une commande\n"
                     + "choissiez une commande dans la liste ci-dessus\n" + "sinon taper 0");
+
+                    //reafire la boucle ici
             while (choix != 0) {
                 while (!(choix > 0 && choix <= commandesClient.size())) {
                     System.out.println("\nvous n'avez pas mis un numero de commande valide\n");

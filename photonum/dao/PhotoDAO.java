@@ -81,7 +81,7 @@ public class PhotoDAO extends DAO<Photo>{
 		try {
 			PreparedStatement requete_update = this.connect.prepareStatement(
 					"UPDATE LesPhotos SET"
-					+ "idPhoto=?,"
+					+ " idPhoto=?,"
 					+ "chemin=?,"
 					+ "mailClient=?");
 			requete_update.setInt(1, obj.getIdPhoto());

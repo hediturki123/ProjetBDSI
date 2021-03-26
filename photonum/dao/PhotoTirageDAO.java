@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import photonum.PhotoNum;
+import photonum.objects.Client;
 import photonum.objects.PhotoTirage;
 
 public class PhotoTirageDAO extends DAO<PhotoTirage>{
@@ -115,11 +116,11 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 	public boolean update(PhotoTirage obj) {
 		try {
 			PreparedStatement requete_update = this.connect.prepareStatement(
-					"UPDATE LesPhotosTirees SET"
+					"UPDATE LesPhotosTirees SET "
 					+ "idPhoto=?,"
 					+ "nbPhotoTirees=?");
 			PreparedStatement requete_update2 = this.connect.prepareStatement(
-					"UPDATE LesPhotos SET"
+					"UPDATE LesPhotos SET "
 					+ "idPhoto=?,"
 					+ "chemin=?,"
 					+ "mailClient=?");
@@ -171,6 +172,37 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 		}
 		return false;
 	}
+
+	public List<PhotoTirage> readAllPhotosTirageByClient(Client client){
+		try {
+			PreparedStatement requete_select = PhotoNum.conn.prepareStatement("SELECT * FROM LesPhotosTirees NATURAL JOIN LesPhotos WHERE mailClient=?");
+			requete_select.setString(1, client.getMail());
+			
+			ResultSet result = requete_select.executeQuery();
+			ArrayList<PhotoTirage> tab  = new ArrayList<PhotoTirage>();
+			while(result.next())
+			{
+				PhotoTirage res = new PhotoTirage(
+						result.getString("chemin"),
+						result.getString("mailClient"),
+						result.getInt("nbFois"));
+				res.setIdPhoto(result.getInt("idPhoto"));
+				tab.add(res);
+			}
+			requete_select.close();
+			return tab;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * cette fonction permet de recuperer le dernier Id pour pouvoir creer une nouvelle commande(AUTO_INCREMENT)
 	 * @return un <b>Int</b> correpondant au dernier id dans la table LesPhotos
@@ -180,7 +212,7 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 			PreparedStatement requete_last = PhotoNum.conn.prepareStatement("SELECT max(idPhoto) FROM LesPhotos");
 			ResultSet res = requete_last.executeQuery();
 			if(res.next()) {
-				return res.getInt("idPhoto");
+				return res.getInt(1);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

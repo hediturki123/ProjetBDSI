@@ -105,7 +105,7 @@ public class InterfaceClient  {
 			<tr><td>Veuillez entrer votre prenom :</td></tr>
 			<tr><td>XXXX</td></tr>
 			<tr><td>veuillez entrez votre numero de rue</td></tr>
-	 		<tr><td>XXX</td></tr>
+	 		<tr><td> XXX</td></tr>
 			<tr><td>veuillez entrez votre rue</td></tr>
 			<tr><td>XXXXX XXXXXX XXXXXXX</td></tr>
 			<tr><td>veuillez entrez votre ville</td></tr>
