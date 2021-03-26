@@ -145,7 +145,7 @@ public class InterfaceImpression {
 		int choix2 = LectureClavier.lireEntier("1.Oui\n2.Non");
 		
 		if(choix2==1){
-			PhotoTirage photo = new PhotoTirage("", client.getMail(), 0);
+			PhotoTirage photo = new PhotoTirage("", client.getMail(), 0, impression.getIdImpression());
 			int nbFois;
 			int j = 1;
 			List<FichierImage> listImg = fichierImageDAO.readAllByClient(client);

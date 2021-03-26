@@ -9,6 +9,7 @@ import java.util.List;
 
 import photonum.PhotoNum;
 import photonum.objects.Client;
+import photonum.objects.Impression;
 import photonum.objects.PhotoTirage;
 
 public class PhotoTirageDAO extends DAO<PhotoTirage>{
@@ -28,7 +29,7 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 	public boolean create(PhotoTirage obj) {
 		try {
 			PreparedStatement requeteCreate=this.connect.prepareStatement(
-				"INSERT INTO LesPhotosTirees VALUES (?,?)"
+				"INSERT INTO LesPhotosTirees VALUES (?,?,?)"
 			);
 			PreparedStatement requeteCreate2=this.connect.prepareStatement(
 					"INSERT INTO LesPhotos VALUES (?,?,?)");
@@ -36,6 +37,7 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 			obj.setIdPhoto(lastId()+1);
 			requeteCreate.setInt(1,obj.getIdPhoto());
 			requeteCreate.setInt(2,obj.getNbFoisTiree());
+			requeteCreate.setInt(3, obj.getIdImpression());
 			
 			requeteCreate2.setInt(1, obj.getIdPhoto());
 			requeteCreate2.setString(2, obj.getChemin());
@@ -71,7 +73,8 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 				PhotoTirage res = new PhotoTirage(
 						result.getString("chemin"),
 						result.getString("mailClient"),
-						result.getInt("nbPhotoTirees"));
+						result.getInt("nbPhotoTirees"),
+						result.getInt("idImpression"));
 				requete_select.close();
 				return res;
 			}
@@ -97,7 +100,31 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 				PhotoTirage res = new PhotoTirage(
 						result.getString("chemin"),
 						result.getString("mailClient"),
-						result.getInt("nbPhotoTirees"));
+						result.getInt("nbPhotoTirees"),
+						result.getInt("idImpression"));
+				requete_select.close();
+				tab.add(res);
+			}
+			return tab;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public List<PhotoTirage> readAllPhotoTirageByImpression(Impression impression){
+		try {
+			PreparedStatement requete_select = this.connect.prepareStatement("SELECT * FROM LesPhotosTirees NATURAL JOIN LesPhotos WHERE idImpression =?");
+			requete_select.setInt(1, impression.getIdImpression());
+			ResultSet result = requete_select.executeQuery();
+			ArrayList<PhotoTirage> tab  = new ArrayList<PhotoTirage>();
+			while(result.next())
+			{
+				PhotoTirage res = new PhotoTirage(
+						result.getString("chemin"),
+						result.getString("mailClient"),
+						result.getInt("nbPhotoTirees"),
+						result.getInt("idImpression"));
 				requete_select.close();
 				tab.add(res);
 			}
@@ -185,7 +212,8 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 				PhotoTirage res = new PhotoTirage(
 						result.getString("chemin"),
 						result.getString("mailClient"),
-						result.getInt("nbFois"));
+						result.getInt("nbFois"),
+						result.getInt("idImpression"));
 				res.setIdPhoto(result.getInt("idPhoto"));
 				tab.add(res);
 			}

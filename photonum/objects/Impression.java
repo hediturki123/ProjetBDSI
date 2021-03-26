@@ -5,6 +5,8 @@ import java.util.List;
 
 import photonum.PhotoNum;
 import photonum.dao.ClientDAO;
+import photonum.dao.PageDAO;
+import photonum.dao.PhotoTirageDAO;
 import photonum.dao.ProduitDAO;
 
 public class Impression{
@@ -14,11 +16,15 @@ public class Impression{
 	private String reference;
 	private TypeImpression type;
 	private String titre;
+	@SuppressWarnings("unused")
 	private List<Page> pages;
+	@SuppressWarnings("unused")
 	private List<PhotoTirage> photosTirage;
 
+	private final static PhotoTirageDAO PT_DAO = new PhotoTirageDAO(PhotoNum.conn);
 	private final static ProduitDAO PR_DAO = new ProduitDAO(PhotoNum.conn);
 	private final static ClientDAO CL_DAO = new ClientDAO(PhotoNum.conn);
+	private final static PageDAO PA_DAO = new PageDAO(PhotoNum.conn);
 
 	public Impression() {
 		setIdImpression(25);
@@ -88,7 +94,7 @@ public class Impression{
 	}
 
 	public List<Page> getPages() {
-		return pages;
+		return PA_DAO.readAllByImpression(this);
 	}
 
 	public void setPages(List<Page> pages) {
@@ -96,7 +102,7 @@ public class Impression{
 	}
 
 	public List<PhotoTirage> getPhotosTirage() {
-		return photosTirage;
+		return PT_DAO.readAllPhotoTirageByImpression(this);
 	}
 
 	public void setPhotosTirage(List<PhotoTirage> photosTirage) {
