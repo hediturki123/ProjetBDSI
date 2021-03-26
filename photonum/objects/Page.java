@@ -3,6 +3,7 @@ import java.util.List;
 
 import photonum.PhotoNum;
 import photonum.dao.ImpressionDAO;
+import photonum.dao.PageDAO;
 
 public class Page{
 
@@ -12,6 +13,7 @@ public class Page{
 	private List<Photo> photos;
 
 	private final static ImpressionDAO IM_DAO = new ImpressionDAO(PhotoNum.conn);
+	private final static PageDAO PG_DAO = new PageDAO(PhotoNum.conn);
 
 	public Page(int idImpression, String miseEnForme) {
 		setAll(idImpression, miseEnForme);
@@ -68,5 +70,13 @@ public class Page{
 
 	public Impression getImpression() {
 		return IM_DAO.read(idImpression);
+	}
+
+	public boolean nouvellePage() {
+		return PG_DAO.create(this);
+	}
+
+	public boolean mettreAJour() {
+		return PG_DAO.update(this);
 	}
 }
