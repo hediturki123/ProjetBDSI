@@ -119,7 +119,9 @@ CREATE TABLE LesArticles (
 CREATE TABLE LesPhotosTirees (
 	idPhoto number(3),
 	nbPhotoTirees number(3),
+	idImpression number(3),
 	constraint priPT1 primary key (idPhoto),
+	constraint frIdImprPhotoTiree foerign key (idImpression) references LesImpressions(idImpression),
 	constraint frPtPhoto foreign key (idPhoto) references LesPhotos(idPhoto),
 	constraint ckNbTirees check (nbPhotoTirees >=1)
 );
