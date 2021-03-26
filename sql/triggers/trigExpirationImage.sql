@@ -3,6 +3,6 @@ CREATE OR REPLACE TRIGGER expi_img_trg
     INSERT OR UPDATE
     ON LesFichiersImage
 BEGIN
-    expi_img_proc();
+   expi_img_proc();
 END;
 /

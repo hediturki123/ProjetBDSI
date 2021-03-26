@@ -78,8 +78,12 @@ public class InterfaceFichier {
             } else {
                 System.out.println("pas de souci votre image n'a pas été partager :) ");
             }
-            if (LectureClavier.lireOuiNon("\nvoulez vous partager une autre image ? (o/n) ")) {
-                partagerFichier(c);
+             if(imgDAO.readAllByClient(c,false).size()>0)
+                if (LectureClavier.lireOuiNon("\nvoulez vous partager une autre image ? (o/n) ")) {
+                    partagerFichier(c);
+                }
+            else{
+                System.out.println("vous n'avez aucune image a partager car elle sont toutes partager");
             }
         } else {
             System.out.println(" vous n'avez aucun fichier , donc vous ne pouvez pas en partager");
@@ -110,7 +114,7 @@ public class InterfaceFichier {
      */
     public static void supprimerFichierImage(Client c){
         int choix;
-        List<FichierImage> imageClient = imgDAO.readAllByClient(c);
+        List<FichierImage> imageClient = imgDAO.readAllByClient(c,false);
         if (imageClient.size() > 0) {
             System.out.println("Vos fichiers d'image : ");
             for (int i = 1; i <= imageClient.size(); i++) {
@@ -135,8 +139,12 @@ public class InterfaceFichier {
             } else {
                 System.out.println("pas de souci votre image n'a pas été supprimer");
             }
-            if (LectureClavier.lireOuiNon("\nvoulez vous supprimer une autre image ? (o/n) ")) {
-                supprimerFichierImage(c);
+            if(imgDAO.readAllByClient(c, false).size()>0)
+                if (LectureClavier.lireOuiNon("\nvoulez vous supprimer une autre image ? (o/n) ")) {
+                    supprimerFichierImage(c);
+                }
+            else{
+                System.out.println("vous n'avez plus aucun fichier a supprimer");
             }
         } else {
             System.out.println(

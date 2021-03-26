@@ -35,6 +35,7 @@ public class InterfaceCommande {
      * @param cmd la {@link Commande} courante
      */
     public static void choixImpression(Client c,Commande cmd){
+        //TODO je suis dans une boucle infini ici a revoir
         List<Impression> impressionClient=impDao.readAllByClient(c);
         List<Article> articleChoisi= new ArrayList<>();
         if(impressionClient.size() != 0) {

@@ -9,4 +9,4 @@ START createPhotoNum.sql;
 START procedures/procExpirationImage.sql;
 
 START triggers/trigExpirationImage.sql;
-START triggers/trigUtilisationPromo.sql;
+--START triggers/trigUtilisationPromo.sql;

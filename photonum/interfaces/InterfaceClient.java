@@ -80,8 +80,8 @@ public class InterfaceClient  {
 			return clientDao.read(args);
 		};
 		clientCourant = connect.apply(null);
-		int essai = 4;
-		while (clientCourant == null && essai != 0) {
+		int essai = 3;
+		while (clientCourant == null && essai > 0) {
 			System.err.println(">>> Mot de passe ou identifiant incorrect ! \nIl vous reste " + essai + " essais");
 			essai--;
 			clientCourant = connect.apply(null);
