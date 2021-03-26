@@ -272,4 +272,39 @@ public class CommandeDAO extends DAO<Commande>{
 		return 0;
 	}
 
+	/**
+	 * Récupère le prix calculé d'une commande.
+	 * @param id Identifiant de la commande dont on veut le prix.
+	 * @return Prix total de la commande.
+	 */
+	public double getPrixTotal(int id) {
+		double prix = 0.0;
+		try {
+			PreparedStatement pstmt = PhotoNum.conn.prepareStatement("SELECT prix FROM LesCommandesPrix WHERE idCommande=?");
+			pstmt.setInt(1, id);
+			ResultSet res = pstmt.executeQuery();
+			if (res.next()) prix = res.getDouble("prix");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return prix;
+	}
+
+	/**
+	 * Récupère le prix calculé d'une commande.
+	 * @param c Commande dont on veut le prix.
+	 * @return Prix total de la commande.
+	 */
+	public double getPrixTotal(Commande c) {
+		double prix = 0.0;
+		try {
+			PreparedStatement pstmt = PhotoNum.conn.prepareStatement("SELECT prixTotal FROM LesCommandesPrix WHERE idCommande=?");
+			pstmt.setInt(1, c.getIdCommande());
+			ResultSet res = pstmt.executeQuery();
+			if (res.next()) prix = res.getDouble("prixTotal");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return prix;
+	}
 }

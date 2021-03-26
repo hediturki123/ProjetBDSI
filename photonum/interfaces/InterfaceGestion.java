@@ -9,14 +9,14 @@ import photonum.objects.Commande;
 import photonum.objects.StatutCommande;
 import photonum.utils.*;
 
-
 /**
- * cette class permet l'interaction de l'utilisateur avec la partie gestion de l'application
+ * cette classe permet l'interaction de l'utilisateur avec la partie gestion de l'application
  */
 public class InterfaceGestion {
 
     private final static CommandeDAO commandeDAO = new CommandeDAO(PhotoNum.conn);
     private final static FichierImageDAO fichierImageDAO = new FichierImageDAO(PhotoNum.conn);
+
     /**
      * permet de passer toutes les commande du status <b>PRETE_ENVOI</b> à <b>ENVOYEE</b>
      * @param cmds la List<{@link Commande}> de toutes les commande à passer du status <b>PRETE_ENVOI</b> à <b>ENVOYEE</b>
@@ -27,7 +27,10 @@ public class InterfaceGestion {
             for (Commande c : cmds) {
                 if (c.getStatus() == StatutCommande.PRETE_ENVOI) {
                     c.setStatus(StatutCommande.ENVOYEE);
-                    i += commandeDAO.update(c) ? 1 : 0;
+                    if (commandeDAO.update(c)) {
+                        genererFacture(c);
+                        i++;
+                    }
                 }
             }
             System.out.println(i+"/"+cmds.size()+" commandes envoyées avec succès !");
@@ -35,6 +38,7 @@ public class InterfaceGestion {
             System.out.println("Il n'y a aucune commande à envoyer.");
         }
     }
+
     /**
      * permet de passer commande {@value id} du status <b>PRETE_ENVOI</b> à <b>ENVOYEE</b>
      * @param id de la commande à passer du status <b>PRETE_ENVOI</b> à <b>ENVOYEE</b>
@@ -44,6 +48,7 @@ public class InterfaceGestion {
         if (commande.getStatus() == StatutCommande.PRETE_ENVOI) {
             commande.setStatus(StatutCommande.ENVOYEE);
             if (commandeDAO.update(commande)) {
+                genererFacture(commande);
                 System.out.println("La commande n°"+id+" a bien été envoyée !");
             } else {
                 System.out.println("La commande n°"+id+" n'a pas pu être envoyée.");
@@ -52,6 +57,7 @@ public class InterfaceGestion {
             System.out.println("La commande n°"+id+" n'est pas encore prête ou a déjà été envoyée.");
         }
     }
+
     /**
      * permet d'afficher toutes les {@link Commande} avec le status <b>PRETE_ENVOI</b>
      */
@@ -64,8 +70,9 @@ public class InterfaceGestion {
             System.out.println("Aucune commande à envoyer.");
         }
     }
+
     /**
-     * permet de demarrer le menu de l'interface de gestion 
+     * permet de demarrer le menu de l'interface de gestion
      * sous la forme :
      * <h3>Exemple</h3>
      * <table>
@@ -75,8 +82,7 @@ public class InterfaceGestion {
             <tr><td>3. Envoyer une commande</td></tr>
             <tr><td>4. Supprimer les images inutilisées</td></tr>
             <tr><td>5. Retour au menu principal</td></tr>
-	* </table>
-     * 
+	 * </table>
      */
     public static void menuPrincipal() {
         int choix = -1;
@@ -111,9 +117,13 @@ public class InterfaceGestion {
                     break;
             }
         }
-
     }
 
-
-
+    /**
+     * Permet de générer la facture d'une commande.
+     * @param c Commande de laquelle on effectue la facture.
+     */
+    private static void genererFacture(Commande c) {
+        System.out.println(c.facture());
+    }
 }
