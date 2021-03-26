@@ -60,7 +60,6 @@ public class PhotoAlbumDAO extends DAO<PhotoAlbum>{
 
 	@Override
 	public PhotoAlbum read(Object obj) {
-		//TODO demander a pierre si la il est sur de ça requete , ou est idPage ? 
 		try {
 			PreparedStatement requete_select = this.connect.prepareStatement("SELECT * FROM LesPhotosAlbum NATURAL JOIN LesPhotos WHERE idPhoto=?");
 			requete_select.setInt(1, (int)obj);

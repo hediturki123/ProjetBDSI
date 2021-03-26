@@ -232,7 +232,6 @@ public class InterfaceImpression {
 				if(listPage.get(0).getPhotos() != null && listPage.get(0).getPhotos().size() != 0) {
 					List<Produit> listProd = produitDAO.readAll();
 
-
 					int i = 1;
 					for(Produit prod : listProd) {
 						System.out.println(i + ". " + prod.toString());
@@ -277,18 +276,17 @@ public class InterfaceImpression {
 				for(int i=1;i<=list.size();i++){
 					menu+=i+". "+list.get(i-1).getTitre()+"\n";
 				}
-				menu+=last+". Suivant";
+				menu+=last+". Sortir";
 
 				choix=LectureClavier.lireEntier(menu);
 				if(choix<0 || choix>last){
 					System.out.println("vous n'avez pas choisi une impression ");
 				}else if (choix!=last){
 					System.err.println(list.get(choix-1).toString()+"\n");
-					//TODO ici rajouter le detail des page 
+					for(Page p : list.get(choix-1).getPages()){
+						System.out.println("\t"+p.toString());
+					}
 				}
-			}
-			if (LectureClavier.lireOuiNon("Voulez vous regardez une autre impression ? (o/n)")){//TODO pas vraiment utilse du coup
-				interfaceVueImpression(client);
 			}
 		} else {
 			System.out.println("Vous n'avez pas d'impressions.");
@@ -325,7 +323,8 @@ public class InterfaceImpression {
 			System.out.println("Voici toutes vos impressions (du compte): "+client.getMail());
 			int choix=-1;
 			int last=list.size()+1;
-			while(choix!=last){
+			boolean supprimer=false;
+			while(choix!=last && !supprimer){
 				String message="";
 					for(int i=1;i<=list.size();i++){
 						message+=i+". "+list.get(i-1).getTitre()+"\n";
@@ -335,7 +334,9 @@ public class InterfaceImpression {
 					if(choix<0 || choix>last){
 						System.out.println("vous n'avez pas choisi une impression ");
 					}else if (choix!=last){
-						impressionDAO.delete(list.get(choix-1));
+						if(LectureClavier.lireOuiNon("Etes vous sûr de supprimer cette impression ? (o/n)")){
+							supprimer=impressionDAO.delete(list.get(choix-1));
+						}
 					}
 			}
 			if(LectureClavier.lireOuiNon("Voulez vous supprimer une autre impression ? (o/n)")){
@@ -357,7 +358,7 @@ public class InterfaceImpression {
 					for(int i=1;i<=list.size();i++){
 						message+=i+". "+list.get(i-1).getTitre()+"\n";
 					}
-					message+=last+". Suivant";
+					message+=last+". Sortir";
 					choix=LectureClavier.lireEntier(message);
 
 					if(choix<0 || choix>last){
@@ -371,9 +372,6 @@ public class InterfaceImpression {
 						list.get(choix-1).setReference(reference);
 						impressionDAO.update(list.get(choix-1));
 					}
-				}
-			if(LectureClavier.lireOuiNon("Voulez vous modifier une autre impression ? (o/n)")){
-				interfaceModificationImpression(client);
 			}
 		}else {
 			System.out.println("Vous n'avez pas d'impressions.");

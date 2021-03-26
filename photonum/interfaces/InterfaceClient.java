@@ -110,7 +110,7 @@ public class InterfaceClient  {
 			<tr><td>Veuillez entrer votre prenom :</td></tr>
 			<tr><td>XXXX</td></tr>
 			<tr><td>veuillez entrez votre numero de rue</td></tr>
-	 		<tr><td>XXX</td></tr>
+	 		<tr><td> XXX</td></tr>
 			<tr><td>veuillez entrez votre rue</td></tr>
 			<tr><td>XXXXX XXXXXX XXXXXXX</td></tr>
 			<tr><td>veuillez entrez votre ville</td></tr>
@@ -171,7 +171,6 @@ public class InterfaceClient  {
 	* </table>
 	 * @param c le {@link Client} courant
 	 */
-    // TODO ici dans cette fonction mettre les fonctionnalité du client et l'envoyer dans les bonnes interface
     public static void menu(Client c) {
 		int choix = -1;
 		while (choix != 5) {
