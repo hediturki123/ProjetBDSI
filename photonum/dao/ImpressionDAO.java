@@ -180,14 +180,14 @@ public class ImpressionDAO extends DAO<Impression> {
 			
 			while(result.next())
 			{
-				impressions.add(new Impression(
-						result.getInt("idImpression"),
+				Impression imp = new Impression(
 						result.getString("mailClient"),
 						result.getString("reference"),
 						TypeImpression.fromString(result.getString("type")),
 						result.getString("titre")
-						)
-					);
+						);
+				imp.setIdImpression(result.getInt("idImpression"));
+				impressions.add(imp);
 			}
 			requete_all.close();
 			return impressions;

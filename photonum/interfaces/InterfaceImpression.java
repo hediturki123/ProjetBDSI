@@ -59,12 +59,8 @@ public class InterfaceImpression {
 
 		
 	}
-<<<<<<< HEAD
 	
 	
-=======
-
->>>>>>> 49d89af763b7c01df2e52c73cee2dfff16eb2491
 	private static void createCadre(Impression impression, Client client) {
 		System.out.println("Vous allez ici créer votre cadre.\nVous devez donc créer une unique page.");
 		Page page = new Page(impression.getIdImpression(), "");
@@ -138,7 +134,6 @@ public class InterfaceImpression {
 					"Choisissez une reference pour votre impression\n"
 				);
 		}
-<<<<<<< HEAD
 
 		impression.setReference(listProd.get(choix - 1).getReference());
 		impression.setMailClient(client.getMail());
@@ -150,23 +145,6 @@ public class InterfaceImpression {
 			System.out.println("Votre " + impression.getType() + " a bien été créé.");
 		} else {
 			System.out.println("Une erreur est survenue, votre " + impression.getType() + " n'a pas pu être créée. Veuillez réessayer.");
-=======
-		impression.setReference(listProd.get(choix-1).getReference());
-
-		impression.setMailClient(client.getMail());
-
-		System.out.println("Choisissez maintenant le titre de votre "+impression.getType()+".");
-		impression.setTitre(LectureClavier.lireChaine());
-
-		boolean reussi = impDAO.update(impression);
-		if(reussi)
-		{
-			System.out.println("Votre "+impression.getType()+" a bien été créé.");
-		}
-		else
-		{
-			System.out.println("Une erreur est survenue, votre "+impression.getType()+" n'a pas pu être créé. Veuillez réessayer.");
->>>>>>> 49d89af763b7c01df2e52c73cee2dfff16eb2491
 		}
 	}
 
@@ -197,38 +175,10 @@ public class InterfaceImpression {
 		}
 	}
 
-<<<<<<< HEAD
 
 	public static void interfaceSuppressionImpression(Client client) {
 		
 		List<Impression> list = impressionDAO.readAllByClient(client);
-=======
-	public static void menuImpression(Client client){
-		int choix = -1;
-		while (choix != 5) {
-			choix = LectureClavier.lireEntier(
-				"--- Mes impressions ---\n"+
-				"\t1. Visualiser vos impressions\n"+
-				"\t2. Créer une impression\n"+
-				"\t3. Modifier une impression\n"+
-				"\t4. Supprimer une impression\n"+
-				"\t5. Retour au menu précédent"+
-				"> "
-			);
-			switch (choix) {
-				case 1: interfaceVueImpression(client); break;
-				case 2: interfaceCreationImpression(client); break;
-				case 3: interfaceModificationImpression(client); break;
-				case 4: interfaceSuppressionImpression(client); break;
-				default: System.err.println("Veuillez indiquer un nombre entre 1 et 3."); break;
-			}
-		}
-	}
-
-	public static void interfaceSuppressionImpression(Client client) {
-
-		List<Impression> list = impDAO.readAllByClient(client);
->>>>>>> 49d89af763b7c01df2e52c73cee2dfff16eb2491
 		if(list.size() != 0) {
 			System.out.println("Voici toutes vos impressions (du compte): "+client.getMail());
 			int choix=-1;
