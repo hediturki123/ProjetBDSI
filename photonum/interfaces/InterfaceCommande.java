@@ -3,25 +3,21 @@ package photonum.interfaces;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import photonum.PhotoNum;
-import photonum.dao.AdresseDAO;
 import photonum.dao.ArticleDAO;
-import photonum.dao.CodePromoDAO;
 import photonum.dao.CommandeDAO;
 import photonum.dao.ImpressionDAO;
-import photonum.dao.ProduitDAO;
 import photonum.objects.*;
 import photonum.utils.LectureClavier;
 
 public class InterfaceCommande {
+
     private static CommandeDAO cmdDao=new CommandeDAO(PhotoNum.conn);
     private static ImpressionDAO impDao = new ImpressionDAO(PhotoNum.conn);
     private static ArticleDAO articleDAO = new ArticleDAO(PhotoNum.conn);
-    //TODO creation commande
+
     /**
      * Permet de demarrer la creation d'une commande
      * @param c le {@link Client} courant
@@ -32,13 +28,13 @@ public class InterfaceCommande {
         cmd.setMail(c.getMail());
         choixImpression(c, cmd);
     }
+
     /**
      * permet de choissir les {@link Article} d'une commande
      * @param c le {@link Client} courant
      * @param cmd la {@link Commande} courante
      */
     public static void choixImpression(Client c,Commande cmd){
-        ImpressionDAO impDao=new ImpressionDAO(PhotoNum.conn);
         List<Impression> impressionClient=impDao.readAllByClient(c);
         List<Article> articleChoisi= new ArrayList<>();
         if(impressionClient.size() != 0) {
@@ -62,14 +58,14 @@ public class InterfaceCommande {
         }
 
     }
+
     /**
-     * 
      * @param c le {@link Client} courant
      * @param cmd la {@link Commande} courante
      * @param articles la List&lt;{@link Article}&gt; des {@link Article} de la commande cmd
      */
     public static void livraison(Client c,Commande cmd,List<Article> articles){
-        Adresse addr =new Adresse();    
+        Adresse addr =new Adresse();
         if(LectureClavier.lireOuiNon("Voulez vous être livrée chez vous")){
                 cmd.setEstLivreChezClient(true);
                 cmd.setAdresseLivraison(c.getNumeroRue(),c.getNomRue(),c.getVille(),c.getCp(),c.getPays());
@@ -78,17 +74,16 @@ public class InterfaceCommande {
                 cmd.setEstLivreChezClient(false);
                 cmd.setAdresseLivraison(addr.getNumeroRue(),addr.getNomRue(),addr.getVille(),addr.getCp(),addr.getPays());
         }
-        ValidationCommande(c, cmd, articles);
+        validationCommande(c, cmd, articles);
     }
 
     /**
-     * Etape de validation de la commande  
+     * Etape de validation de la commande
      * @param c le {@link Client} courant
      * @param cmd la {@link Commande} courante
      * @param articles la List&lt;{@link Article}&gt; des {@link Article} de la commande cmd
      */
-    public static void ValidationCommande(Client c,Commande cmd,List<Article> articles){
-        ArticleDAO articleDAO=new ArticleDAO(PhotoNum.conn);
+    public static void validationCommande(Client c,Commande cmd,List<Article> articles){
         System.out.println("voici le descriptif de votre commande :");
         System.out.println("    " + cmd.toString());
         System.out.println("    Details de vos articles :");
