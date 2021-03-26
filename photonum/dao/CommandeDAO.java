@@ -274,7 +274,7 @@ public class CommandeDAO extends DAO<Commande>{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return prix;
+		return 0;
 	}
 
 	/**
