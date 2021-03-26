@@ -116,11 +116,11 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 	public boolean update(PhotoTirage obj) {
 		try {
 			PreparedStatement requete_update = this.connect.prepareStatement(
-					"UPDATE LesPhotosTirees SET"
+					"UPDATE LesPhotosTirees SET "
 					+ "idPhoto=?,"
 					+ "nbPhotoTirees=?");
 			PreparedStatement requete_update2 = this.connect.prepareStatement(
-					"UPDATE LesPhotos SET"
+					"UPDATE LesPhotos SET "
 					+ "idPhoto=?,"
 					+ "chemin=?,"
 					+ "mailClient=?");
