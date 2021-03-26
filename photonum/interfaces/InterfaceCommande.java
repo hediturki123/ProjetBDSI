@@ -125,16 +125,24 @@ public class InterfaceCommande {
 
     /**
      * cette fonction simule l'étape de paiement à un utilisateur
-     * et va mettre à <pre>PRETE_ENVOI le statut de la commande </pre>
+     * et va mettre à <b>PRETE_ENVOI</b> le statut de la commande.
+     * Le client obtient également un code
      * @param cmd La {@link Commande} qu'on veut payer ou non
      */
     public static void paiement(Commande cmd){
-        if(LectureClavier.lireOuiNon("voulez vous payer maintenant ? (o/n)")){
-            System.out.println("Voila payer , votre commande et maintenant prete a l'envoie");
+        if (LectureClavier.lireOuiNon("Voulez-vous payer maintenant ? (o/n)")) {
+            System.out.println("Merci pour votre achat ! Votre commande est maintenant prête à être envoyée.");
             cmd.setStatus(StatutCommande.PRETE_ENVOI);
             cmd.mettreAJour();
-        }else{
-            System.out.println("Pas de souci , vous pourrez modifier votre commande tant qu'elle n'est pas payer ! ");
+            // Si la commande dépasse 100€, on donne au client un nouveau code promo !
+            if (cmd.getPrixTotal() >= 100)
+                if (CommandeDAO.ajouterPromo(cmd.getClient())) {
+                    System.out.println("Vous obtenez un nouveau code promo. (Raison : achats > 100€)");
+                } else {
+                    System.err.println("Nous n'avons pas pu vous donner un code promo...");
+                }
+        } else {
+            System.out.println("Annulation. Vous pouvez modifier votre commande tant qu'elle n'est pas payée.");
         }
     }
     /**
@@ -148,19 +156,17 @@ public class InterfaceCommande {
             for (int i = 1; i <= commandesClient.size(); i++) {
                 System.out.println(i + ". " + commandesClient.get(i - 1).toString());
             }
-            int choix = LectureClavier.lireEntier("si vous voulez plus de detail sur une commande\n"
-                    + "choissiez une commande dans la liste ci-dessus\n" + "sinon taper 0");
+            int choix = LectureClavier.lireEntier("Si vous voulez plus de details sur une commande, choisissez une commande dans la liste ci-dessus (sinon taper 0).");
 
                     //reafire la boucle ici
             while (choix != 0) {
                 while (!(choix > 0 && choix <= commandesClient.size())) {
-                    System.out.println("\nvous n'avez pas mis un numero de commande valide\n");
+                    System.out.println("\nVous n'avez pas mis un numero de commande valide.");
                     System.out.println("Voici toutes vos commandes :");
                     for (int i = 1; i <= commandesClient.size(); i++) {
                         System.out.println(i + ". " + commandesClient.get(i - 1).toString());
                     }
-                    choix = LectureClavier.lireEntier("si vous voulez plus de detail sur une commande\n"
-                            + "choissiez une commande dans la liste ci-dessus\n" + "sinon taper 0");
+                    choix = LectureClavier.lireEntier("Si vous voulez plus de details sur une commande, choisissez une commande dans la liste ci-dessus (sinon taper 0).");
                 }
                 afficherDetailCommande(commandesClient.get(choix - 1));
 
@@ -168,11 +174,10 @@ public class InterfaceCommande {
                 for (int i = 1; i <= commandesClient.size(); i++) {
                     System.out.println(i + ". " + commandesClient.get(i - 1).toString());
                 }
-                choix = LectureClavier.lireEntier("si vous voulez plus de detail sur une commande\n"
-                        + "choissiez une commande dans la liste ci-dessus\n" + "sinon taper 0");
+                choix = LectureClavier.lireEntier("Si vous voulez plus de details sur une commande, choisissez une commande dans la liste ci-dessus (sinon taper 0).");
             }
         } else {
-            System.out.println("Désolé mais vous n'avez pas fait encore de commande \n");
+            System.out.println("Désolé, mais vous n'avez pas encore fait de commande.");
         }
     }
     /**
@@ -185,10 +190,10 @@ public class InterfaceCommande {
         System.out.println("\n\nLes details de votre commande :");
         if (tabArticles.size() > 0) {
             for (int i = 1; i <= tabArticles.size(); i++) {
-                System.out.println("    " + tabArticles.get(i - 1).factureString());
+                System.out.println("\t" + tabArticles.get(i - 1).factureString());
             }
         } else {
-            System.out.println("    aucun article dans votre commande !\n");
+            System.out.println("Aucun article dans votre commande !\n");
         }
     }
 }
