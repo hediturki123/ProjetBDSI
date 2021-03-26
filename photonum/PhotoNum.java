@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import photonum.interfaces.InterfaceGeneral;
+import photonum.interfaces.InterfaceGenerale;
 import photonum.utils.DatabaseAccessProperties;
 
 public class PhotoNum {
@@ -23,7 +23,7 @@ public class PhotoNum {
    	        System.out.println("connected");
             conn.setAutoCommit(true);
 
-            InterfaceGeneral.menu();
+            InterfaceGenerale.menu();
 
         } catch(SQLException e) {
             System.err.println("failed");
