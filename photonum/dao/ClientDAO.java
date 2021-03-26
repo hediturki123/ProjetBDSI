@@ -64,9 +64,10 @@ public class ClientDAO extends DAO<Client> {
 			String [] args=(String[]) obj;
 			Client c;
 			PreparedStatement requete_selection=this.connect.prepareStatement(
-					"SELECT * from LesClients where mail=? and mdp=? and actif=1");
+					"SELECT * from LesClients where mail=? and mdp=? and actif=?");
 			requete_selection.setString(1,args[0]); // icic l'obj sera l'adresse mail
 			requete_selection.setString(2,args[1]);
+			requete_selection.setBoolean(3,true);
 			ResultSet resultat=requete_selection.executeQuery();
 			if(!resultat.next()){
 				c=null;
@@ -183,7 +184,6 @@ public class ClientDAO extends DAO<Client> {
 
 		return null;
 	}
-	//TODO regarder si le client n'existe pas en inactif , si il existe faire update !! 
 	/**************************************/
 
 }

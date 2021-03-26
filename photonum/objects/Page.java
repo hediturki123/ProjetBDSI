@@ -1,17 +1,22 @@
 package photonum.objects;
 import java.util.List;
 
+import photonum.PhotoNum;
+import photonum.dao.ImpressionDAO;
+
 public class Page{
 
 	private int idPage;
 	private int idImpression;
 	private String miseEnForme;
 	private List<Photo> photos;
-	
+
+	private final static ImpressionDAO IM_DAO = new ImpressionDAO(PhotoNum.conn);
+
 	public Page(int idImpression, String miseEnForme) {
 		setAll(idImpression, miseEnForme);
 	}
-	
+
 	@Override
 	public String toString() {
 		String s = "Cette page a pour ID: "+getIdPage();
@@ -23,9 +28,7 @@ public class Page{
 		}
 		return s;
 	}
-	
-	/***** getters and setters *****/
-	
+
 	public int getIdPage() {
 		return idPage;
 	}
@@ -49,7 +52,7 @@ public class Page{
 	public void setMiseEnForme(String miseEnForme) {
 		this.miseEnForme = miseEnForme;
 	}
-	
+
 	public List<Photo> getPhotos() {
 		return photos;
 	}
@@ -61,5 +64,9 @@ public class Page{
 	private void setAll(int idImpression, String miseEnForme){
 		setIdImpression(idImpression);
 		setMiseEnForme(miseEnForme);
+	}
+
+	public Impression getImpression() {
+		return IM_DAO.read(idImpression);
 	}
 }

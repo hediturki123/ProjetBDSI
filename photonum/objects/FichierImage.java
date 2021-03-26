@@ -1,13 +1,19 @@
 package photonum.objects;
 import java.sql.Date;
 
+import photonum.PhotoNum;
+import photonum.dao.ClientDAO;
+
 public class FichierImage {
+
 	private String chemin;
 	private String mailProprio;
 	private String infoPVD;
 	private int resolution;
 	private boolean estPartage;
 	private Date dateUpload;
+
+	private final static ClientDAO CL_DAO = new ClientDAO(PhotoNum.conn);
 
 	public FichierImage(String chemin, String mailProprio, String infoPVD, int resolution,
 			boolean estPartage, Date dateUpload) {
@@ -65,6 +71,7 @@ public class FichierImage {
 	public void setDateUpload(Date dateUpload) {
 		this.dateUpload = dateUpload;
 	}
+
 	public void setAll(String chemin, String mailProprio, String infoPVD, int resolution,
 	boolean estPartage, Date dateUpload){
 		setChemin(chemin);
@@ -79,6 +86,8 @@ public class FichierImage {
 	public String toString() {
 		return chemin;
 	}
-	
-	/*********************************************/
+
+	public Client getProprietaire() {
+		return CL_DAO.read(mailProprio);
+	}
 }

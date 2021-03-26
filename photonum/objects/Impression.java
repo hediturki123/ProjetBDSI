@@ -3,6 +3,9 @@ package photonum.objects;
 import java.util.ArrayList;
 import java.util.List;
 
+import photonum.PhotoNum;
+import photonum.dao.ClientDAO;
+import photonum.dao.ProduitDAO;
 
 public class Impression{
 
@@ -13,19 +16,23 @@ public class Impression{
 	private String titre;
 	private List<Page> pages;
 	private List<PhotoTirage> photosTirage;
-	
+
+	private final static ProduitDAO PR_DAO = new ProduitDAO(PhotoNum.conn);
+	private final static ClientDAO CL_DAO = new ClientDAO(PhotoNum.conn);
+
 	public Impression() {
 		setIdImpression(25);
 	}
-	
-	public Impression(String mailClient ,String reference, TypeImpression type, String titre) {
+
+	public Impression(int idImpression, String mailClient ,String reference, TypeImpression type, String titre) {
+		setIdImpression(idImpression);
 		setMailClient(mailClient);
 		setReference(reference);
 		setType(type);
 		setTitre(titre);
 		this.pages = new ArrayList<>();
 	}
-	
+
 	@Override
 	public String toString() {
 		String s="Le titre de l'impression est: ";
@@ -103,5 +110,12 @@ public class Impression{
 	public void setMailClient(String mailClient) {
 		this.mailClient = mailClient;
 	}
-	
+
+	public Produit getProduit() {
+		return PR_DAO.read(reference);
+	}
+
+	public Client getProprietaire() {
+		return CL_DAO.read(mailClient);
+	}
 }

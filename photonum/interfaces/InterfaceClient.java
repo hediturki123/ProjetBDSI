@@ -171,7 +171,7 @@ public class InterfaceClient  {
 	* </table>
 	 * @param c le {@link Client} courant
 	 */
-    // TODO ici dans cette fonction mettre les fonctionnalité du client et l'envoyer dans les bonne interface
+    // TODO ici dans cette fonction mettre les fonctionnalité du client et l'envoyer dans les bonnes interface
     public static void menu(Client c) {
 		int choix = -1;
 		while (choix != 5) {

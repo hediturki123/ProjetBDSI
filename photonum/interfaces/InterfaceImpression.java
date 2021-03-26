@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import photonum.PhotoNum;
-import photonum.dao.DAO;
 import photonum.dao.FichierImageDAO;
 import photonum.dao.ImpressionDAO;
 import photonum.dao.ProduitDAO;
@@ -22,8 +21,8 @@ public class InterfaceImpression {
 	private static FichierImageDAO fichierImageDAO = new FichierImageDAO(PhotoNum.conn);
 	private static PhotoTirageDAO photoTirageDAO = new PhotoTirageDAO(PhotoNum.conn);
 
+
 	public static void interfaceCreationImpression(Client client) {
-		
 
 		System.out.println("Quel type d'impression voulez-vous créer?");
 		System.out.println("\t1. Tirage\n\t2. Album\n\t3. Calendrier\n\t4. Cadre\n");
@@ -267,18 +266,21 @@ public class InterfaceImpression {
 		if(list.size() != 0) {
 			System.out.println("Voici toutes vos impressions (du compte): "+client.getMail());
 			int choix=-1;
-			while(choix!=0){
-				while(!(choix>0 && choix<=list.size())){
-					for(int i=1;i<=list.size();i++){
-						System.out.println(i+". "+list.get(i-1).getTitre());
-					}
-					choix=LectureClavier.lireEntier(
-						"choisissez une impression pour la voir plus en detail dans la liste ci-dessus \n"+
-						"ou taper sur 0"
-					);
+			int last=list.size()+1;
+			while(choix!=last){
+				String menu="";
+				for(int i=1;i<=list.size();i++){
+					menu+=i+". "+list.get(i-1).getTitre()+"\n";
+				}
+				menu+=last+". Suivant";
+
+				choix=LectureClavier.lireEntier(menu);
+				if(choix<0 || choix>last){
+					System.out.println("vous n'avez pas choisi une impression ");
+				}else if (choix!=last){
+					list.get(choix-1).toString();
 				}
 			}
-			if (choix != 0)list.get(choix-1).toString();
 			if (LectureClavier.lireOuiNon("Voulez vous regardez une autre impression ? (o/n)")){
 				interfaceVueImpression(client);
 			}
@@ -287,24 +289,47 @@ public class InterfaceImpression {
 		}
 	}
 
+	public static void menuImpression(Client client){
+		int choix = -1;
+		while (choix != 5) {
+			choix = LectureClavier.lireEntier(
+				"--- Mes impressions ---\n"+
+				"\t1. Visualiser vos impressions\n"+
+				"\t2. Créer une impression\n"+
+				"\t3. Modifier une impression\n"+
+				"\t4. Supprimer une impression\n"+
+				"\t5. Retour au menu précédent"+
+				"> "
+			);
+			switch (choix) {
+				case 1: interfaceVueImpression(client); break;
+				case 2: interfaceCreationImpression(client); break;
+				case 3: interfaceModificationImpression(client); break;
+				case 4: interfaceSuppressionImpression(client); break;
+				default: System.err.println("Veuillez indiquer un nombre entre 1 et 3."); break;
+			}
+		}
+	}
 
 	public static void interfaceSuppressionImpression(Client client) {
-		
+
 		List<Impression> list = impressionDAO.readAllByClient(client);
 		if(list.size() != 0) {
 			System.out.println("Voici toutes vos impressions (du compte): "+client.getMail());
 			int choix=-1;
-			while(choix!=0){
-				while(!(choix>0 && choix<=list.size())){
+			int last=list.size()+1;
+			while(choix!=last){
+				String message="";
 					for(int i=1;i<=list.size();i++){
-						System.out.println(i+". "+list.get(i-1).getTitre());
+						message+=i+". "+list.get(i-1).getTitre()+"\n";
 					}
-					choix=LectureClavier.lireEntier(
-						"Choisissez une impression que vous voulez supprimer\n"+
-						"ou taper sur 0"
-					);
-				}
-				if(choix!=0)impressionDAO.delete(list.get(choix-1));
+					message+=last+". Suivant";
+					choix=LectureClavier.lireEntier(message);
+					if(choix<0 || choix>last){
+						System.out.println("vous n'avez pas choisi une impression ");
+					}else if (choix!=last){
+						impressionDAO.delete(list.get(choix-1));
+					}
 			}
 			if(LectureClavier.lireOuiNon("Voulez vous supprimer une autre impression ? (o/n)")){
 				interfaceSuppressionImpression(client);
@@ -319,25 +344,27 @@ public class InterfaceImpression {
 		if(list.size() != 0) {
 			System.out.println("Voici toutes vos impressions (du compte): "+client.getMail());
 			int choix=-1;
-			while(choix!=0){
-				while(!(choix>0 && choix<=list.size())){
+			int last=list.size()+1;
+			while(choix!=last){
+					String message="";
 					for(int i=1;i<=list.size();i++){
-						System.out.println(i+". "+list.get(i-1).getTitre());
+						message+=i+". "+list.get(i-1).getTitre()+"\n";
 					}
-					choix=LectureClavier.lireEntier(
-						"Choisissez une impression que vous voulez modifier\n"+
-						"ou taper sur 0"
-					);
-				}
-				System.out.println("Quel est le nouveau titre?");
-				String titre = LectureClavier.lireChaine();
-				System.out.println("Quel est la nouvelle référence");
-				String reference = LectureClavier.lireChaine();
+					message+=last+". Suivant";
+					choix=LectureClavier.lireEntier(message);
 
-				list.get(choix-1).setTitre(titre);
-				list.get(choix-1).setReference(reference);
-				if(choix!=0)impressionDAO.update(list.get(choix-1));
-			}
+					if(choix<0 || choix>last){
+						System.out.println("vous n'avez pas choisi une impression ");
+					}else if (choix!=last){
+						System.out.println("Quel est le nouveau titre?");
+						String titre = LectureClavier.lireChaine();
+						System.out.println("Quel est la nouvelle référence");
+						String reference = LectureClavier.lireChaine();
+						list.get(choix-1).setTitre(titre);
+						list.get(choix-1).setReference(reference);
+						impressionDAO.update(list.get(choix-1));
+					}
+				}
 			if(LectureClavier.lireOuiNon("Voulez vous modifier une autre impression ? (o/n)")){
 				interfaceModificationImpression(client);
 			}
@@ -345,35 +372,6 @@ public class InterfaceImpression {
 			System.out.println("Vous n'avez pas d'impressions.");
 		}
 
-	}
-
-
-
-	
-	public static void menuImpression(Client client){
-		System.out.println("\n--- Gérer les impressions ---");
-		System.out.println("\t1. Visualiser vos impressions");
-		System.out.println("\t2. Créer une impression");
-		System.out.println("\t3. Modifier une impression");
-		System.out.println("\t4. Supprimer une impression");
-		
-		int choix = LectureClavier.lireEntier(">");
-		switch(choix) {
-		case 1:
-			interfaceVueImpression(client);
-			break;
-		case 2:
-			interfaceCreationImpression(client);
-			break;
-		case 3:
-			interfaceModificationImpression(client);
-			break;
-		case 4:
-			interfaceSuppressionImpression(client);
-			break;
-		default:
-			break;	
-		}
 	}
 
 }

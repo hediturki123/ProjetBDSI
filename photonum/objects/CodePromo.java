@@ -4,14 +4,17 @@ import photonum.PhotoNum;
 import photonum.dao.CodePromoDAO;
 
 public class CodePromo  {
-    private String mail;
+
+    private String mailClient;
     private String code;
     private boolean estUtilise;
+
+    private final static CodePromoDAO CP_DAO = new CodePromoDAO(PhotoNum.conn);
 
     public CodePromo() {}
 
     public CodePromo(String code, String mail) {
-        this.mail = mail;
+        this.mailClient = mail;
         this.code = code;
         this.estUtilise = false;
     }
@@ -21,12 +24,12 @@ public class CodePromo  {
         this.estUtilise = estUtilise;
     }
 
-    public String getMail() {
-        return this.mail;
+    public String getMailClient() {
+        return this.mailClient;
     }
 
     public void setMail(String mail) {
-        this.mail = mail;
+        this.mailClient = mail;
     }
 
     public String getCode() {
@@ -37,21 +40,20 @@ public class CodePromo  {
         this.code = code;
     }
 
-    public boolean isEstUtilise() {
+    public boolean estUtilise() {
         return this.estUtilise;
     }
 
-    public boolean getEstUtilise() {
-        return this.estUtilise;
-    }
-
-    public void setEstUtilise(boolean estUtilise) {
+    public void utilise(boolean estUtilise) {
         this.estUtilise = estUtilise;
     }
 
     public static void ajouterPromo(String mail) {
-        CodePromoDAO codePromoDAO = new CodePromoDAO(PhotoNum.conn);
         CodePromo cp = new CodePromo(null, mail);
-        codePromoDAO.create(cp);
+        CP_DAO.create(cp);
+    }
+
+    public static void ajouterPromo(Client c) {
+        ajouterPromo(c.getMail());
     }
 }

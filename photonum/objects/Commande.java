@@ -146,22 +146,22 @@ public class Commande {
 		return A_DAO.readAllByCommande(this).get(index);
 	}
 
-	public void setArticles(List<Article> articles) {
+	public void ajouterArticles(List<Article> articles) {
 		articles.forEach(a -> {
 			A_DAO.create(a);
 		});
 	}
 
-	public void setArticle(Article a) {
+	public void ajouterArticle(Article a) {
 		A_DAO.create(a);
 	}
 
-	public void setArticle(int idImpression, int quantite) {
+	public void ajouterArticle(int idImpression, int quantite) {
 		A_DAO.create(new Article(this.idCommande, idImpression, quantite));
 	}
 
 	public double getPrixTotal() {
-		return C_DAO.getPrixTotal(this.idCommande);
+		return C_DAO.getPrix(this.idCommande);
 	}
 
 	@Override
@@ -184,8 +184,9 @@ public class Commande {
 
 		String f = "< FACTURE n°"+idCommande+" >\n"+"-".repeat(10)+"\n";
 		f += "Vous avez commandé "+(articles.size() > 1 ? "les "+articles.size()+" suivants" : "l'article suivant")+" :\n";
+		f += "Référence | Prix / u. | Quantité | Prix";
 		for (Article a : articles) {
-			f += "\t"+a.toString()+"\n";
+			f += "\t"+a.factureString()+"\n";
 		}
 		f += "-".repeat(10)+"\n";
 		f += "PRIX HT : "+(PRIX_TOTAL*0.8)+"€ / PRIX TTC : "+PRIX_TOTAL+"€";
