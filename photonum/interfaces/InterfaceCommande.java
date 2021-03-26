@@ -35,7 +35,6 @@ public class InterfaceCommande {
      * @param cmd la {@link Commande} courante
      */
     public static void choixImpression(Client c,Commande cmd){
-        //TODO je suis dans une boucle infini ici a revoir
         List<Impression> impressionClient=impDao.readAllByClient(c);
         List<Article> articleChoisi= new ArrayList<>();
         if(impressionClient.size() != 0) {
@@ -46,7 +45,7 @@ public class InterfaceCommande {
                     for (int i = 1; i <= impressionClient.size(); i++) {
                         System.out.println(i + ". " + impressionClient.get(i - 1).getTitre());
                     }
-                    choix = LectureClavier.lireEntier(
+                    choix= LectureClavier.lireEntier(
                             "choisissez une impression pour la voir plus en detail dans la liste ci-dessus \n"
                                     + "ou taper sur 0");
                 }

@@ -63,4 +63,3 @@ public class Page{
 		setMiseEnForme(miseEnForme);
 	}
 }
-t
