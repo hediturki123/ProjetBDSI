@@ -157,9 +157,13 @@ public class InterfaceFichier {
      */
     public static void afficherImagesPartage(Client c){
         List<FichierImage> imagePartageClient = imgDAO.readAllByClient(c, true);
-        System.out.println("\nVos images partagé sont : ");
-        for (int i = 1; i <= imagePartageClient.size(); i++) {
-            System.out.println(i + ". " + imagePartageClient.get(i - 1).toString());
+        if(imagePartageClient.size()>0){
+             System.out.println("\nVos images partagé sont : ");
+            for (int i = 1; i <= imagePartageClient.size(); i++) {
+                System.out.println(i + ". " + imagePartageClient.get(i - 1).toString());
+            }
+        }else{
+            System.out.println("vous n'avez aucune image partagées");
         }
     }
 

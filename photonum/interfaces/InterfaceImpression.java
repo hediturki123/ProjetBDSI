@@ -166,7 +166,7 @@ public class InterfaceImpression {
 				if(choix<0 || choix>last){
 					System.out.println("vous n'avez pas choisi une impression ");
 				}else if (choix!=last){
-					list.get(choix-1).toString();
+					System.err.println(list.get(choix-1).toString()+"\n");
 				}
 			}
 			if (LectureClavier.lireOuiNon("Voulez vous regardez une autre impression ? (o/n)")){

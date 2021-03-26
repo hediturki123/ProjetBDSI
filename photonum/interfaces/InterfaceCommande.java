@@ -54,7 +54,7 @@ public class InterfaceCommande {
                         LectureClavier.lireEntier("Quantite : ")));
                     }
                 }
-                if(modif)InterfaceCodePromo.utilisationCodePromo(c, cmd, articleChoisi,false);else validationCommande(c, cmd, articleChoisi);
+                if(!modif)InterfaceCodePromo.utilisationCodePromo(c, cmd, articleChoisi,false);else validationCommande(c, cmd, articleChoisi);
         } else {
             System.out.println("Vous n'avez pas d'impressions.");
         }
@@ -87,6 +87,7 @@ public class InterfaceCommande {
      * @param articles la List&lt;{@link Article}&gt; des {@link Article} de la commande cmd
      */
     public static void validationCommande(Client c,Commande cmd,List<Article> articles){
+        cmd.setDateCommande(Date.valueOf(LocalDate.now()));
         System.out.println("voici le descriptif de votre commande :");
         System.out.println("    " + cmd.toString());
         System.out.println("    Details de vos articles :");
@@ -95,7 +96,7 @@ public class InterfaceCommande {
         }
 
         if (LectureClavier.lireOuiNon("valider la commande ? (o/n)")) {
-            cmd.setDateCommande(Date.valueOf(LocalDate.now()));
+    
             cmd.setStatus(StatutCommande.EN_COURS);
             if (cmdDao.create(cmd)) {
                 for (Article a : articles)
@@ -153,6 +154,8 @@ public class InterfaceCommande {
             }
             int choix = LectureClavier.lireEntier("si vous voulez plus de detail sur une commande\n"
                     + "choissiez une commande dans la liste ci-dessus\n" + "sinon taper 0");
+
+                    //reafire la boucle ici
             while (choix != 0) {
                 while (!(choix > 0 && choix <= commandesClient.size())) {
                     System.out.println("\nvous n'avez pas mis un numero de commande valide\n");
