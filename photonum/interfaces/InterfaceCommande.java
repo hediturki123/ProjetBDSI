@@ -52,37 +52,11 @@ public class InterfaceCommande {
                     LectureClavier.lireEntier("Quantite : "))
                 );
             }
-            utilisationCodePromo(c,cmd,articleChoisi);
+            InterfaceCodePromo.utilisationCodePromo(c,cmd,articleChoisi);
 		}else {
 			System.out.println("Vous n'avez pas d'impressions.");
 		}
         
-    }
-
-    public static void  utilisationCodePromo(Client c, Commande cmd,List<Article> articles){
-        CodePromoDAO cpDao=new CodePromoDAO(PhotoNum.conn);
-        List<CodePromo> cpDispo=cpDao.readAllByClient(c.getMail(), false);
-        CodePromo cpUtiliser=new CodePromo();
-        if(LectureClavier.lireOuiNon("voulez vous utiliser un code promo ? (o/n)")){
-            if(cpDispo.size()>0){
-                int choix=-1;
-                while(!(choix>0 && choix<=cpDispo.size())){
-                    System.out.println("vos code promo :");
-                    for(int i=1;i<=cpDispo.size();i++){
-                        System.out.println("    "+i+". "+cpDispo.get(i-1));
-                    }
-                    choix=LectureClavier.lireEntier(" choissisez dans la liste ci-dessus");
-                }
-                cpUtiliser=new CodePromo(cpDispo.get(choix-1).getMail(),cpDispo.get(choix-1).getCode(),cpDispo.get(choix-1).getEstUtilise());
-            }else{
-                System.out.println("Sha !! pas assez bon client pour avoir un code promo baltringue !!");
-            }
-        }else{
-            System.out.println("pas de souci , mais tant pis pour vous SHA !");
-        }
-        cmd.setCodePromo(cpUtiliser.getCode());
-        livraison(c, cmd, articles);
-
     }
 
     public static void livraison(Client c,Commande cmd,List<Article> articles){

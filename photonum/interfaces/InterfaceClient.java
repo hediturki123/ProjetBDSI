@@ -7,11 +7,30 @@ import photonum.*;
 import photonum.dao.ClientDAO;
 import photonum.utils.*;
 import photonum.objects.*;
-
+/**
+ * Cette interface permet toutes les interactions avec un {@link Client}
+ */
 public class InterfaceClient  {
 
 	private static ClientDAO clientDao = new ClientDAO(PhotoNum.conn);
-
+	/**
+	 * on demarre le menu de l'interface client
+	 * ici l'utilisateur a 3 choix qui se presente de cette manière :
+	 *
+	 * <h3>Exemple :</h3>
+	 * <table>
+	 		<tr><td>"--- Connexion Client ---"</td></tr>
+	 		<tr><td>1. Se connecter</td></tr>
+			<tr><td>2. Créer un nouveau compte</td></tr>
+			<tr><td>3. Retour au menu principal</td></tr>
+	* </table>
+	
+	<ul>
+	<li>1 -> permet a l'utilisateur de se connecter en entrant son mail , et sont mot de passe</li>
+	<li>2 -> permet de creer un nouveau compte</li>
+	<li>3-> Sortir du menu et revenir au menuprincipal</li>
+	</ul>
+	*/
     public static void interfaceConnexion(){
 		int choix = -1;
 		while (choix != 3) {
@@ -34,6 +53,22 @@ public class InterfaceClient  {
 		}
 	}
 
+	/**
+	 *<p> Permet de demander les identifiants de connexion (mail, mdp) </p>
+	 * <h3>Exemple :</h3>
+	 * <table>
+	 		<tr><td>>>> Connexion...</td></tr>
+	 		<tr><td>Mail :</td></tr>
+			<tr><td>XXXXXXX@XXX.XX</td></tr>
+			<tr><td>Mot de passe :</td></tr>
+			<tr><td>************</td></tr>
+			<tr><td>>>> Connexion réussie !");</td></tr>
+	* </table>
+		<br>
+		<h4>Si la connexion est refuser:</h4>
+		alors le client devra recommencer ça saisi et aural le message <b>>>> Mot de passe ou identifiant incorrect !</b>
+		<b>Il vous reste  XX essais <b>
+	 */
     private static void connexion() {
 		System.out.println(">>> Connexion...");
 		Client clientCourant = null;
@@ -47,15 +82,48 @@ public class InterfaceClient  {
 			return clientDao.read(args);
 		};
 		clientCourant = connect.apply(null);
-
-		while (clientCourant == null) {
-			System.err.println(">>> Mot de passe ou identifiant incorrect !");
+		int essai=4;
+		while (clientCourant == null && essai!=0) {
+			System.err.println(">>> Mot de passe ou identifiant incorrect ! \nIl vous reste "+essai+" essais");
+			essai--;
 			clientCourant = connect.apply(null);
+
 		}
-		System.out.println(">>> Connexion réussie !");
-		menu(clientCourant);
+		if(clientCourant!=null){
+			System.out.println(">>> Connexion réussie !");
+			menu(clientCourant);
+		}else{
+			System.out.println(">>> Veuillez vous connectez ulterieurment");
+		}
     }
 
+	/**
+	 * permet de faire la creation complete d'un compte client
+	 * en lui demandant Mail , mdp , nom , prenom , et toutes sont adresse 
+	 * Au moment ou le mail 
+	 * <h3>Exemple :</h3>
+	 * <table>
+	 		<tr><td>Veuillez entrer votre adresse mail : </td></tr>
+			<tr><td>XXXXXXX@XXX.XX</td></tr>
+			<tr><td>Mot de passe :</td></tr>
+			<tr><td>************</td></tr>
+			<tr><td>Veuillez entrer votre nom :</td></tr>
+			<tr><td>XXXX</td></tr>
+			<tr><td>Veuillez entrer votre prenom :</td></tr>
+			<tr><td>XXXX</td></tr>
+			<tr><td>veuillez entrez votre numero de rue</td></tr>
+	 		<tr><td>XXX</td></tr>
+			<tr><td>veuillez entrez votre rue</td></tr>
+			<tr><td>XXXXX XXXXXX XXXXXXX</td></tr>
+			<tr><td>veuillez entrez votre ville</td></tr>
+            <tr><td>XXXXXXX</td></tr>
+            <tr><td>veuillez entrez votre code postal</td></tr>
+            <tr><td>XXXXX</td></tr>
+            <tr><td>veuillez entrez votre pays</td></tr>
+            <tr><td>XXXXX</td></tr>
+	* </table>
+	<h4>Probleme<
+	 */
     private static void creationCompte(){
 		System.out.println("Veuillez entrer votre adresse mail :");
 		String mail=LectureClavier.lireChaine();
@@ -68,11 +136,21 @@ public class InterfaceClient  {
 
 		System.out.println("Veuillez entrer votre prenom :");
 		String prenom=LectureClavier.lireChaine();
-		Adresse addr=new Adresse() ;
-		InterfaceAdresse.creerAdresse(mail, addr);
 
+		int numeroRue=LectureClavier.lireEntier("veuillez entrez votre numero de rue");
 
-		Client c = new Client(mail, nom, prenom, mdp,addr.getNumeroRue(),addr.getNomRue(),addr.getVille(),addr.getCp(),addr.getPays(),true);
+		System.out.println("veuillez entrez votre rue");
+		String nomRue=LectureClavier.lireChaine();
+
+		System.out.println("veuillez entrez votre ville");
+		String ville=LectureClavier.lireChaine();
+
+		int cp=LectureClavier.lireEntier("veuillez entrez votre code postal");
+
+		System.out.println("veuillez entrez votre pays ");
+        String pays=LectureClavier.lireChaine();
+        
+		Client c = new Client(mail, nom, prenom, mdp, numeroRue, nomRue, ville, cp, pays,true);
 	
 		if(clientDao.create(c)){
 			menu(c);
@@ -81,7 +159,20 @@ public class InterfaceClient  {
 		}
 	}
  
-
+	/**
+	 * Permet d'arriver sur le menu principal du client
+	 * Le menu ce presente de la maniere suivante :
+	 * <h3>Exemple :</h3>
+	 * <table>
+	 		<tr><td>--- Menu Client ---</td></tr>
+	 		<tr><td>1. Afficher mes informations</td></tr>
+			<tr><td>2. Gérer les fichiers </td></tr>
+			<tr><td>3. Gérer une impression </td></tr>
+			<tr><td>4. Passer une commande</td></tr>
+			<tr><td>5. Se deconnecter</td></tr>
+	* </table>
+	 * @param c le {@link Client} courant
+	 */
     // TODO ici dans cette fonction mettre les fonctionnalité du client et l'envoyer dans les bonne interface
     public static void menu(Client c) {
 		int choix=LectureClavier.lireEntier(
@@ -110,6 +201,24 @@ public class InterfaceClient  {
 		}
 		System.out.println("Merci d'utiliser nos services !");
 	}
+
+
+
+/**
+ * Permet d'avoir le menu de visualisations des imformation client(info,code pormo, commandes, impression, image partagé)
+ *  Le menu ce presente de la maniere suivante :
+ * <h3>Exemple :</h3>
+ * <table>
+	 		<tr><td>--- Menu Visualisation ---</td></tr>
+	 		<tr><td>1. Mes informations personnelles</td></tr>
+			<tr><td>2. Mes Codes promos </td></tr>
+			<tr><td>3. Mes Commandes </td></tr>
+			<tr><td>4. Mes Impressions</td></tr>
+			<tr><td>5. Mes Images Partagées</td></tr>
+			<tr><td>6. Retour au menu</td></tr>
+	* </table>
+ * @param c le {@link Client} courant
+ */
 public static void menuInfo(Client c){
 	System.out.println("que voulez vous faire ?");
 	int choix=LectureClavier.lireEntier(
@@ -155,6 +264,11 @@ public static void menuInfo(Client c){
 				"6. Retour au menu");
 	}
 }
+
+/**
+ * Affiche les informations du client à travers son toString();
+ * @param c le {@link Client} courant
+ */
  public static void afficherInfo(Client c){
 	 System.out.println(c.toString());
  }
