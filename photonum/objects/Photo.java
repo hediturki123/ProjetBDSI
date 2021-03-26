@@ -3,6 +3,7 @@ package photonum.objects;
 import photonum.PhotoNum;
 import photonum.dao.ClientDAO;
 import photonum.dao.FichierImageDAO;
+import photonum.dao.PhotoDAO;
 
 public class Photo  {
 
@@ -12,6 +13,7 @@ public class Photo  {
 
 	private final static FichierImageDAO FI_DAO = new FichierImageDAO(PhotoNum.conn);
 	private final static ClientDAO CL_DAO = new ClientDAO(PhotoNum.conn);
+	private final static PhotoDAO PH_DAO = new PhotoDAO(PhotoNum.conn);
 
 	public Photo(String chemin, String mailClient) {
 		this.mailClient = mailClient;
@@ -55,5 +57,9 @@ public class Photo  {
 
 	public Client getProprietaire() {
 		return CL_DAO.read(mailClient);
+	}
+
+	public boolean nouvellePhoto() {
+		return PH_DAO.create(this);
 	}
 }
