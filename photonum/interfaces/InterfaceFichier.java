@@ -49,7 +49,7 @@ public class InterfaceFichier {
      */
     public static void partagerFichier(Client c){
         int choix = -1;
-        List<FichierImage> imagesClient = c.getImages();
+        List<FichierImage> imagesClient = c.getImages(false);
 
         if (imagesClient.size() > 0) {
             int last=imagesClient.size()+1;

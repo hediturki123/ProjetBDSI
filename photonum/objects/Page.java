@@ -4,16 +4,17 @@ import java.util.List;
 import photonum.PhotoNum;
 import photonum.dao.ImpressionDAO;
 import photonum.dao.PageDAO;
+import photonum.dao.PhotoDAO;
 
 public class Page{
 
 	private int idPage;
 	private int idImpression;
 	private String miseEnForme;
-	private List<Photo> photos;
 
 	private final static ImpressionDAO IM_DAO = new ImpressionDAO(PhotoNum.conn);
 	private final static PageDAO PG_DAO = new PageDAO(PhotoNum.conn);
+	private final static PhotoDAO PH_DAO = new PhotoDAO(PhotoNum.conn);
 
 	public Page(int idImpression, String miseEnForme) {
 		setAll(idImpression, miseEnForme);
@@ -56,11 +57,7 @@ public class Page{
 	}
 
 	public List<Photo> getPhotos() {
-		return photos;
-	}
-
-	public void setPhotos(List<Photo> photos) {
-		this.photos = photos;
+		return PH_DAO.readAllByPage(this);
 	}
 
 	private void setAll(int idImpression, String miseEnForme){

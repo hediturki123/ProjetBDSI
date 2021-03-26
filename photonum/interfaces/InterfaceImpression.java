@@ -91,11 +91,11 @@ public class InterfaceImpression {
 		List<Page> pages = new ArrayList<>();
 		Page p = new Page(impression.getIdImpression(),"");
 		for(boolean b = true; b; b = 1 != LectureClavier.lireEntier("quitter ou continuer")) {
-			InterfacePage.interfaceCreationPage(impression.getIdImpression(),client,p);
+			InterfacePage.interfaceCreationPageAlbum(impression.getIdImpression(),client,p);
 			pages.add(p);
 			System.out.println("Selectionnez 1 pour quitter et un autre nombre pour continuer la création de pages");
 		}
-		impression.ajoutPages(pages);
+		//impression.ajoutPages(pages);
 		createImpression(impression,client);
 	}
 
@@ -176,7 +176,7 @@ public class InterfaceImpression {
 	}
 
 	private static void createImpression(Impression impression, Client client) {
-
+		System.out.println("Je suis dans createImpression");
 		if(impression.getType() == TypeImpression.TIRAGE)
 		{
 			List<PhotoTirage> listPhoto = impression.getPhotosTirage();
@@ -217,7 +217,15 @@ public class InterfaceImpression {
 		{
 			List<Page> listPage = impression.getPages();
 			if(listPage.size() != 0){
-				if(listPage.get(0).getPhotos() != null && listPage.get(0).getPhotos().size() != 0) {
+				int k = 0;
+				for(Page page : listPage)
+				{
+					System.out.println("index = "+k+" size = "+page.getPhotos());
+					k++;
+				}
+				List<Photo> listPhoto = listPage.get(0).getPhotos();
+				System.out.println("size: "+listPhoto.size());
+				if(listPhoto != null && listPhoto.size() != 0) {
 					List<Produit> listProd = Produit.getAll();
 
 					int i = 1;

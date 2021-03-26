@@ -30,8 +30,8 @@ public class PhotoAlbumDAO extends DAO<PhotoAlbum>{
 					"INSERT INTO LesPhotosAlbum VALUES (?,?)");
 			PreparedStatement requete_imp2 = this.connect.prepareStatement(
 					"INSERT INTO LesPhotos VALUES (?,?,?)");
-			
-			obj.setIdPhoto(lastId()+1);
+			int id = lastId()+1;
+			obj.setIdPhoto(id);
 			requete_imp.setInt(1, obj.getIdPhoto());
 			requete_imp.setString(2, obj.getTexteDescriptif());
 			
@@ -39,8 +39,8 @@ public class PhotoAlbumDAO extends DAO<PhotoAlbum>{
 			requete_imp2.setString(2, obj.getChemin());
 			requete_imp2.setString(3, obj.getMailClient());
 			
-			boolean b1 = requete_imp.execute();
-			boolean b2 = requete_imp2.execute();
+			boolean b1 = requete_imp.executeUpdate();
+			boolean b2 = requete_imp2.executeUpdate();
 			
 			requete_imp.close();
 			requete_imp2.close();
@@ -208,16 +208,16 @@ public class PhotoAlbumDAO extends DAO<PhotoAlbum>{
 	 * @return un <b>Int</b> correpondant au dernier id dans la table LesPages
 	 */
 	private int lastId() {
+		int id =0;
 		try {
 			PreparedStatement requete_last = PhotoNum.conn.prepareStatement("SELECT max(idPhoto) FROM LesPhotos");
 			ResultSet res = requete_last.executeQuery();
 			if(res.next()) {
-				requete_last.close();
-				return res.getInt("idPhoto");
+				id = res.getInt(1);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return 0;
+		return id;
 	}
 }

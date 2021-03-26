@@ -250,8 +250,8 @@ public class Client {
 	 * @param a une {@link Adresse} qui sera l'adresse des client 
 	 */
 	public void checkAdresseExist(Adresse a){
-		List<Adresse> addrC=AD_DAO.readAllByClient(this);
-		if(addrC.contains(a)){
+		Adresse addrexist =AD_DAO.read(mail);
+		if(!addrexist.equals(a)){
 			ajouterAdresseLivraison(a);
 		}
 	}

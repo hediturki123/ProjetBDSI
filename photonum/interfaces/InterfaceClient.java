@@ -164,20 +164,22 @@ public class InterfaceClient  {
 			<tr><td>2. Gérer les fichiers </td></tr>
 			<tr><td>3. Gérer une impression </td></tr>
 			<tr><td>4. Passer une commande</td></tr>
-			<tr><td>5. Se deconnecter</td></tr>
+			<tr><td>5. Modifier une commande</td></tr>
+			<tr><td>6. Se deconnecter</td></tr>
 	* </table>
 	 * @param c le {@link Client} courant
 	 */
     public static void menu(Client c) {
 		int choix = -1;
-		while (choix != 5) {
+		while (choix != 6) {
 			choix=LectureClavier.lireEntier(
 				"--- Menu Client ---\n" +
 				"\t1. Afficher mes infos\n" +
 				"\t2. Gérer les fichiers \n" +
 				"\t3. Gérer une impressions \n" +
 				"\t4. Passer une commande\n" +
-				"\t5. Se deconnecter\n" +
+				"\t5. Modifier une commande\n" +
+				"\t6. Se deconnecter\n" +
 				"> "
 			);
 			switch (choix) {
@@ -185,7 +187,8 @@ public class InterfaceClient  {
 				case 2: InterfaceFichier.interfaceDemandeFichier(c); break;
 				case 3: InterfaceImpression.menuImpression(c); break;
 				case 4: InterfaceCommande.creationCommande(c); break;
-				case 5: break;
+				case 5: InterfaceCommande.MenuModifCommande(c);break;
+				case 6:break;
 				default: System.err.println("Veuillez indiquer un nombre entre 1 et 5."); break;
             }
 		}

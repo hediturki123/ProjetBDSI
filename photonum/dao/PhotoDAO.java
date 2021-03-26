@@ -10,7 +10,7 @@ import photonum.PhotoNum;
 import photonum.objects.*;
 
 public class PhotoDAO extends DAO<Photo>{
-	
+
     /**
 	 * construit une PhotoDAO avec la connexions à la BD
 	 * @param conn
@@ -42,10 +42,10 @@ public class PhotoDAO extends DAO<Photo>{
 		return false;
 	}
 	/**
-	 * 
+	 *
 	 * @param id un <b>Int</b> coorespondant à l'<b>idPhoto</b>
 	 * @return {@link Photo} correspondante
-	 * @exception SQLException;	 
+	 * @exception SQLException;
 	 * */
 	@Override
 	public Photo read(Object id) {
@@ -124,7 +124,7 @@ public class PhotoDAO extends DAO<Photo>{
 		try {
 			PreparedStatement requete_select = this.connect.prepareStatement("SELECT * FROM LesPhotos WHERE mailClient=?");
 			requete_select.setString(1, mail);
-			
+
 			ResultSet result = requete_select.executeQuery();
 			ArrayList<Photo> tab  = new ArrayList<Photo>();
 			while(result.next())
@@ -150,7 +150,7 @@ public class PhotoDAO extends DAO<Photo>{
 	public List<Photo> readAll() {
 		try {
 			PreparedStatement requete_select = this.connect.prepareStatement("SELECT * FROM LesPhotos");
-			
+
 			ResultSet result = requete_select.executeQuery();
 			ArrayList<Photo> tab  = new ArrayList<Photo>();
 			while(result.next())
@@ -168,7 +168,34 @@ public class PhotoDAO extends DAO<Photo>{
 		}
 		return null;
 	}
-	
+
+	public List<Photo> readAllByPage(Page page){
+		try {
+			PreparedStatement requete_select = this.connect.prepareStatement(
+				"SELECT * FROM LesPhotos"+
+				" NATURAL JOIN LesPhotosParPages"+
+				" NATURAL JOIN LesPages"+
+				" WHERE idPage=?"
+			);
+			requete_select.setInt(1, page.getIdPage());
+			ResultSet result = requete_select.executeQuery();
+			ArrayList<Photo> tab  = new ArrayList<Photo>();
+			while(result.next())
+			{
+				Photo res = new Photo(
+						result.getString("chemin"),
+						result.getString("mailClient"));
+				res.setIdPhoto(result.getInt("idPhoto"));
+				tab.add(res);
+			}
+			requete_select.close();
+			return tab;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	/**
 	 * cette fonction permet de recuperer le dernier Id pour pouvoir creer une nouvelle commande(AUTO_INCREMENT)
 	 * @return un <b>Int</b> correpondant au dernier id dans la table LesPhotos
