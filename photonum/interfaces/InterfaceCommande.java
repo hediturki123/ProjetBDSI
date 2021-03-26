@@ -70,6 +70,7 @@ public class InterfaceCommande {
         cmd.setEstLivreChezClient(livreChezClient);
         if (livreChezClient) {
             cmd.setAdresseLivraison(c.getNumeroRue(), c.getNomRue(), c.getVille(), c.getCp(), c.getPays());
+            c.checkAdresseExist(new Adresse(c.getMail(),c.getNumeroRue(), c.getNomRue(), c.getVille(), c.getCp(), c.getPays()));
         } else {
             InterfaceAdresse.choixAdresseLivraison(c, addr);
             cmd.setAdresseLivraison(addr);

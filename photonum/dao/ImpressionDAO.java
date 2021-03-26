@@ -112,7 +112,7 @@ public class ImpressionDAO extends DAO<Impression> {
 	 * @exception SQLException;
 	 */
 	@Override
-	public boolean delete(Impression obj) {//TODO verifier la suppression 
+	public boolean delete(Impression obj) {
 		try {
 			PreparedStatement requete_delete = this.connect.prepareStatement(
 					"DELETE FROM LesImpressions WHERE idImpression = ?");

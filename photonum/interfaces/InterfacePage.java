@@ -52,7 +52,7 @@ public class InterfacePage {
 
 
 		System.out.println("Voulez vous créer des photos à mettre dans votre page?");
-		int choix = LectureClavier.lireEntier("1.Oui/2.Non");//TODO changer par un lire oui non 
+		int choix = LectureClavier.lireEntier("1.Oui/2.Non");
 		List<FichierImage> listImg = fichierImageDAO.readAllByClient(client);
 		if(listImg.size()!=0){
 			if(choix == 1) {

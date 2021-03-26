@@ -70,7 +70,6 @@ public class InterfaceFichier {
                 }
             }
             if(choisi){
-                //TODO tester si ça fonctionne ( partager un fichier )
                 if (LectureClavier.lireOuiNon("Êtes-vous sur de vouloir le partager ? (o/n)")) {
                     imagesClient.get(choix - 1).setEstPartage(true);
                     if (imagesClient.get(choix - 1).mettreAJour()) {

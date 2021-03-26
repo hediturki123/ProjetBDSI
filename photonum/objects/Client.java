@@ -224,8 +224,18 @@ public class Client {
 	public List<FichierImage> getImages(boolean partages) {
 		return FI_DAO.readAllByClient(this, partages);
 	}
-
+	/**
+	 * Récupère la liste des Photo tirage
+	 * @return
+	 */
 	public List<PhotoTirage> getPhotosTirage() {
 		return PT_DAO.readAllPhotosTirageByClient(this);
 	}
-}
+
+	public void checkAdresseExist(Adresse a){
+		List<Adresse> addrC=AD_DAO.readAllByClient(this);
+		if(addrC.contains(a)){
+			ajouterAdresseLivraison(a);
+		}
+	}
+ }
