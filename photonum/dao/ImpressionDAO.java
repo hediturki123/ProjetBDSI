@@ -112,10 +112,10 @@ public class ImpressionDAO extends DAO<Impression> {
 	 * @exception SQLException;
 	 */
 	@Override
-	public boolean delete(Impression obj) {//TODO regarder si l'impression n'appratient pas a une commande au status ENVOYEEx
+	public boolean delete(Impression obj) {//TODO verifier la suppression 
 		try {
 			PreparedStatement requete_delete = this.connect.prepareStatement(
-					"DELETE FROM LesImpressions WHERE idImpression = ? and idImpression NOT IN (Select IdImpression FROM )");
+					"DELETE FROM LesImpressions WHERE idImpression = ? and idImpression NOT IN (Select IdImpression FROM LesImpressions natural join LesArticles natural join LesCommandes where status='envoyee')");
 			requete_delete.setInt(1, obj.getIdImpression());
 			int b = requete_delete.executeUpdate();
 			requete_delete.close();

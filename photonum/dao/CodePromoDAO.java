@@ -31,7 +31,7 @@ public class CodePromoDAO extends DAO<CodePromo>{
 				"INSERT INTO LesCodesPromo VALUES (?,?,?)"
 			);
 			pstmt.setString(1, cp.getMailClient());
-			pstmt.setString(2, System.currentTimeMillis()+""); // TODO: Générer un code lisible.
+			pstmt.setString(2, System.currentTimeMillis()+"");
 			pstmt.setBoolean(3, cp.estUtilise());
 			success = pstmt.execute();
 			pstmt.close();

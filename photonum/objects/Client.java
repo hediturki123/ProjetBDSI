@@ -1,5 +1,15 @@
 package photonum.objects;
 
+import java.util.List;
+
+import photonum.PhotoNum;
+import photonum.dao.AdresseDAO;
+import photonum.dao.ClientDAO;
+import photonum.dao.CodePromoDAO;
+import photonum.dao.CommandeDAO;
+import photonum.dao.FichierImageDAO;
+import photonum.dao.ImpressionDAO;
+
 public class Client {
 
     private String mail;
@@ -13,9 +23,21 @@ public class Client {
 	private String pays;
 	private boolean actif;
 
+	private final static AdresseDAO AD_DAO = new AdresseDAO(PhotoNum.conn);
+	private final static ClientDAO CL_DAO = new ClientDAO(PhotoNum.conn);
+	private final static ImpressionDAO IM_DAO = new ImpressionDAO(PhotoNum.conn);
+	private final static CommandeDAO CM_DAO = new CommandeDAO(PhotoNum.conn);
+	private final static CodePromoDAO CP_DAO = new CodePromoDAO(PhotoNum.conn);
+	private final static FichierImageDAO FI_DAO = new FichierImageDAO(PhotoNum.conn);
+
     public Client(String mail, String nom, String prenom, String mdp, int numeroRue, String nomRue,
 			String ville, int cp, String pays, boolean actif) {
 		this.setAll(mail, nom, prenom, mdp, numeroRue, nomRue, ville, cp, pays, actif);
+    }
+
+	public Client(String mail, String nom, String prenom, String mdp, int numeroRue, String nomRue,
+			String ville, int cp, String pays) {
+		this(mail, nom, prenom, mdp, numeroRue, nomRue, ville, cp, pays, true);
     }
 
 	public String getMail() {
@@ -114,8 +136,90 @@ public class Client {
 
 	@Override
 	public String toString() {
-		String descriptif = prenom+" "+nom+" <"+mail+">\n" + (isActif() ? "" : "(INACTIF)") +
-			numeroRue +", "+nomRue+", "+cp+" "+ville.toUpperCase()+" ("+pays+")";
+		String descriptif =
+			"┌"+"─".repeat(12)+"┐\n"+
+			prenom+" "+nom+" <"+mail+">\n" + (isActif() ? "" : "(INACTIF)") +
+			numeroRue +", "+nomRue+", "+cp+" "+ville.toUpperCase()+" ("+pays+")"+
+			"└"+"─".repeat(12)+"┘\n";
 		return descriptif;
+	}
+
+	/**
+	 * Récupère les adresses de livraison associées au client.
+	 * @return Liste des adresses de livraison.
+	 */
+	public List<Adresse> getAdressesLivraison() {
+		return AD_DAO.readAllByClient(this);
+	}
+
+	/**
+	 * Ajoute une nouvelle adresse de livraison au client.
+	 * @param a Une adresse de livraison.
+	 */
+	public void ajouterAdresseLivraison(Adresse a) {
+		AD_DAO.create(a);
+	}
+
+	/**
+	 * Crée un nouveau compte client dans la base de données.
+	 * @return <b>true</b> si la création du compte s'est déroulée correctement ; <b>false</b> sinon.
+	 */
+	public boolean nouveauCompte() {
+		return CL_DAO.create(this);
+	}
+
+	public static Client connexion(String mail, String mdp) {
+		String[] infos = {mail, mdp};
+		return CL_DAO.read(infos);
+	}
+
+	/**
+	 * Récupère la liste des impressions crées par un client.
+	 * @return Les impressions d'un client.
+	 */
+	public List<Impression> getImpressions() {
+		return IM_DAO.readAllByClient(this);
+	}
+
+	/**
+	 * Récupère la liste des commandes (passées et présentes) du client.
+	 * @return Toutes les commandes d'un client.
+	 */
+	public List<Commande> getCommandes() {
+		return CM_DAO.readAllByClient(this);
+	}
+
+	/**
+	 * Récupère la liste de <u>tous</u> les codes promo d'un client.
+	 * @return Tous les codes promos d'un client.
+	 */
+	public List<CodePromo> getCodesPromo() {
+		return CP_DAO.readAllByClient(mail);
+	}
+
+	/**
+	 * Récupère la liste des codes promo (utilisés ou non) d'un client.
+	 * @param utilise <b>true</b> si on cherche les codes utilisés, <b>false</b> si on cherche les codes utilisables.
+	 * @return Les codes promos (utilisés ou non) d'un client.
+	 */
+	public List<CodePromo> getCodesPromo(boolean utilise) {
+		return CP_DAO.readAllByClient(mail, utilise);
+	}
+
+	/**
+	 * Récupère la liste des images importées par un client.
+	 * @return Fichiers images importées par le client.
+	 */
+	public List<FichierImage> getImages() {
+		return FI_DAO.readAllByClient(this);
+	}
+
+	/**
+	 * Récupère la liste des images partagées ou non par le client.
+	 * @param partages <b>true</b> si les images sont partagées ; <b>false</b> sinon.
+	 * @return Fichiers images partagés (ou non) par le client.
+	 */
+	public List<FichierImage> getImages(boolean partages) {
+		return FI_DAO.readAllByClient(this, partages);
 	}
 }
