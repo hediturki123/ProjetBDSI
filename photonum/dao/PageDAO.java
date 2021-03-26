@@ -88,8 +88,8 @@ public class PageDAO extends DAO<Page>{
 	public boolean update(Page obj) {
 		try {
 			PreparedStatement requeteUpdate=this.connect.prepareStatement(
-				"UPDATE INTO LesPages set"+
-				"miseEnForme=? where idPage=? and idImpression=?"
+				"UPDATE LesPages SET"+
+				"miseEnForme=? WHERE idPage=? AND idImpression=?"
 			);
 			requeteUpdate.setString(1,obj.getMiseEnForme());
 			requeteUpdate.setInt(2,obj.getIdPage());
