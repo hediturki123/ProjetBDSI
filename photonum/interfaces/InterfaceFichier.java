@@ -30,10 +30,10 @@ public class InterfaceFichier {
         while (choix != 4) {
             choix = LectureClavier.lireEntier(
                 "--- Mes images ---\n" +
-                "1. Rajouter une image\n"+
-                "2. Supprimer une image\n"+
-                "3. Partager une image\n"+
-                "4. Revenir au menu\n"+
+                "\t1. Rajouter une image\n"+
+                "\t2. Supprimer une image\n"+
+                "\t3. Partager une image\n"+
+                "\t4. Revenir au menu\n"+
                 "> "
             );
             switch (choix) {
@@ -67,7 +67,7 @@ public class InterfaceFichier {
                     System.out.println(i + ". " + imageClient.get(i - 1).toString());
                 }
                 choix = LectureClavier.lireEntier("choissisez quel fichier voulez-vous paratger ? ");
-            }
+            }//TODO choix de sorti a faire 
             if (LectureClavier.lireOuiNon("êtes vous sur de vouloir le partager (o/n)")) {
                 imageClient.get(choix - 1).setEstPartage(true);
                 if (imgDAO.update(imageClient.get(choix - 1))) {
@@ -157,9 +157,13 @@ public class InterfaceFichier {
      */
     public static void afficherImagesPartage(Client c){
         List<FichierImage> imagePartageClient = imgDAO.readAllByClient(c, true);
-        System.out.println("\nVos images partagé sont : ");
-        for (int i = 1; i <= imagePartageClient.size(); i++) {
-            System.out.println(i + ". " + imagePartageClient.get(i - 1).toString());
+        if(imagePartageClient.size()>0){
+             System.out.println("\nVos images partagé sont : ");
+            for (int i = 1; i <= imagePartageClient.size(); i++) {
+                System.out.println(i + ". " + imagePartageClient.get(i - 1).toString());
+            }
+        }else{
+            System.out.println("vous n'avez aucune image partagées");
         }
     }
 

@@ -79,16 +79,21 @@ public class InterfaceImpression {
 		List<Page> pages = new ArrayList<>();
 		Page page = new Page(impression.getIdImpression(), "");
 		boolean b = true;
-		for(int i = 0; i < 12 && b; i++) {
+		for(int i = 0; i < 12 && b && page!=null; i++) {
 			InterfacePage.interfaceCreationPage(impression.getIdImpression(), client, page);
 			pages.add(page);
 			System.out.println("Page n° : " + i);
 			b = LectureClavier.lireEntier("1.Quitter la création.\n2.Continuer la création.") != 1;
 		}
-		if(b)
+		if(b && page!=null)
 		{
 			impression.setPages(pages);
 			createImpression(impression,client);
+		}
+		else if(!b && page==null){
+			System.out.println("Allez dans le menu image pour cela !");
+		}else{
+			System.out.println("Pas de souci , mais votre impression n'a pas été enregistré");
 		}
 	}
 
@@ -143,7 +148,7 @@ public class InterfaceImpression {
 			PhotoTirage photo = new PhotoTirage("", client.getMail(), 0);
 			int nbFois;
 			int j = 1;
-			List<FichierImage> listImg = fichierImageDAO.readAllByClient(client, true);
+			List<FichierImage> listImg = fichierImageDAO.readAllByClient(client);
 			if(listImg.size() != 0){
 			
 				System.out.println("Vos fichiers images disponibles:");
@@ -278,10 +283,11 @@ public class InterfaceImpression {
 				if(choix<0 || choix>last){
 					System.out.println("vous n'avez pas choisi une impression ");
 				}else if (choix!=last){
-					list.get(choix-1).toString();
+					System.err.println(list.get(choix-1).toString()+"\n");
+					//TODO ici rajouter le detail des page 
 				}
 			}
-			if (LectureClavier.lireOuiNon("Voulez vous regardez une autre impression ? (o/n)")){
+			if (LectureClavier.lireOuiNon("Voulez vous regardez une autre impression ? (o/n)")){//TODO pas vraiment utilse du coup
 				interfaceVueImpression(client);
 			}
 		} else {
@@ -298,7 +304,7 @@ public class InterfaceImpression {
 				"\t2. Créer une impression\n"+
 				"\t3. Modifier une impression\n"+
 				"\t4. Supprimer une impression\n"+
-				"\t5. Retour au menu précédent"+
+				"\t5. Retour au menu précédent\n"+
 				"> "
 			);
 			switch (choix) {
@@ -306,6 +312,7 @@ public class InterfaceImpression {
 				case 2: interfaceCreationImpression(client); break;
 				case 3: interfaceModificationImpression(client); break;
 				case 4: interfaceSuppressionImpression(client); break;
+				case 5:break;
 				default: System.err.println("Veuillez indiquer un nombre entre 1 et 3."); break;
 			}
 		}

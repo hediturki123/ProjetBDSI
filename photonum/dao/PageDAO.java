@@ -89,7 +89,7 @@ public class PageDAO extends DAO<Page>{
 		try {
 			PreparedStatement requeteUpdate=this.connect.prepareStatement(
 				"UPDATE LesPages SET"+
-				"miseEnForme=? WHERE idPage=? AND idImpression=?"
+				" miseEnForme=? WHERE idPage=? AND idImpression=?"
 			);
 			requeteUpdate.setString(1,obj.getMiseEnForme());
 			requeteUpdate.setInt(2,obj.getIdPage());
