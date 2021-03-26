@@ -30,8 +30,9 @@ public class InterfacePage {
 			int choix;
 			for(Photo photo: photosExi) {
 				System.out.println(i+". Vous avez cette photo: "+photo.toString());
+				i++;
 			}
-			for(boolean b = true; b; b = 1 != LectureClavier.lireEntier("1.quitter ou 2.continuer"))
+			for(boolean b = true; b; b = 1 != LectureClavier.lireEntier("1.Arrêter d'ajouter des photos ou 2.continuer"))
 			{
 				choix = LectureClavier.lireEntier("Choisissez la photo que vous voulez pour votre page");
 				while(choix<1 && choix>photosExi.size()){
