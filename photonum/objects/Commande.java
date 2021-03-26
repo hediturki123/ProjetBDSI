@@ -2,6 +2,11 @@ package photonum.objects;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.List;
+
+import photonum.PhotoNum;
+import photonum.dao.ArticleDAO;
+import photonum.dao.CommandeDAO;
 
 public class Commande {
 
@@ -16,6 +21,9 @@ public class Commande {
 	private String ville;
 	private int codePostal;
 	private String pays;
+
+	private final static ArticleDAO A_DAO = new ArticleDAO(PhotoNum.conn);
+	private final static CommandeDAO C_DAO = new CommandeDAO(PhotoNum.conn);
 
 	public Commande() {}
 
@@ -130,6 +138,32 @@ public class Commande {
 		this.pays = pays;
 	}
 
+	public List<Article> getArticles() {
+		return A_DAO.readAllByCommande(this);
+	}
+
+	public Article getArticle(int index) {
+		return A_DAO.readAllByCommande(this).get(index);
+	}
+
+	public void setArticles(List<Article> articles) {
+		articles.forEach(a -> {
+			A_DAO.create(a);
+		});
+	}
+
+	public void setArticle(Article a) {
+		A_DAO.create(a);
+	}
+
+	public void setArticle(int idImpression, int quantite) {
+		A_DAO.create(new Article(this.idCommande, idImpression, quantite));
+	}
+
+	public double getPrixTotal() {
+		return C_DAO.getPrixTotal(this.idCommande);
+	}
+
 	@Override
 	public String toString() {
 		String s = String.join(" | ",
@@ -142,5 +176,20 @@ public class Commande {
 			numeroRue+", "+nomRue+", "+codePostal+" "+ville.toUpperCase()+" ("+pays+")"
 		);
 		return s;
+	}
+
+	public String facture() {
+		final double PRIX_TOTAL = getPrixTotal();
+		final List<Article> articles = getArticles();
+
+		String f = "< FACTURE n°"+idCommande+" >\n"+"-".repeat(10)+"\n";
+		f += "Vous avez commandé "+(articles.size() > 1 ? "les "+articles.size()+" suivants" : "l'article suivant")+" :\n";
+		for (Article a : articles) {
+			f += "\t"+a.toString()+"\n";
+		}
+		f += "-".repeat(10)+"\n";
+		f += "PRIX HT : "+(PRIX_TOTAL*0.8)+"€ / PRIX TTC : "+PRIX_TOTAL+"€";
+
+		return f;
 	}
 }

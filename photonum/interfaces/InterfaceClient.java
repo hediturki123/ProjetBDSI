@@ -1,16 +1,19 @@
 package photonum.interfaces;
+
 import java.util.function.UnaryOperator;
 
 import photonum.*;
 import photonum.dao.ClientDAO;
 import photonum.utils.*;
 import photonum.objects.*;
+
 /**
  * Cette interface permet toutes les interactions avec un {@link Client}
  */
 public class InterfaceClient  {
 
 	private static ClientDAO clientDao = new ClientDAO(PhotoNum.conn);
+
 	/**
 	 * on demarre le menu de l'interface client
 	 * ici l'utilisateur a 3 choix qui se presente de cette manière :
@@ -22,7 +25,7 @@ public class InterfaceClient  {
 			<tr><td>2. Créer un nouveau compte</td></tr>
 			<tr><td>3. Retour au menu principal</td></tr>
 	* </table>
-	
+
 	<ul>
 	<li>1 -> permet a l'utilisateur de se connecter en entrant son mail , et sont mot de passe</li>
 	<li>2 -> permet de creer un nouveau compte</li>
@@ -70,32 +73,32 @@ public class InterfaceClient  {
 
 		UnaryOperator<Client> connect = c -> {
 			System.out.println("Mail :");
-			String mailConnexion=LectureClavier.lireChaine();
+			String mailConnexion = LectureClavier.lireChaine();
 			System.out.println("Mot de passe :");
-			String mdpConnexion=LectureClavier.lireChaine();
-			String[] args = {mailConnexion, mdpConnexion};
+			String mdpConnexion = LectureClavier.lireChaine();
+			String[] args = { mailConnexion, mdpConnexion };
 			return clientDao.read(args);
 		};
 		clientCourant = connect.apply(null);
-		int essai=4;
-		while (clientCourant == null && essai!=0) {
-			System.err.println(">>> Mot de passe ou identifiant incorrect ! \nIl vous reste "+essai+" essais");
+		int essai = 3;
+		while (clientCourant == null && essai > 0) {
+			System.err.println(">>> Mot de passe ou identifiant incorrect ! \nIl vous reste " + essai + " essais");
 			essai--;
 			clientCourant = connect.apply(null);
 
 		}
-		if(clientCourant!=null){
+		if (clientCourant != null) {
 			System.out.println(">>> Connexion réussie !");
 			menu(clientCourant);
-		}else{
+		} else {
 			System.out.println(">>> Veuillez vous connectez ulterieurment");
 		}
     }
 
 	/**
 	 * permet de faire la creation complete d'un compte client
-	 * en lui demandant Mail , mdp , nom , prenom , et toutes sont adresse 
-	 * Au moment ou le mail 
+	 * en lui demandant Mail , mdp , nom , prenom , et toutes sont adresse
+	 * Au moment ou le mail
 	 * <h3>Exemple :</h3>
 	 * <table>
 	 		<tr><td>Veuillez entrer votre adresse mail : </td></tr>
@@ -117,43 +120,43 @@ public class InterfaceClient  {
             <tr><td>veuillez entrez votre pays</td></tr>
             <tr><td>XXXXX</td></tr>
 	* </table>
-	<h4>Probleme<
+	<h4>Probleme</h4>
 	 */
     private static void creationCompte(){
 		System.out.println("Veuillez entrer votre adresse mail :");
-		String mail=LectureClavier.lireChaine();
+		String mail = LectureClavier.lireChaine();
 
 		System.out.println("Veuillez entrer votre mdp :");
-		String mdp=LectureClavier.lireChaine();
+		String mdp = LectureClavier.lireChaine();
 
 		System.out.println("Veuillez entrer votre nom :");
-		String nom=LectureClavier.lireChaine();
+		String nom = LectureClavier.lireChaine();
 
 		System.out.println("Veuillez entrer votre prenom :");
-		String prenom=LectureClavier.lireChaine();
+		String prenom = LectureClavier.lireChaine();
 
-		int numeroRue=LectureClavier.lireEntier("veuillez entrez votre numero de rue");
+		int numeroRue = LectureClavier.lireEntier("veuillez entrez votre numero de rue");
 
 		System.out.println("veuillez entrez votre rue");
-		String nomRue=LectureClavier.lireChaine();
+		String nomRue = LectureClavier.lireChaine();
 
 		System.out.println("veuillez entrez votre ville");
-		String ville=LectureClavier.lireChaine();
+		String ville = LectureClavier.lireChaine();
 
-		int cp=LectureClavier.lireEntier("veuillez entrez votre code postal");
+		int cp = LectureClavier.lireEntier("veuillez entrez votre code postal");
 
 		System.out.println("veuillez entrez votre pays ");
-        String pays=LectureClavier.lireChaine();
-        
-		Client c = new Client(mail, nom, prenom, mdp, numeroRue, nomRue, ville, cp, pays,true);
-	
-		if(clientDao.create(c)){
+		String pays = LectureClavier.lireChaine();
+
+		Client c = new Client(mail, nom, prenom, mdp, numeroRue, nomRue, ville, cp, pays, true);
+
+		if (clientDao.create(c)) {
 			menu(c);
 		} else {
 			System.out.println("Quelque chose s'est mal passé lors de la création du compte...");
 		}
 	}
- 
+
 	/**
 	 * Permet d'arriver sur le menu principal du client
 	 * Le menu ce presente de la maniere suivante :
@@ -234,11 +237,11 @@ public class InterfaceClient  {
 		}
 	}
 
-/**
- * Affiche les informations du client à travers son toString();
- * @param c le {@link Client} courant
- */
- public static void afficherInfo(Client c){
-	 System.out.println(c.toString());
- }
+	/**
+	 * Affiche les informations du client à travers son toString();
+	 * @param c le {@link Client} courant
+	 */
+	public static void afficherInfo(Client c){
+		System.out.println(c.toString());
+	}
 }

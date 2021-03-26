@@ -1,10 +1,10 @@
 package photonum.objects;
 
-public class Article{
+public class Article {
+
     private int idCommande;
     private int idImpression;
     private int quantite;
-
 
     public Article(int idCommande, int idImpression, int quantite) {
         setIdCommande(idCommande);
@@ -12,7 +12,6 @@ public class Article{
         setQuantite(quantite);
     }
 
-    /**************Gettter and setter *******/
     public int getIdCommande() {
         return idCommande;
     }
@@ -46,11 +45,4 @@ public class Article{
     public String toString() {
         return "Article [idCommande=" + idCommande + ", idImpression=" + idImpression + ", quantite=" + quantite + "]";
     }
-    
-
-    /*************************/
-
-    
-
-    
 }
