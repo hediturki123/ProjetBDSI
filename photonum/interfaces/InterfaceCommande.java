@@ -158,6 +158,7 @@ public class InterfaceCommande {
 
     public static void afficherDetailCommande(Commande c) {
         List<Article> tabArticles = articleDAO.readAllByCommande(c);
+        System.out.println(c.toString());
         System.out.println("\n\nLes details de votre commande :");
         if (tabArticles.size() > 0) {
             for (int i = 1; i <= tabArticles.size(); i++) {
