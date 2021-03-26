@@ -114,11 +114,8 @@ public class Client {
 
 	@Override
 	public String toString() {
-		String descriptif="vos informations:\n"+
-		"mail = "+mail+
-		"\nnom ="+nom+
-		"\nprenom =" + prenom +
-		"\nadresse = "+numeroRue +" "+nomRue+" "+cp+" "+ville+" "+pays;
-		return descriptif+"\n";
+		String descriptif = prenom+" "+nom+" <"+mail+">\n" + (isActif() ? "" : "(INACTIF)") +
+			numeroRue +", "+nomRue+", "+cp+" "+ville.toUpperCase()+" ("+pays+")";
+		return descriptif;
 	}
 }
