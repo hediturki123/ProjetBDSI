@@ -7,6 +7,7 @@ START dropPhotoNum.sql;
 START createPhotoNum.sql;
 
 START procedures/procExpirationImage.sql;
+START procedures/procCodePromo.sql;
 
 START triggers/trigExpirationImage.sql;
 START triggers/trigUtilisationPromo.sql;
