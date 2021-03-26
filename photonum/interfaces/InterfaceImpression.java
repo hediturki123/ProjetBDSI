@@ -68,7 +68,7 @@ public class InterfaceImpression {
 		List<Page> pages = new ArrayList<>();
 		Page page = new Page(impression.getIdImpression(), "");
 		boolean b = true;
-		for(int i = 0; i < 12 && b && page!=null; i++) {
+		for(int i = 1; i < 13 && b && page!=null; i++) {
 			InterfacePage.interfaceCreationPage(impression.getIdImpression(), client, page);
 			pages.add(page);
 			System.out.println("Page n° : " + i);

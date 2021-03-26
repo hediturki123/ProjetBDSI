@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import photonum.objects.Client;
-import photonum.objects.CodePromo;
 import photonum.PhotoNum;
 import photonum.objects.Commande;
 import photonum.objects.StatutCommande;
