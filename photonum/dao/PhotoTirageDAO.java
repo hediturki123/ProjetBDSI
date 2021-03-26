@@ -116,11 +116,11 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 	public boolean update(PhotoTirage obj) {
 		try {
 			PreparedStatement requete_update = this.connect.prepareStatement(
-					"UPDATE LesPhotosTirees SET"
+					"UPDATE LesPhotosTirees SET "
 					+ "idPhoto=?,"
 					+ "nbPhotoTirees=?");
 			PreparedStatement requete_update2 = this.connect.prepareStatement(
-					"UPDATE LesPhotos SET"
+					"UPDATE LesPhotos SET "
 					+ "idPhoto=?,"
 					+ "chemin=?,"
 					+ "mailClient=?");
@@ -173,7 +173,7 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 		return false;
 	}
 
-	public static List<PhotoTirage> readAllPhotosTirageByClient(Client client){
+	public List<PhotoTirage> readAllPhotosTirageByClient(Client client){
 		try {
 			PreparedStatement requete_select = PhotoNum.conn.prepareStatement("SELECT * FROM LesPhotosTirees NATURAL JOIN LesPhotos WHERE mailClient=?");
 			requete_select.setString(1, client.getMail());

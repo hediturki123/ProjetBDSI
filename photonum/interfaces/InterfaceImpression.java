@@ -367,9 +367,25 @@ public class InterfaceImpression {
 						System.out.println("Quel est le nouveau titre?");
 						String titre = LectureClavier.lireChaine();
 						System.out.println("Quel est la nouvelle référence");
-						String reference = LectureClavier.lireChaine();
+						
+						List<Produit> listProd = produitDAO.readAll();
+						int i = 1;
+						for(Produit prod : listProd) {
+							System.out.println(i + ". " + prod.toString());
+							i++;
+						}
+						int choix1 = LectureClavier.lireEntier(
+								"Choisissez une reference pour votre impression\n"
+							);
+						while(choix1 > i) {
+							System.out.println("Prenez une référence qui existe");
+							choix1 = LectureClavier.lireEntier(
+									"Choisissez une reference pour votre impression\n"
+								);
+						}
+						
 						list.get(choix-1).setTitre(titre);
-						list.get(choix-1).setReference(reference);
+						list.get(choix-1).setReference(listProd.get(choix1-1).getReference());
 						impressionDAO.update(list.get(choix-1));
 					}
 			}

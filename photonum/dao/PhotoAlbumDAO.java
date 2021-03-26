@@ -93,11 +93,11 @@ public class PhotoAlbumDAO extends DAO<PhotoAlbum>{
 	public boolean update(PhotoAlbum obj) {
 		try {
 			PreparedStatement requete_update = this.connect.prepareStatement(
-					"UPDATE LesPhotosAlbum SET"
+					"UPDATE LesPhotosAlbum SET "
 					+ "idPhoto=?,"
 					+ "texteDescriptif=?");
 			PreparedStatement requete_update2 = this.connect.prepareStatement(
-					"UPDATE LesPhotos SET"
+					"UPDATE LesPhotos SET "
 					+ "idPhoto=?,"
 					+ "chemin=?,"
 					+ "mailClient=?");
@@ -180,7 +180,7 @@ public class PhotoAlbumDAO extends DAO<PhotoAlbum>{
 	 * @return <b>List&lt;{@link PhotoAlbum}&gt; </b> la liste de toutes les {@link PhotoAlbum} de la base en fonction du client
 	 * @exception SQLException;
 	 */
-	public static List<PhotoAlbum> readAllPhotosAlbumByClient(String mail){
+	public List<PhotoAlbum> readAllPhotosAlbumByClient(String mail){
 		try {
 			PreparedStatement requete_select = PhotoNum.conn.prepareStatement("SELECT * FROM LesPhotosAlbum NATURAL JOIN LesPhotos WHERE mailClient=?");
 			requete_select.setString(1, mail);
