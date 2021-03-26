@@ -88,16 +88,15 @@ public class InterfaceCommande {
      */
     public static void validationCommande(Client c,Commande cmd,List<Article> articles){
         cmd.setDateCommande(Date.valueOf(LocalDate.now()));
+        cmd.setStatus(StatutCommande.EN_COURS);
         System.out.println("voici le descriptif de votre commande :");
-        System.out.println("    " + cmd.toString());
+        System.out.println("    " + cmd.toString()+"\n");
         System.out.println("    Details de vos articles :");
         for (Article a : articles) {
             System.out.println("        " + a.factureString());
         }
 
         if (LectureClavier.lireOuiNon("valider la commande ? (o/n)")) {
-    
-            cmd.setStatus(StatutCommande.EN_COURS);
             if (cmdDao.create(cmd)) {
                 for (Article a : articles)
                     articleDAO.create(a);

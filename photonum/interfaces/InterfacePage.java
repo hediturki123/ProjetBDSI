@@ -49,9 +49,9 @@ public class InterfacePage {
 
 
 		System.out.println("Voulez vous créer des photos à mettre dans votre page?");
-		int choix = LectureClavier.lireEntier("1.Oui/2.Non");
+		int choix = LectureClavier.lireEntier("1.Oui/2.Non");//TODO changer par un lire oui non 
 		String chemin;
-		List<FichierImage> listImg = fichierImageDAO.readAllByClient(client, true);
+		List<FichierImage> listImg = fichierImageDAO.readAllByClient(client);
 		if(listImg.size()!=0){
 			if(choix == 1) {
 				Photo photo = new Photo("",client.getMail());
@@ -86,6 +86,8 @@ public class InterfacePage {
 		}
 		else{
 			System.out.println("Vous n'avez pas de fichier image pour créer des photos, téléchargez-en.");
+			page=null;
+
 		}
 		
 	}

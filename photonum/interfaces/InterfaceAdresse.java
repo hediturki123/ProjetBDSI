@@ -49,7 +49,12 @@ public class InterfaceAdresse {
 		System.out.println("veuillez entrez votre pays ");
         String pays=LectureClavier.lireChaine();
 
-        a = new Adresse(mailClient, numeroRue, nomRue, ville, cp, pays);
+        a.setCp(cp);
+        a.setMailClient(mailClient);
+        a.setNomRue(nomRue);
+        a.setNumeroRue(numeroRue);
+        a.setPays(pays);
+        a.setVille(ville);
     }
 
     /**
