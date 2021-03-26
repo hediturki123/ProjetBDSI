@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import photonum.PhotoNum;
 import photonum.objects.Client;
 import photonum.objects.Impression;
 import photonum.objects.TypeImpression;
@@ -29,8 +30,9 @@ public class ImpressionDAO extends DAO<Impression> {
 	public boolean create(Impression obj) {
 		try {
 			PreparedStatement requete_imp = this.connect.prepareStatement(
-					"INSERT INTO LesImpressions VALUES (?, ?, ? , ?, ?)");
-			obj.setIdImpression(lastId() + 1);
+					"INSERT INTO LesImpressions VALUES (?, ?, ?, ?, ?)");
+			int id = getLastId() +1;
+			obj.setIdImpression(id); 
 			requete_imp.setInt(1, obj.getIdImpression());
 			requete_imp.setString(2, obj.getMailClient());
 			requete_imp.setString(3, obj.getReference());
@@ -63,13 +65,12 @@ public class ImpressionDAO extends DAO<Impression> {
 			if(result.next())
 			{
 				 res = new Impression(
-					 	result.getInt("idImpression"),
 						result.getString("mailClient"),
 						result.getString("reference"),
 						TypeImpression.fromString(result.getString("type")),
 						result.getString("titre")
 						);
-				 res.setIdImpression(result.getInt("idImpressions"));
+				res.setIdImpression(result.getInt("idImpression"));
 			}
 			requete_select.close();
 			return res;
@@ -143,14 +144,14 @@ public class ImpressionDAO extends DAO<Impression> {
 			ArrayList<Impression> impressions  = new ArrayList<Impression>();
 			while(result.next())
 			{
-				impressions.add(new Impression(
-						result.getInt("idImpression"),
+				Impression imp new Impression(
 						result.getString("mailClient"),
 						result.getString("reference"),
 						TypeImpression.fromString(result.getString("type")),
 						result.getString("titre")
-						)
-					);
+						);
+					imp.setIdImpression(result.getInt("idImpression"));
+				impressions.add(imp);
 			}
 			requete_select.close();
 			return impressions;
@@ -200,14 +201,15 @@ public class ImpressionDAO extends DAO<Impression> {
 	 * cette fonction permet de recuperer le dernier Id pour pouvoir creer une nouvelle commande(AUTO_INCREMENT)
 	 * @return un <b>Int</b> correpondant au dernier id dans la table LesImpressions
 	 */
-	private int lastId() {
+	public int getLastId() {
 		try {
 			PreparedStatement requete_last = this.connect.prepareStatement(
 				"SELECT max(idImpression) FROM LesImpressions"
-				);
+			);
 			ResultSet res = requete_last.executeQuery();
+			
 			if(res.next()) {
-				return res.getInt("idImpression");
+				return res.getInt(1);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

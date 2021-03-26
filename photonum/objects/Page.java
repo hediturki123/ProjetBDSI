@@ -9,7 +9,6 @@ public class Page{
 	private List<Photo> photos;
 	
 	public Page(int idImpression, String miseEnForme) {
-		setIdPage(-1);
 		setAll(idImpression, miseEnForme);
 	}
 	
@@ -59,8 +58,9 @@ public class Page{
 		this.photos = photos;
 	}
 
-	private void setAll(int idPage, String miseEnForme){
-		setIdPage(idPage);
+	private void setAll(int idImpression, String miseEnForme){
+		setIdImpression(idImpression);
 		setMiseEnForme(miseEnForme);
 	}
 }
+t

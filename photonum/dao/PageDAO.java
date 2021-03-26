@@ -31,7 +31,7 @@ public class PageDAO extends DAO<Page>{
 			PreparedStatement requeteCreate=this.connect.prepareStatement(
 				"INSERT INTO LesPages VALUES (?,?,?)"
 			);
-			obj.setIdPage(lastId()+1);
+			obj.setIdPage(lastId() + 1);
 			requeteCreate.setInt(1,obj.getIdPage());
 			requeteCreate.setInt(2, obj.getIdImpression());
 			requeteCreate.setString(3, obj.getMiseEnForme());
@@ -66,9 +66,10 @@ public class PageDAO extends DAO<Page>{
 			if(!resultat.next()){
 				p=null;
 			}else{
-				p=new Page(
-				resultat.getInt("idImpression"), 
-				resultat.getString("miseEnForme"));
+				p = new Page(
+					resultat.getInt("idImpression"),
+					resultat.getString("miseEnForme")
+				);
 				p.setIdPage(resultat.getInt("idPage"));
 			}
 			requeteRead.close();
@@ -91,8 +92,8 @@ public class PageDAO extends DAO<Page>{
 				"miseEnForme=? where idPage=? and idImpression=?"
 			);
 			requeteUpdate.setString(1,obj.getMiseEnForme());
-			requeteUpdate.setInt(1,obj.getIdPage());
-			requeteUpdate.setInt(2,obj.getIdImpression());
+			requeteUpdate.setInt(2,obj.getIdPage());
+			requeteUpdate.setInt(3,obj.getIdImpression());
 
 			int reussi=requeteUpdate.executeUpdate();
 			requeteUpdate.close();
@@ -138,11 +139,12 @@ public class PageDAO extends DAO<Page>{
 			);
 			ResultSet resultat=requeteAll.executeQuery();
 			while(resultat.next()){
-				tab.add(
-					new Page(
-					 resultat.getInt("idImpression"),
-					 resultat.getString("miseEnForme"))
+				Page p = new Page(
+					resultat.getInt("idImpression"),
+					resultat.getString("miseEnForme")
 				);
+				p.setIdPage(resultat.getInt("idPage"));
+				tab.add(p);
 			}
 			requeteAll.close();
 			return tab;
@@ -160,7 +162,7 @@ public class PageDAO extends DAO<Page>{
 			PreparedStatement requete_last = PhotoNum.conn.prepareStatement("SELECT max(idPage) FROM LesPages");
 			ResultSet res = requete_last.executeQuery();
 			if(res.next()) {
-				return res.getInt("idPage");
+				return res.getInt(1);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

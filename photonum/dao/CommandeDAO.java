@@ -264,7 +264,7 @@ public class CommandeDAO extends DAO<Commande>{
 			PreparedStatement requete_last = PhotoNum.conn.prepareStatement("SELECT max(idCommande) FROM LesCommandes");
 			ResultSet res = requete_last.executeQuery();
 			if(res.next()) {
-				return res.getInt("idCommande");
+				return res.getInt(1);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -7,7 +7,6 @@ public class Photo  {
 	private String mailClient;
 	
 	public Photo(String chemin, String mailClient) {
-		setIdPhoto(-1);
 		this.mailClient = mailClient;
 		this.chemin = chemin;
 	}

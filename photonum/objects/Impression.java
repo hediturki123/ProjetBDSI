@@ -15,11 +15,10 @@ public class Impression{
 	private List<PhotoTirage> photosTirage;
 	
 	public Impression() {
-		setIdImpression(-1);
+		setIdImpression(25);
 	}
 	
-	public Impression(int idImpression, String mailClient ,String reference, TypeImpression type, String titre) {
-		setIdImpression(idImpression);
+	public Impression(String mailClient ,String reference, TypeImpression type, String titre) {
 		setMailClient(mailClient);
 		setReference(reference);
 		setType(type);
