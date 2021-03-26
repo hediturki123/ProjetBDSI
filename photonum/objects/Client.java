@@ -231,7 +231,10 @@ public class Client {
 	public List<PhotoTirage> getPhotosTirage() {
 		return PT_DAO.readAllPhotosTirageByClient(this);
 	}
-
+	/**
+	 * permet de regarder si l'adresse du client est deja dans la base de donnée pour eviter la redondances de sont adresse 
+	 * @param a une {@link Adresse} qui sera l'adresse des client 
+	 */
 	public void checkAdresseExist(Adresse a){
 		List<Adresse> addrC=AD_DAO.readAllByClient(this);
 		if(addrC.contains(a)){
