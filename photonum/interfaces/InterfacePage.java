@@ -44,8 +44,7 @@ public class InterfacePage {
 		}else {
 			System.out.println("Vous n'avez pas de photos.");
 		}
-		DAO<Page> pageDAO = new PageDAO(PhotoNum.conn);
-		pageDAO.create(page);
+		page.nouvellePage();
 
 
 		System.out.println("Voulez vous créer des photos à mettre dans votre page?");
@@ -79,8 +78,7 @@ public class InterfacePage {
 				System.out.println("Rentrez votre mise en forme");
 				String mef = LectureClavier.lireChaine();
 				page.setMiseEnForme(mef);
-
-				pageDAO.update(page);
+				page.mettreAJour();
 			}
 		}
 		else{

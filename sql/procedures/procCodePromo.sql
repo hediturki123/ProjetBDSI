@@ -1,6 +1,6 @@
 CREATE OR REPLACE PROCEDURE code_promo_proc (
-    in_code NUMBER(10),
-    in_mail_client VARCHAR2(80)
+    in_code NUMBER,
+    in_mail_client VARCHAR2
 )
 IS
 BEGIN
