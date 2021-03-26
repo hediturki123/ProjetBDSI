@@ -247,6 +247,14 @@ public class InterfaceImpression {
 						System.out.println("Une erreur est survenue, votre " + impression.getType() + " n'a pas pu être créée. Veuillez réessayer.");
 					}
 				}
+				else
+				{
+					System.out.println("Il n'y a pas de photos dans la page");
+				}
+			}
+			else
+			{
+				System.out.println("Il n'y a pas de pages");
 			}
 		}
 	}
