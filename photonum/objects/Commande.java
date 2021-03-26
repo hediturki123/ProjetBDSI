@@ -6,6 +6,7 @@ import java.util.List;
 
 import photonum.PhotoNum;
 import photonum.dao.ArticleDAO;
+import photonum.dao.ClientDAO;
 import photonum.dao.CommandeDAO;
 
 public class Commande {
@@ -24,6 +25,7 @@ public class Commande {
 
 	private final static ArticleDAO AT_DAO = new ArticleDAO(PhotoNum.conn);
 	private final static CommandeDAO CM_DAO = new CommandeDAO(PhotoNum.conn);
+	private final static ClientDAO CL_DAO = new ClientDAO(PhotoNum.conn);
 
 	public Commande() {}
 
@@ -236,5 +238,9 @@ public class Commande {
 	 */
 	public static List<Commande> getByStatus(StatutCommande sc) {
 		return CM_DAO.readAllByStatus(sc);
+	}
+
+	public Client getClient() {
+		return CL_DAO.read(mail);
 	}
 }

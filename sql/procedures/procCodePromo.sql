@@ -1,5 +1,5 @@
 CREATE OR REPLACE PROCEDURE code_promo_proc (
-    in_code NUMBER,
+    in_code VARCHAR2,
     in_mail_client VARCHAR2
 )
 IS
