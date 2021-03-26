@@ -60,6 +60,8 @@ public class InterfaceImpression {
 
 		
 	}
+	
+	
 	private static void createCadre(Impression impression, Client client) {
 		System.out.println("Vous allez ici créer votre cadre.\nVous devez donc créer une unique page.");
 		Page page = new Page(impression.getIdImpression(), "");
@@ -133,21 +135,17 @@ public class InterfaceImpression {
 					"Choisissez une reference pour votre impression\n"
 				);
 		}
-		impression.setReference(listProd.get(choix-1).getReference());
 
+		impression.setReference(listProd.get(choix - 1).getReference());
 		impression.setMailClient(client.getMail());
-
-		System.out.println("Choisissez maintenant le titre de votre "+impression.getType()+".");
+		System.out.println("Choisissez maintenant le titre de votre " + impression.getType() + ".");
 		impression.setTitre(LectureClavier.lireChaine());
-
 		boolean reussi = impressionDAO.update(impression);
-		if(reussi)
-		{
-			System.out.println("Votre "+impression.getType()+" a bien été créé.");
-		}
-		else
-		{
-			System.out.println("Une erreur est survenue, votre "+impression.getType()+" n'a pas pu être créé. Veuillez réessayer.");
+
+		if(reussi) {
+			System.out.println("Votre " + impression.getType() + " a bien été créé.");
+		} else {
+			System.out.println("Une erreur est survenue, votre " + impression.getType() + " n'a pas pu être créée. Veuillez réessayer.");
 		}
 	}
 
