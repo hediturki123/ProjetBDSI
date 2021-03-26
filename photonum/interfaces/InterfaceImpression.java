@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import photonum.PhotoNum;
-import photonum.dao.DAO;
 import photonum.dao.ImpressionDAO;
 import photonum.dao.ProduitDAO;
 import photonum.objects.*;
@@ -19,7 +18,6 @@ public class InterfaceImpression {
 	private static ProduitDAO produitDAO = new ProduitDAO(PhotoNum.conn);
 
 	public static void interfaceCreationImpression(Client client) {
-		
 
 		System.out.println("Quel type d'impression voulez-vous créer?");
 		System.out.println("\t1. Tirage\n\t2. Album\n\t3. Calendrier\n\t4. Cadre\n");

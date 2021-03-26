@@ -161,7 +161,7 @@ public class Commande {
 	}
 
 	public double getPrixTotal() {
-		return C_DAO.getPrixTotal(this.idCommande);
+		return C_DAO.getPrix(this.idCommande);
 	}
 
 	@Override
@@ -184,6 +184,7 @@ public class Commande {
 
 		String f = "< FACTURE n°"+idCommande+" >\n"+"-".repeat(10)+"\n";
 		f += "Vous avez commandé "+(articles.size() > 1 ? "les "+articles.size()+" suivants" : "l'article suivant")+" :\n";
+		f += "Référence | Prix / u. | Quantité | Prix";
 		for (Article a : articles) {
 			f += "\t"+a.factureString()+"\n";
 		}

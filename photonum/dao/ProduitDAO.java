@@ -10,6 +10,7 @@ import java.util.List;
 import photonum.objects.Produit;
 
 public class ProduitDAO extends DAO<Produit>{
+
 	/**
 	 * construit un ProduitDAO avec la connexions à la BD
 	 * @param conn
@@ -17,6 +18,7 @@ public class ProduitDAO extends DAO<Produit>{
 	public ProduitDAO(Connection conn) {
 		super(conn);
 	}
+
 	/**
 	 * @param obj un {@link Produit} à creer dans la BD
 	 * @return <b>boolean</b> l'action c'est bien passée
@@ -29,7 +31,7 @@ public class ProduitDAO extends DAO<Produit>{
 				"INSERT INTO LesProduits VALUES (?, ?, ?)"
 			);
 			requete.setString(1, obj.getReference());
-			requete.setFloat(2, obj.getPrix());
+			requete.setDouble(2, obj.getPrix());
 			requete.setInt(3, obj.getStock());
 			int reussi = requete.executeUpdate();
 			requete.close();
@@ -40,11 +42,11 @@ public class ProduitDAO extends DAO<Produit>{
 		}
 		return false;
 	}
+
 	/**
-	 * 
 	 * @param id un <b>String</b> correspondant à la reference du {@link Produit}
 	 * @return Le {@link Produit} correspondant à la ref
-	 * @exception SQLException;	 
+	 * @exception SQLException;
 	 * */
 	@Override
 	public Produit read(Object ref) {
@@ -60,7 +62,7 @@ public class ProduitDAO extends DAO<Produit>{
 			if (resultat.next()) {
 				p = new Produit(
 					resultat.getString("reference"),
-					resultat.getFloat("prix"),
+					resultat.getDouble("prix"),
 					resultat.getInt("stock")
 				);
 			}
@@ -72,15 +74,16 @@ public class ProduitDAO extends DAO<Produit>{
 		}
 		return null;
 	}
+
 	/**
 	 * @return <b>List&lt;{@link Produit}&gt;</b> la liste de tous les {@link Produit} de la base
 	 * @exception SQLException;
 	 */
 	@Override
 	public List<Produit> readAll() {
-		
+
 		List<Produit> produits = new ArrayList<Produit>();
-		
+
 		try {
 			PreparedStatement requete = this.connect.prepareStatement(
 				"SELECT * FROM LesProduits"
@@ -90,7 +93,7 @@ public class ProduitDAO extends DAO<Produit>{
 			while (resultat.next()) {
 				produits.add(new Produit(
 					resultat.getString("requete"),
-					resultat.getFloat("prix"),
+					resultat.getDouble("prix"),
 					resultat.getInt("stock")
 				));
 			}
@@ -109,7 +112,7 @@ public class ProduitDAO extends DAO<Produit>{
 			PreparedStatement requete = this.connect.prepareStatement(
 				"UPDATE LesProduits SET prix = ?, stock = ? WHERE reference = ?"
 			);
-			requete.setFloat(1, obj.getPrix());
+			requete.setDouble(1, obj.getPrix());
 			requete.setInt(2, obj.getStock());
 			requete.setString(3, obj.getReference());
 			int reussi = requete.executeUpdate();

@@ -3,7 +3,7 @@ package photonum.objects;
 public enum TypeImpression {
     TIRAGE ("tirage", "Tirage"),
     CADRE ("cadre", "Cadre"),
-    ALBUM ("album", "Album"), 
+    ALBUM ("album", "Album"),
     CALENDRIER ("calendrier", "Calendrier");
 
     private final String str;

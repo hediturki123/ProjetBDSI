@@ -30,9 +30,9 @@ public class CodePromoDAO extends DAO<CodePromo>{
 			PreparedStatement pstmt = this.connect.prepareStatement(
 				"INSERT INTO LesCodesPromo VALUES (?,?,?)"
 			);
-			pstmt.setString(1, cp.getMail());
+			pstmt.setString(1, cp.getMailClient());
 			pstmt.setString(2, System.currentTimeMillis()+""); // TODO: Générer un code lisible.
-			pstmt.setBoolean(3, cp.getEstUtilise());
+			pstmt.setBoolean(3, cp.estUtilise());
 			success = pstmt.execute();
 			pstmt.close();
 		} catch (SQLException e) {
@@ -42,10 +42,9 @@ public class CodePromoDAO extends DAO<CodePromo>{
 	}
 
 	/**
-	 * 
-	 * @param id un <b>String</b> qui correspond au {@link CodePromo} 
+	 * @param id un <b>String</b> qui correspond au {@link CodePromo}
 	 * @return Le {@link CodePromo}correspondant au paramètre
-	 * @exception SQLException;	 
+	 * @exception SQLException;
 	 * */
 	@Override
 	public CodePromo read(Object obj) {
@@ -110,8 +109,8 @@ public class CodePromoDAO extends DAO<CodePromo>{
 			PreparedStatement pstmt = this.connect.prepareStatement(
 				"UPDATE LesCodesPromo SET mail=?, estUtilise=? WHERE code=?"
 			);
-			pstmt.setString(1, cp.getMail());
-			pstmt.setBoolean(2, cp.getEstUtilise());
+			pstmt.setString(1, cp.getMailClient());
+			pstmt.setBoolean(2, cp.estUtilise());
 			pstmt.setString(3, cp.getCode());
 			success = (pstmt.executeUpdate() == 1);
 			pstmt.close();
@@ -142,7 +141,7 @@ public class CodePromoDAO extends DAO<CodePromo>{
 	}
 
 	/**
-	 * @param mail pour trouver  tous les code promo 
+	 * @param mail pour trouver  tous les code promo
 	 * @return <b>List&lt;{@link CodePromo}&gt; </b> la liste de toutes les codePromo en fonction du client
 	 * @exception SQLException;
 	 */
@@ -172,8 +171,8 @@ public class CodePromoDAO extends DAO<CodePromo>{
 	/**
 	 * Ici on vas preciser l'utilisation du {@link CodePromo}
 	 * @param mail pour trouver  tous les code promo
-	 * @param estUtilise un boolean qui dit si le code promo est utilisé ou non  
-	 * @return <b>List&lt;{@link CodePromo}&gt; </b> la liste de tous les codePromo en fonction du client et si il est utiliser ou non 
+	 * @param estUtilise un boolean qui dit si le code promo est utilisé ou non
+	 * @return <b>List&lt;{@link CodePromo}&gt; </b> la liste de tous les codePromo en fonction du client et si il est utiliser ou non
 	 * @exception SQLException;
 	 */
 	public List<CodePromo> readAllByClient(String mail,boolean estUtilise) {

@@ -2,13 +2,13 @@ package photonum.objects;
 
 public class Produit {
     private String reference;
-    private float prix;
+    private double prix;
     private int stock;
 
     public Produit() {
     }
 
-    public Produit(String reference, float prix, int stock) {
+    public Produit(String reference, double prix, int stock) {
         this.reference = reference;
         this.prix = prix;
         this.stock = stock;
@@ -22,11 +22,11 @@ public class Produit {
         this.reference = reference;
     }
 
-    public float getPrix() {
+    public double getPrix() {
         return this.prix;
     }
 
-    public void setPrix(float prix) {
+    public void setPrix(double prix) {
         this.prix = prix;
     }
 
@@ -36,21 +36,6 @@ public class Produit {
 
     public void setStock(int stock) {
         this.stock = stock;
-    }
-
-    public Produit reference(String reference) {
-        setReference(reference);
-        return this;
-    }
-
-    public Produit prix(float prix) {
-        setPrix(prix);
-        return this;
-    }
-
-    public Produit stock(int stock) {
-        setStock(stock);
-        return this;
     }
 
     @Override

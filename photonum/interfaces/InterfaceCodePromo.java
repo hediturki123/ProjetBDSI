@@ -11,18 +11,18 @@ import photonum.objects.Commande;
 import photonum.utils.LectureClavier;
 
 /**
- * cette class permet toutes les interaction avec un utilisateur
-  pour tous ce qui concerne les {@link CodePromo}
+ * cette class permet toutes les interaction avec un utilisateur pour tous ce
+ * qui concerne les {@link CodePromo}
  */
 public class InterfaceCodePromo {
 
-    public static CodePromoDAO cpDao=new CodePromoDAO(PhotoNum.conn);
-    
+    public static CodePromoDAO cpDao = new CodePromoDAO(PhotoNum.conn);
+
     /**
-     * Presente tous les {@link CodePromo} actif du client 
+     * Presente tous les {@link CodePromo} actif du client
      * @param c le {@link Client}
-     */    
-    public static void PresentationCodePromo(Client c){
+     */
+    public static void PresentationCodePromo(Client c) {
         List<CodePromo> codeClients = cpDao.readAllByClient(c.getMail(), false);
         if (codeClients.size() != 0) {
             System.out.println("voici vos codes promo toujours actif :");
@@ -33,13 +33,15 @@ public class InterfaceCodePromo {
             System.out.println("Désolé mais vous n'avez aucun code promo ....\n");
         }
     }
+
     /**
-     * permet lors d'une commande de demander au client courant si il veut utiliser un {@link CodePromo}
-     * @param c le {@link Client} courant 
-     * @param cmd la {@link Commande} courante
+     * permet lors d'une commande de demander au client courant si il veut utiliser
+     * un {@link CodePromo}
+     * @param c        le {@link Client} courant
+     * @param cmd      la {@link Commande} courante
      * @param articles List&lt;{@link Article}&gt; les articles de la commande cmd
      */
-    public static void  utilisationCodePromo(Client c, Commande cmd,List<Article> articles){
+    public static void utilisationCodePromo(Client c, Commande cmd, List<Article> articles) {
         List<CodePromo> cpDispo = cpDao.readAllByClient(c.getMail(), false);
         CodePromo cpUtiliser = new CodePromo();
         if (LectureClavier.lireOuiNon("voulez vous utiliser un code promo ? (o/n)")) {
@@ -52,8 +54,8 @@ public class InterfaceCodePromo {
                     }
                     choix = LectureClavier.lireEntier(" choissisez dans la liste ci-dessus");
                 }
-                cpUtiliser = new CodePromo(cpDispo.get(choix - 1).getMail(), cpDispo.get(choix - 1).getCode(),
-                        cpDispo.get(choix - 1).getEstUtilise());
+                cpUtiliser = new CodePromo(cpDispo.get(choix - 1).getMailClient(), cpDispo.get(choix - 1).getCode(),
+                        cpDispo.get(choix - 1).estUtilise());
             } else {
                 System.out.println("Sha !! pas assez bon client pour avoir un code promo baltringue !!");
             }

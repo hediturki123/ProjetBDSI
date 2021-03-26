@@ -7,7 +7,6 @@ import photonum.PhotoNum;
 import photonum.dao.ClientDAO;
 import photonum.dao.ProduitDAO;
 
-
 public class Impression{
 
 	private int idImpression;
