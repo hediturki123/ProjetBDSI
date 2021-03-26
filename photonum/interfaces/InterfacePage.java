@@ -19,9 +19,9 @@ public class InterfacePage {
 		System.out.println("Vous allez ici créer une page pour votre impression.");
 
 		List<Photo> resultat = new ArrayList<>();
-
+		PhotoParPage pp = null;
 		List<Photo> photosExi = client.getPhotos();
-
+		page.nouvellePage();
 		if(photosExi.size()!=0) {
 			System.out.println("Votre liste de photo:");
 			int i = 1;
@@ -38,12 +38,13 @@ public class InterfacePage {
 						"choisissez une photo existante.\n"
 					);
 				}
-				resultat.add(photosExi.get(choix-1));
+				pp = new PhotoParPage(photosExi.get(choix-1).getIdPhoto(), page.getIdPage());
+				pp.associerPhotoPage();
 			}
 		}else {
 			System.out.println("Vous n'avez pas de photos.");
 		}
-		page.nouvellePage();
+		page.mettreAJour();
 
 
 		System.out.println("Voulez vous créer des photos à mettre dans votre page?");
