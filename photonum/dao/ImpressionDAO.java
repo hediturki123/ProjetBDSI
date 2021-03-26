@@ -12,11 +12,19 @@ import photonum.objects.Impression;
 import photonum.objects.TypeImpression;
 
 public class ImpressionDAO extends DAO<Impression> {
-
+	/**
+	 * construit un ImpressionDAO avec la connexions à la BD
+	 * @param conn
+	 */
 	public ImpressionDAO(Connection conn) {
 		super(conn);
 	}
 
+	/**
+	 * @param obj une {@link Impression} à creer dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean create(Impression obj) {
 		try {
@@ -36,7 +44,12 @@ public class ImpressionDAO extends DAO<Impression> {
 		}
 		return false;
 	}
-
+	/**
+	 * 
+	 * @param id un <b>Int</b> contenant <b>idImpression</b>
+	 * @return L'impression correspondante à <b>id</b>
+	 * @exception SQLException;	 
+	 * */
 	@Override
 	public Impression read(Object id) {
 		try {
@@ -66,6 +79,11 @@ public class ImpressionDAO extends DAO<Impression> {
 		return null;
 	}
 
+	/**
+	 * @param obj une {@link Impression} à update dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean update(Impression obj) {
 		try {
@@ -90,7 +108,11 @@ public class ImpressionDAO extends DAO<Impression> {
 		}
 		return false;
 	}
-
+	/**
+	 * @param obj une {@link Impression} à delete dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean delete(Impression obj) {
 		try {
@@ -106,6 +128,10 @@ public class ImpressionDAO extends DAO<Impression> {
 		return false;
 	}
 
+	/**
+	 * @return <b>List&lt;{@link Impression}&gt;</b> la liste de tous les Articles de la base
+	 * @exception SQLException;
+	 */
 	@Override
 	public List<Impression> readAll() {
 		try {
@@ -133,6 +159,12 @@ public class ImpressionDAO extends DAO<Impression> {
 		}
 		return null;
 	}
+
+	/**
+	 * @param c {@link Client} pour qui on veut recuperer les impressions
+	 * @return <b>List&lt;{@link Impression}&gt; </b> la liste de toutes les {@link Impression} de la base en fonction du client
+	 * @exception SQLException;
+	 */
 	
 	public List<Impression> readAllByClient(Client client){
 		try {
@@ -164,7 +196,10 @@ public class ImpressionDAO extends DAO<Impression> {
 		}
 		return null;
 	}
-	
+	/**
+	 * cette fonction permet de recuperer le dernier Id pour pouvoir creer une nouvelle commande(AUTO_INCREMENT)
+	 * @return un <b>Int</b> correpondant au dernier id dans la table LesImpressions
+	 */
 	private int lastId() {
 		try {
 			PreparedStatement requete_last = this.connect.prepareStatement(

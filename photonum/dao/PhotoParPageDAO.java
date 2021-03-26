@@ -9,12 +9,20 @@ import java.util.List;
 import photonum.objects.PhotoParPage;
 
 public class PhotoParPageDAO extends DAO<PhotoParPage> {
-    
+	
+	/**
+	 * construit une PhotoParPageDAO avec la connexions à la BD
+	 * @param conn
+	 */
     public PhotoParPageDAO(Connection conn) {
 		super(conn);
 	}
 
-    
+    /**
+	 * @param obj une {@link PhotoParPage} à creer dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean create(PhotoParPage obj){
 		try {
@@ -31,7 +39,12 @@ public class PhotoParPageDAO extends DAO<PhotoParPage> {
 		}
 		return false;
 	}
-
+	/**
+	 * 
+	 * @param id un <b>Int[2]</b> contenant <b>idPhoto</b> et <b>idPages</b>
+	 * @return {@link PhotoAlbum} correspondante
+	 * @exception SQLException;	 
+	 * */
 	@Override
 	public PhotoParPage read(Object id) {
 		try {
@@ -54,7 +67,10 @@ public class PhotoParPageDAO extends DAO<PhotoParPage> {
 		}
 		return null;
 	}
-
+	/**
+	 * @return <b>List&lt;{@link PhotoParPage}&gt;</b> la liste de toutes les {@link PhotoParPage} de la base
+	 * @exception SQLException;
+	 */
 	@Override
 	public List<PhotoParPage> readAll() {
 		try {
@@ -76,7 +92,11 @@ public class PhotoParPageDAO extends DAO<PhotoParPage> {
 		}
 		return null;
 	}
-	
+	/**
+	 * @param obj une {@link PhotoParPage} à update dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean update(PhotoParPage obj) {
 		try {
@@ -95,7 +115,11 @@ public class PhotoParPageDAO extends DAO<PhotoParPage> {
 		return false;
 	}
 
-
+	/**
+	 * @param obj une {@link PhotoParPage} à delete dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean delete(PhotoParPage obj) {
 		try {

@@ -10,11 +10,18 @@ import java.util.List;
 import photonum.objects.Produit;
 
 public class ProduitDAO extends DAO<Produit>{
-
+	/**
+	 * construit un ProduitDAO avec la connexions à la BD
+	 * @param conn
+	 */
 	public ProduitDAO(Connection conn) {
 		super(conn);
 	}
-
+	/**
+	 * @param obj un {@link Produit} à creer dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean create(Produit obj) {
 		try {
@@ -33,7 +40,12 @@ public class ProduitDAO extends DAO<Produit>{
 		}
 		return false;
 	}
-
+	/**
+	 * 
+	 * @param id un <b>String</b> correspondant à la reference du {@link Produit}
+	 * @return Le {@link Produit} correspondant à la ref
+	 * @exception SQLException;	 
+	 * */
 	@Override
 	public Produit read(Object ref) {
 		try {
@@ -60,7 +72,10 @@ public class ProduitDAO extends DAO<Produit>{
 		}
 		return null;
 	}
-
+	/**
+	 * @return <b>List&lt;{@link Produit}&gt;</b> la liste de tous les {@link Produit} de la base
+	 * @exception SQLException;
+	 */
 	@Override
 	public List<Produit> readAll() {
 		
@@ -106,7 +121,11 @@ public class ProduitDAO extends DAO<Produit>{
 		}
 		return false;
 	}
-
+	/**
+	 * @param obj un {@link Produit} à delete dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean delete(Produit obj) {
 		try {

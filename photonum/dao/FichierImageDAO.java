@@ -14,10 +14,20 @@ import photonum.PhotoNum;
 import photonum.objects.Client;
 
 public class FichierImageDAO extends DAO<FichierImage> {
+
+	/**
+	 * construit un FichierDAO avec la connexions à la BD
+	 * @param conn
+	 */
 	public FichierImageDAO(Connection conn) {
 		super(conn);
 	}
 
+	/**
+	 * @param obj un {@link FichierImage} à creer dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean create(FichierImage obj) {
 		try{
@@ -41,6 +51,12 @@ public class FichierImageDAO extends DAO<FichierImage> {
 		return false;
 	}
 
+	/**
+	 * 
+	 * @param id un <b>String[2]</b> contenant <b>mailProprio</b> et <b>chemin</b>
+	 * @return Le {@link FichierImage} correspondant à <b>mailProprio</b> et <b>chemin</b>
+	 * @exception SQLException;	 
+	 * */
 	@Override
 	public FichierImage read(Object id) {
 		String [] args = (String []) id;
@@ -69,7 +85,11 @@ public class FichierImageDAO extends DAO<FichierImage> {
 		}
 		return null;
 	}
-
+	/**
+	 * @param obj un {@link FichierImage} à update dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean update(FichierImage obj) {
 		try {
@@ -100,7 +120,11 @@ public class FichierImageDAO extends DAO<FichierImage> {
 		}
 		return false;
 	}
-
+	/**
+	 * @param obj un {@link FichierImage} à delete dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean delete(FichierImage obj) {
 		try {
@@ -117,7 +141,10 @@ public class FichierImageDAO extends DAO<FichierImage> {
 		}
 		return false;
 	}
-
+		/**
+	 * @return <b>List&lt;{@link FichierImage}&gt;</b> la liste de tous les FichierImage de la base
+	 * @exception SQLException;
+	 */
 	@Override
 	public List<FichierImage> readAll() {
 		ArrayList<FichierImage> tab=new ArrayList<>();
@@ -144,6 +171,11 @@ public class FichierImageDAO extends DAO<FichierImage> {
 		}
 		return null;
 	}
+	/**
+	 * @param c une {@link Commande} pour trouver ces articles correspondant 
+	 * @return <b>List&lt;{@link FichierImage}&gt;</b> la liste de toutes les adresseDeLivraison de la base en fonction du client
+	 * @exception SQLException;
+	 */
 
 	public List<FichierImage> readAllByClient(Client c){
 		ArrayList<FichierImage> tabImg=new ArrayList<>();
@@ -171,6 +203,14 @@ public class FichierImageDAO extends DAO<FichierImage> {
 		return tabImg;
 	}
 
+	/**
+	 * Ici on précise si le fichier est partagé ou non  
+	 * @param c un {@link Client} pour trouvez ses FichierImage 
+	 * @param estPartagee savoir si les fichiers sont partagés ou non 
+	 * @return <b>List&lt;{@link FichierImage}&gt; </b> la liste de tous les fichiersImages de la base en fonction du client
+	 * 	et si il sont partarger ou non 
+	 * @exception SQLException;
+	 */
 	public List<FichierImage> readAllByClient(Client c,boolean estPartagee){
 		ArrayList<FichierImage> tabImg=new ArrayList<>();
 		try {
@@ -197,7 +237,11 @@ public class FichierImageDAO extends DAO<FichierImage> {
 		}
 		return tabImg;
 	}
-
+	/**
+	 * Permet d'appeler la procedure <b>expi_img_proc</b> qui regarde si les fichiers on plus de 10 jours
+	 * et si oui alors elle supprime les fichier de la BD
+	 * @return <b>boolean</b> la procédure <b>expi_img_proc</b> a bien fonctionnée
+	 */
 	public boolean cleanExpiredImages() {
 		boolean success = false;
 		try {

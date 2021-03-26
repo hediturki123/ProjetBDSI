@@ -11,11 +11,18 @@ import photonum.PhotoNum;
 import photonum.objects.PhotoTirage;
 
 public class PhotoTirageDAO extends DAO<PhotoTirage>{
-	
+	/**
+	 * construit une PhotoTirageDAO avec la connexions à la BD
+	 * @param conn
+	 */
 	public PhotoTirageDAO(Connection conn) {
 		super(conn);
 	}
-
+	/**
+	 * @param obj une {@link PhotoTirage} à creer dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean create(PhotoTirage obj) {
 		try {
@@ -45,7 +52,12 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 		}
 		return false;
 	}
-
+	/**
+	 * 
+	 * @param id un <b>Int</b> correspondant à l'<b>idPhoto</b>
+	 * @return {@link PhotoAlbum} correspondante
+	 * @exception SQLException;	 
+	 * */
 	@Override
 	public PhotoTirage read(Object obj) {
 		try {
@@ -68,6 +80,10 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 		return null;
 	}
 
+	/**
+	 * @return <b>List&lt;{@link PhotoTirage}&gt;</b> la liste de toutes les {@link PhotoTirage} de la base
+	 * @exception SQLException;
+	 */
 	@Override
 	public List<PhotoTirage> readAll() {
 		try {
@@ -90,7 +106,11 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 		}
 		return null;
 	}
-
+	/**
+	 * @param obj une {@link PhotoTirage} à update dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean update(PhotoTirage obj) {
 		try {
@@ -123,7 +143,11 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 		}
 		return false;
 	}
-
+	/**
+	 * @param obj une {@link PhotoTirage} à delete dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean delete(PhotoTirage obj) {
 		try {
@@ -147,7 +171,10 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 		}
 		return false;
 	}
-
+	/**
+	 * cette fonction permet de recuperer le dernier Id pour pouvoir creer une nouvelle commande(AUTO_INCREMENT)
+	 * @return un <b>Int</b> correpondant au dernier id dans la table LesPhotos
+	 */
 	private int lastId() {
 		try {
 			PreparedStatement requete_last = PhotoNum.conn.prepareStatement("SELECT max(idPhoto) FROM LesPhotos");

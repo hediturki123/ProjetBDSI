@@ -6,7 +6,10 @@ public class Adresse {
 	private String ville;
 	private int cp;
     private String pays;
-    
+	
+	public Adresse(){
+
+	}
     public Adresse(String mailClient, int numeroRue, String nomRue, String ville, int cp,
 			String pays) {
 		setAll(mailClient, numeroRue, nomRue, ville, cp, pays);
@@ -60,6 +63,12 @@ public class Adresse {
 		setCp(cp);
 		setPays(pays);
 	}
+	@Override
+	public String toString() {
+		return ""+numeroRue +" "+nomRue+" "+cp+" "+ville+" "+pays;
+	}
+
+	
 
 	/******setter and getter****/
 }

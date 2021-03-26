@@ -3,6 +3,7 @@ package photonum.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,10 +12,20 @@ import photonum.objects.Commande;
 
 public class ArticleDAO  extends DAO<Article> {
 
+	/**
+	 * construit un ArticleDAO avec la connexions à la BD
+	 * @param conn
+	 */
+
     public ArticleDAO(Connection conn) {
 		super(conn);
 	}
 
+	/**
+	 * @param obj un {@link Article} à creer dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean create(Article obj) {
 		try {
@@ -33,6 +44,13 @@ public class ArticleDAO  extends DAO<Article> {
 		}
 		return false;
 	}
+
+	/**
+	 * 
+	 * @param id un <b>Int[2]</b> contenant <b>IdCommande</b> et <b>idImpression</b>
+	 * @return Le premiere {@link Article} appartenant à la commande <b>IdCommande</b>
+	 * @exception SQLException;	 
+	 * */
 
 	@Override
 	public Article read(Object id) {
@@ -57,6 +75,10 @@ public class ArticleDAO  extends DAO<Article> {
 		return art;
 	}
 
+	/**
+	 * @return <b>List&lt;{@link Article}&gt;</b> la liste de tous les {@link Article} de la base
+	 * @exception SQLException;
+	 */
 	@Override
 	public List<Article>readAll() {
 		ArrayList<Article> tabArticle=new ArrayList<>();
@@ -78,7 +100,11 @@ public class ArticleDAO  extends DAO<Article> {
 		}
 		return tabArticle;
 	}
-
+	/**
+	 * @param obj un {@link Article} à update dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean update(Article obj) {
 		try {
@@ -103,7 +129,11 @@ public class ArticleDAO  extends DAO<Article> {
 		}
 		return false;
 	}
-
+	/**
+	 * @param obj un {@link Article} à delete dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean delete(Article obj) {
 		try {
@@ -121,7 +151,11 @@ public class ArticleDAO  extends DAO<Article> {
 		}
 		return false;
 	}
-
+	/**
+	 * @param c une {@link Commande}pour trouver ces articles correspondant 
+	 * @return <b>List&lt;{@link Article}&gt; </b> la liste de tous les {@link Article} de la base en fonction du client
+	 * @exception SQLException;
+	 */
 	public List<Article>readAllByCommande(Commande c) {
 		ArrayList<Article> tabArticle=new ArrayList<>();
 		try {

@@ -12,16 +12,26 @@ import photonum.objects.Client;
 
 public class ClientDAO extends DAO<Client> {
 
+	/**
+	 * Construit un clientDAO avec la connexion a la BD
+	 * @param conn
+	 */
+
 	public ClientDAO(Connection conn){
 		super(conn);
 	}
 
+	/**
+	 * @param obj un {@link Client} à creer dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean create(Client obj) {
-		boolean reussi = false;
+
 		try {
 			PreparedStatement requeteAjout=this.connect.prepareStatement(
-				"INSERT INTO LesClients VALUES (?,?,?,?,?,?,?,?,?,?)"
+				"INSERT INTO LesClients VALUES (?,?,?,?,?,?,?,?,?)"
 			);
 			requeteAjout.setString(1, obj.getMail());
 			requeteAjout.setString(2, obj.getNom());
@@ -32,14 +42,22 @@ public class ClientDAO extends DAO<Client> {
 			requeteAjout.setString(7, obj.getVille());
 			requeteAjout.setInt(8,obj.getCp());
 			requeteAjout.setString(9, obj.getPays());
-			requeteAjout.setBoolean(10, obj.isActif());
-			reussi = requeteAjout.executeUpdate() != 0;
+
+			int reussi=requeteAjout.executeUpdate();
 			requeteAjout.close();
+			return reussi==1;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return reussi;
+		return false;
 	}
+
+	/**
+	 * 	nous permet de connecter un {@link Client}  et de recuperer ces infos.
+	 * @param id un <b>String[2]</b> contenant <b>mail</b> et <b>mdp</b>
+	 * @return le {@link Client}  connecter
+	 * @exception SQLException;	 
+	 * */
 
 	@Override
 	public Client read(Object obj) {
@@ -47,26 +65,26 @@ public class ClientDAO extends DAO<Client> {
 			String [] args=(String[]) obj;
 			Client c;
 			PreparedStatement requete_selection=this.connect.prepareStatement(
-					"SELECT * from LesClients where mail=? and mdp=?");
+					"SELECT * from LesClients where mail=? and mdp=? and actif=1");
 			requete_selection.setString(1,args[0]); // icic l'obj sera l'adresse mail
 			requete_selection.setString(2,args[1]);
 			ResultSet resultat=requete_selection.executeQuery();
-			if (!resultat.next()) {
-				c = null;
-			} // ici last renvoie false si il n'y a aucune row selectionner
-			else {
-				c = new Client(
-					resultat.getString("mail"),
-					resultat.getString("nom"),
-					resultat.getString("prenom"),
-					resultat.getString("mdp"),
-					resultat.getInt("numeroRue"),
-					resultat.getString("nomRue"),
-					resultat.getString("ville"),
-					resultat.getInt("cp"),
-					resultat.getString("pays"),
-					resultat.getBoolean("actif")
-				);
+			if(!resultat.next()){
+				c=null;
+			} //ici last renvoie false si il n'y a aucune row selectionner
+			else{
+			 c= new Client
+			(
+			resultat.getString("mail"),
+			resultat.getString("nom"),
+			resultat.getString("prenom"),
+			resultat.getString("mdp"),
+			resultat.getInt("numeroRue"),
+			resultat.getString("nomRue"),
+			resultat.getString("ville"),
+			resultat.getInt("cp"),
+			resultat.getString("pays"),
+			resultat.getBoolean("actif"));
 			}
 			requete_selection.close();
 			return c;
@@ -75,7 +93,11 @@ public class ClientDAO extends DAO<Client> {
 		}
 		return null;
 	}
-
+	/**
+	 * @param obj un {@link Client} à update dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean update(Client obj) {
 		try {
@@ -108,6 +130,11 @@ public class ClientDAO extends DAO<Client> {
 		return false;
 	}
 
+	/**
+	 * @param obj un {@link Client}  à delete dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean delete(Client obj) {
 		try {
@@ -123,7 +150,10 @@ public class ClientDAO extends DAO<Client> {
 		}
 		return false;
 	}
-
+	/**
+	 * @return <b>List&lt;{@link Client}&gt;</b> la liste de tous les clients de la base
+	 * @exception SQLException;
+	 */
 	@Override
 	public List<Client> readAll() {
 		ArrayList<Client> c= new ArrayList<Client>();
@@ -132,7 +162,9 @@ public class ClientDAO extends DAO<Client> {
 			"SELECT * FROM lesClients");
 			ResultSet resultat=requete_all.executeQuery();
 			while(resultat.next()){
-				 c.add(new Client (
+				 c.add(
+					new Client
+					(
 					resultat.getString("mail"),
 					resultat.getString("nom"),
 					resultat.getString("prenom"),
@@ -142,8 +174,7 @@ public class ClientDAO extends DAO<Client> {
 					resultat.getString("ville"),
 					resultat.getInt("cp"),
 					resultat.getString("pays"),
-					resultat.getBoolean("actif")
-				));
+					resultat.getBoolean("actif")));
 			}
 			requete_all.close();
 			return c;
@@ -153,7 +184,7 @@ public class ClientDAO extends DAO<Client> {
 
 		return null;
 	}
-
+	//TODO regarder si le client n'existe pas en inactif , si il existe faire update !! 
 	/**************************************/
 
 }

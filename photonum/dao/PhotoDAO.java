@@ -11,11 +11,19 @@ import photonum.objects.*;
 
 public class PhotoDAO extends DAO<Photo>{
 	
-    
+    /**
+	 * construit une PhotoDAO avec la connexions à la BD
+	 * @param conn
+	 */
     public PhotoDAO(Connection conn) {
 		super(conn);
 	}
 
+	/**
+	 * @param obj une {@link Photo} à creer dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
     @Override
 	public boolean create(Photo obj) {
 		try {
@@ -33,7 +41,12 @@ public class PhotoDAO extends DAO<Photo>{
 		}
 		return false;
 	}
-
+	/**
+	 * 
+	 * @param id un <b>Int</b> coorespondant à l'<b>idPhoto</b>
+	 * @return {@link Photo} correspondante
+	 * @exception SQLException;	 
+	 * */
 	@Override
 	public Photo read(Object id) {
 		try {
@@ -58,7 +71,11 @@ public class PhotoDAO extends DAO<Photo>{
 		}
 		return null;
 	}
-
+	/**
+	 * @param obj une {@link Photo} à update dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean update(Photo obj) {
 		try {
@@ -78,7 +95,11 @@ public class PhotoDAO extends DAO<Photo>{
 		}
 		return false;
 	}
-
+	/**
+	 * @param obj une {@link Photo} à delete dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean delete(Photo obj) {
 		try {
@@ -94,6 +115,11 @@ public class PhotoDAO extends DAO<Photo>{
 		return false;
 	}
 
+	/**
+	 * @param mail le mail d'un {@link Client}
+	 * @return <b>List&lt;{@link Photo}&gt;</b> la liste de toutes les {@link PhotoNum} de la base en fonction du client
+	 * @exception SQLException;
+	 */
 	public List<Photo> readAllPhotosByClient(String mail){
 		try {
 			PreparedStatement requete_select = this.connect.prepareStatement("SELECT * FROM LesPhotos WHERE mailClient=?");
@@ -116,7 +142,10 @@ public class PhotoDAO extends DAO<Photo>{
 		}
 		return null;
 	}
-
+	/**
+	 * @return <b>List&lt;{@link Photo}&gt;</b> la liste de toutes les {@link Photo} de la base
+	 * @exception SQLException;
+	 */
 	@Override
 	public List<Photo> readAll() {
 		try {
@@ -140,6 +169,10 @@ public class PhotoDAO extends DAO<Photo>{
 		return null;
 	}
 	
+	/**
+	 * cette fonction permet de recuperer le dernier Id pour pouvoir creer une nouvelle commande(AUTO_INCREMENT)
+	 * @return un <b>Int</b> correpondant au dernier id dans la table LesPhotos
+	 */
 	private int lastId() {
 		try {
 			PreparedStatement requete_last = PhotoNum.conn.prepareStatement("SELECT max(idPhoto) FROM LesPhotos");

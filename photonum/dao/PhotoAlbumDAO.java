@@ -10,11 +10,19 @@ import photonum.PhotoNum;
 import photonum.objects.PhotoAlbum;
 
 public class PhotoAlbumDAO extends DAO<PhotoAlbum>{
-    
+	/**
+	 * construit une PhotoAlbumDAO avec la connexions à la BD
+	 * @param conn
+	 */
     public PhotoAlbumDAO(Connection conn) {
 		super(conn);
 	}
 
+	/**
+	 * @param obj une {@link PhotoAlbum} à creer dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean create(PhotoAlbum obj) {
 		try {
@@ -43,8 +51,16 @@ public class PhotoAlbumDAO extends DAO<PhotoAlbum>{
 		return false;
 	}
 
+	/**
+	 * 
+	 * @param id un <b>Int</b> correspondant à l'<b>idPhoto</b>
+	 * @return {@link PhotoAlbum} correspondante
+	 * @exception SQLException;	 
+	 * */
+
 	@Override
 	public PhotoAlbum read(Object obj) {
+		//TODO demander a pierre si la il est sur de ça requete , ou est idPage ? 
 		try {
 			PreparedStatement requete_select = this.connect.prepareStatement("SELECT * FROM LesPhotosAlbum NATURAL JOIN LesPhotos WHERE idPhoto=?");
 			requete_select.setInt(1, (int)obj);
@@ -69,6 +85,11 @@ public class PhotoAlbumDAO extends DAO<PhotoAlbum>{
 		return null;
 	}
 
+	/**
+	 * @param obj une {@link PhotoAlbum} à update dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean update(PhotoAlbum obj) {
 		try {
@@ -99,7 +120,11 @@ public class PhotoAlbumDAO extends DAO<PhotoAlbum>{
 		}
 		return false;
 	}
-
+	/**
+	 * @param obj une {@link PhotoAlbum} à delete dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean delete(PhotoAlbum obj) {
 		try {
@@ -123,6 +148,10 @@ public class PhotoAlbumDAO extends DAO<PhotoAlbum>{
 		return false;
 	}
 
+	/**
+	 * @return <b>List&lt;{@link PhotoAlbum}&gt;</b> la liste de toutes les {@link PhotoAlbum} de la base
+	 * @exception SQLException;
+	 */
 	@Override
 	public List<PhotoAlbum> readAll() {
 		try {
@@ -147,7 +176,11 @@ public class PhotoAlbumDAO extends DAO<PhotoAlbum>{
 		}
 		return null;
 	}
-
+	/**
+	 * @param mail le mail d'un {@link Client}
+	 * @return <b>List&lt;{@link PhotoAlbum}&gt; </b> la liste de toutes les {@link PhotoAlbum} de la base en fonction du client
+	 * @exception SQLException;
+	 */
 	public static List<PhotoAlbum> readAllPhotosAlbumByClient(String mail){
 		try {
 			PreparedStatement requete_select = PhotoNum.conn.prepareStatement("SELECT * FROM LesPhotosAlbum NATURAL JOIN LesPhotos WHERE mailClient=?");
@@ -171,7 +204,10 @@ public class PhotoAlbumDAO extends DAO<PhotoAlbum>{
 		}
 		return null;
 	}
-
+	/**
+	 * cette fonction permet de recuperer le dernier Id pour pouvoir creer une nouvelle commande(AUTO_INCREMENT)
+	 * @return un <b>Int</b> correpondant au dernier id dans la table LesPages
+	 */
 	private int lastId() {
 		try {
 			PreparedStatement requete_last = PhotoNum.conn.prepareStatement("SELECT max(idPhoto) FROM LesPhotos");

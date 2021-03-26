@@ -9,11 +9,19 @@ import photonum.objects.*;
 
 public class AdresseDAO extends DAO<Adresse>{
 	
+	/**
+	 * Creation de l'objet DAO
+	 * @param conn la connection a la base de donnée
+	 */
 	public AdresseDAO(Connection conn) {
 		super(conn);
 	}
 	
-
+	/**
+	 * @param obj une {@link Adresse} de livraison à creer dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean create(Adresse obj) {
 		try {
@@ -35,13 +43,14 @@ public class AdresseDAO extends DAO<Adresse>{
 		}
 		return false;
 	}
-
+	/**
+	 * 
+	 * @param id le mail du client
+	 * @return La premiere {@link Adresse} de livraison du client
+	 * @exception SQLException;
+	 */
 	@Override
 	public Adresse read(Object id) {
-		/*
-			ici on vas avoir un probleme si le client a plusieur adresse ...
-			ici id = le mail du client = String  
-		*/
 		String mail=(String) id;
 		Adresse addr;
 		try {
@@ -68,7 +77,11 @@ public class AdresseDAO extends DAO<Adresse>{
 		}
 		return null;
 	}
-
+	/**
+	 * @param obj une {@link Adresse} à update dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean update(Adresse obj) {
 		try {
@@ -97,7 +110,11 @@ public class AdresseDAO extends DAO<Adresse>{
 		}
 		return false;
 	}
-
+	/**
+	 * @param obj une {@link Adresse} à delete dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean delete(Adresse obj) {
 		try {
@@ -108,10 +125,6 @@ public class AdresseDAO extends DAO<Adresse>{
 				"and cp=?"+
 				"and ville=?"
 			);
-		/*
-		ici je regarde toutes info pour etre sur qu'on supprime une seul adresse
-		a ce niveau , on est sur que l'adresse est unique 
-		*/
 			requeteDelete.setString(1, obj.getMailClient());
 			requeteDelete.setInt(2, obj.getNumeroRue());
 			requeteDelete.setString(3, obj.getNomRue());
@@ -127,6 +140,10 @@ public class AdresseDAO extends DAO<Adresse>{
 		return false;
 	}
 
+	/**
+	 * @return <b>List&lt;{@link Adresse}&gt;</b> la liste de toutes les adresseDeLivraison de la base
+	 * @exception SQLException;
+	 */
 	@Override
 	public List<Adresse> readAll() {
 		ArrayList<Adresse> tab =new ArrayList<>();
@@ -152,5 +169,35 @@ public class AdresseDAO extends DAO<Adresse>{
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	/**
+	 * @param c le {@link Client} pour lequel on chercher ses adresses de livraison 
+	 * @return <b>List&lt;{@link Adresse}&gt;</b>  la liste de toutes les adresseDeLivraison de la base en fonction du {@link Client}
+	 * @exception SQLException;
+	 */
+	public List<Adresse> readAllByClient(Client c){
+		ArrayList<Adresse> tabAdresse = new ArrayList<>();
+		try {
+			PreparedStatement requeteAllC=this.connect.prepareStatement(
+				"SELECT * FROM lesAdressesDeLivraison where mailClient=?"
+			);
+			requeteAllC.setString(1,c.getMail());
+			ResultSet result=requeteAllC.executeQuery();
+			while(result.next()){
+				tabAdresse.add(
+					new Adresse(result.getString("mailClient"),
+					result.getInt("numeroRue"),
+					result.getString("nomRue"),
+					 result.getString("ville"),
+					 result.getInt("cp"),
+					 result.getString("pays")
+				));
+			}
+			requeteAllC.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return tabAdresse;
 	}
 }

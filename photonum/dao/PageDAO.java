@@ -12,10 +12,19 @@ import photonum.objects.Page;
 
 public class PageDAO extends DAO<Page>{
 
+	/**
+	 * construit une PageDAO avec la connexions à la BD
+	 * @param conn
+	 */
 	public PageDAO(Connection conn) {
 		super(conn);
 	}
 
+	/**
+	 * @param obj une {@link Page} à creer dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean create(Page obj) {
 		try {
@@ -35,6 +44,13 @@ public class PageDAO extends DAO<Page>{
 		}
 		return false;
 	}
+
+	/**
+	 * 
+	 * @param id un <b>Int[2]</b> contenant <b>IdPage</b> et <b>idImpression</b>
+	 * @return {@link Page} appartenant à l'impression <b>idImpression</b>
+	 * @exception SQLException;	 
+	 * */
 
 	@Override
 	public Page read(Object id) {
@@ -62,7 +78,11 @@ public class PageDAO extends DAO<Page>{
 		}
 		return null;
 	}
-
+	/**
+	 * @param obj une {@link Page} à update dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean update(Page obj) {
 		try {
@@ -82,7 +102,11 @@ public class PageDAO extends DAO<Page>{
 		}
 		return false;
 	}
-
+	/**
+	 * @param obj une {@link Page} à delete dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean delete(Page obj) {
 		try {
@@ -101,6 +125,10 @@ public class PageDAO extends DAO<Page>{
 		return false;
 	}
 
+	/**
+	 * @return <b>List&lt;{@link Page}&gt;</b> la liste de toutes les {@link Page} de la base
+	 * @exception SQLException;
+	 */
 	@Override
 	public List<Page> readAll() {
 		ArrayList<Page> tab = new ArrayList<>();
@@ -123,7 +151,10 @@ public class PageDAO extends DAO<Page>{
 		}
 		return null;
 	}
-	
+	/**
+	 * cette fonction permet de recuperer le dernier Id pour pouvoir creer une nouvelle commande(AUTO_INCREMENT)
+	 * @return un <b>Int</b> correpondant au dernier id dans la table LesPages
+	 */
 	private int lastId() {
 		try {
 			PreparedStatement requete_last = PhotoNum.conn.prepareStatement("SELECT max(idPage) FROM LesPages");

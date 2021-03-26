@@ -4,7 +4,12 @@ import java.util.List;
 
 public abstract class DAO<T> {
 	protected Connection connect;
-	
+	/**
+	 * <ul>
+	 * 	<li>permet de construire un objet DAO avec la connection a la BD (conn)
+	 *
+	 * @param Connection conn
+	 */
 	public DAO(Connection conn) {
 		this.connect=conn;
 	}

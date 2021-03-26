@@ -1,11 +1,14 @@
 package photonum.interfaces;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import photonum.PhotoNum;
+import photonum.dao.AdresseDAO;
 import photonum.dao.ArticleDAO;
 import photonum.dao.CodePromoDAO;
 import photonum.dao.CommandeDAO;
@@ -21,6 +24,7 @@ public class InterfaceCommande {
     public static void creationCommande(Client c){
         Commande cmd=new Commande();
         cmd.setIdCommande(cmdDao.getLastId()+1);
+        cmd.setMail(c.getMail());
         choixImpression(c, cmd);
 
     }
@@ -76,23 +80,64 @@ public class InterfaceCommande {
         }else{
             System.out.println("pas de souci , mais tant pis pour vous SHA !");
         }
-        livraison(c, cmd, articles, cpUtiliser);
+        cmd.setCodePromo(cpUtiliser.getCode());
+        livraison(c, cmd, articles);
 
     }
 
-    public static void livraison(Client c,Commande cmd,List<Article> articles,CodePromo cp){
-            if(LectureClavier.lireOuiNon("Voulez vous être livrée chez vous")){
-
-            }else{
-
-            }
+    public static void livraison(Client c,Commande cmd,List<Article> articles){
+        Adresse addr =new Adresse();    
+        if(LectureClavier.lireOuiNon("Voulez vous être livrée chez vous")){
+                cmd.setEstLivreChezClient(true);
+                cmd.setAdresseLivraison(c.getNumeroRue(),c.getNomRue(),c.getVille(),c.getCp(),c.getPays());
+        }else{
+                InterfaceAdresse.choixAdresseLivraison(c,addr);
+                cmd.setEstLivreChezClient(false);
+                cmd.setAdresseLivraison(addr.getNumeroRue(),addr.getNomRue(),addr.getVille(),addr.getCp(),addr.getPays());
+        }
+        ValidationCommande(c, cmd, articles);
     }
 
 
-    public static void ValidationCommande(Client c,Commande cmd,List<Article> articles,CodePromo cp){
+    public static void ValidationCommande(Client c,Commande cmd,List<Article> articles){
+        ArticleDAO articleDAO=new ArticleDAO(PhotoNum.conn);
         System.out.println("voici le descriptif de votre commande :");
-            System.out.println(cmd);
-        if(LectureClavier.lireOuiNon(""))
+        System.out.println("    "+cmd.toString());
+        System.out.println("    Details de vos articles :");
+        for(Article a :articles){
+            System.out.println("        "+a.toString());
+        }
+
+        if(LectureClavier.lireOuiNon("valider la commande ? (o/n)")){
+            cmd.setDateCommande(Date.valueOf(LocalDate.now()));
+            if(cmdDao.create(cmd)){
+                for(Article a:articles)articleDAO.create(a);
+                System.out.println("Votre commande n°"+cmd.getIdCommande()+" a bien été enregistrer , Merci de votre confiance !");
+            }else{
+                System.out.println("desolée mais votre commande n'a pas pus etre enregistrer , veuillez recommencer  !");
+            }
+        }else{
+            int choix=-1;
+            while(!(choix>0 && choix<=4)){
+                choix=LectureClavier.lireEntier(
+                "Voulez vous revenir a une etape ou quitter ? "+
+                "\n(attention reneir a une etape vous oblige a faire les suivantes)"+
+                "\n1. Choisir les Impressions"+
+                "\n2. Choisir le CodePromo"+
+                "\n3. Changer l'adresse de livraison"+
+                "\n4. Abandonner\n"
+                );
+            }
+            switch(choix){
+                case 1: choixImpression(c, cmd);
+                        break;
+                case 2:utilisationCodePromo(c, cmd, articles);
+                        break;
+                case 3:livraison(c, cmd, articles);
+                        break;
+                case 4:break;
+            }
+        }
     }
 
 

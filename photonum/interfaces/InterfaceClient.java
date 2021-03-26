@@ -58,21 +58,10 @@ public class InterfaceClient  {
 
 		System.out.println("veuillez entrez votre prenom");
 		String prenom=LectureClavier.lireChaine();
+		Adresse addr=new Adresse() ;
+		InterfaceAdresse.creerAdresse(mail, addr);
 
-		int numeroRue=LectureClavier.lireEntier("veuillez entrez votre numero de rue");
-
-		System.out.println("veuillez entrez votre rue");
-		String nomRue=LectureClavier.lireChaine();
-
-		System.out.println("veuillez entrez votre ville");
-		String ville=LectureClavier.lireChaine();
-
-		int cp=LectureClavier.lireEntier("veuillez entrez votre code postal");
-
-		System.out.println("veuillez entrez votre pays ");
-		String pays=LectureClavier.lireChaine();
-
-		Client c = new Client(mail, nom, prenom, mdp, numeroRue, nomRue, ville, cp, pays);
+		Client c = new Client(mail, nom, prenom, mdp,addr.getNumeroRue(),addr.getNomRue(),addr.getVille(),addr.getCp(),addr.getPays(),true);
 	
 		if(clientDao.create(c)){
 			menu(c);
@@ -85,7 +74,7 @@ public class InterfaceClient  {
     
     //ici dans cette fonction mmettre les fonctionnalité du client et l'envoyer dans les bonne interface
     public static void menu(Client c){
-		int choix=LectureClavier.lireEntier("\n1. Afficher mes informations  \n2. Gerer les fichiers \n3. Gerer une impression \n4. \n5. Se deconnecter");
+		int choix=LectureClavier.lireEntier("\n1. Afficher mes informations  \n2. Gerer les fichiers \n3. Gerer une impression \n4. Commander \n5. Se deconnecter");
 		while(choix!=5){
 			switch (choix){
 				case 1:menuInfo(c);

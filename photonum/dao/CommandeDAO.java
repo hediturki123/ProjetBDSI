@@ -13,10 +13,20 @@ import photonum.objects.Commande;
 import photonum.objects.StatutCommande;
 
 public class CommandeDAO extends DAO<Commande>{
+	/**
+	 * construit un CommandeDAO avec la connexions à la BD
+	 * @param conn
+	 */
+
 	public CommandeDAO(Connection conn) {
 		super(conn);
 	}
 
+	/**
+	 * @param obj une {@link Commande} à creer dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean create(Commande cmd) {
 		boolean reussi = false;
@@ -44,6 +54,12 @@ public class CommandeDAO extends DAO<Commande>{
 		return reussi;
 	}
 
+	/**
+	 * 
+	 * @param id un <b>Int</b> correspondant a <b>IdCommande</b>
+	 * @return La {@link Commande} correpondant à <b>IdCommande</b>
+	 * @exception SQLException;	 
+	 * */
 	@Override
 	public Commande read(Object id) {
 		Commande c = null;
@@ -78,6 +94,10 @@ public class CommandeDAO extends DAO<Commande>{
 		return c;
 	}
 
+	/**
+	 * @return <b>List&lt;{@link Commande}&gt;</b> la liste de tous les Commandes de la base
+	 * @exception SQLException;
+	 */
 	@Override
 	public List<Commande> readAll() {
 
@@ -111,7 +131,11 @@ public class CommandeDAO extends DAO<Commande>{
 		}
 		return commandes;
 	}
-
+	/**
+	 * @param obj une {@link Commande} à update dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean update(Commande obj) {
 		boolean reussi = false;
@@ -128,7 +152,11 @@ public class CommandeDAO extends DAO<Commande>{
 		}
 		return reussi;
 	}
-
+	/**
+	 * @param obj une {@link Commande} à delete dans la BD
+	 * @return <b>boolean</b> l'action c'est bien passée
+	 * @exception SQLException;
+	 */
 	@Override
 	public boolean delete(Commande obj) {
 		boolean reussi = false;
@@ -145,6 +173,11 @@ public class CommandeDAO extends DAO<Commande>{
 		return reussi;
 	}
 
+	/**
+	 * @param sc Le {@link StatutCommande}(<b>EN_COURS,PRETE_ENVOI,ENVOYEE</b>) 
+	 * @return <b>List&lt;{@link Commande}&gt; </b> la liste de toutes les  commande de la base en fonction de leut statut
+	 * @exception SQLException;
+	 */
 	public List<Commande> readAllByStatus(StatutCommande sc) {
 
 		List<Commande> commande = new ArrayList<Commande>();
@@ -181,7 +214,11 @@ public class CommandeDAO extends DAO<Commande>{
 
 		return null;
 	}
-
+	/**
+	 * @param c un {@link Client} pour trouver ces articles correspondant 
+	 * @return <b>List&lt;{@link Commande}&gt; </b> la liste de toutes les commandes de la base en fonction du client
+	 * @exception SQLException;
+	 */
 	public List<Commande> readAllByClient(Client c) {
 
 		List<Commande> commande = new ArrayList<Commande>();
@@ -218,6 +255,10 @@ public class CommandeDAO extends DAO<Commande>{
 
 		return null;
 	}
+	/**
+	 * cette fonction permet de recuperer le dernier id pour pouvoir creer une nouvelle commande(AUTO_INCREMENT)
+	 * @return un <b>Int</b> correpondant au dernier id dans la table LesCommandes
+	 */
 	public int getLastId() {
 		try {
 			PreparedStatement requete_last = PhotoNum.conn.prepareStatement("SELECT max(idCommande) FROM LesCommandes");
