@@ -30,6 +30,7 @@ public class InterfacePage {
 			int choix;
 			for(Photo photo: photosExi) {
 				System.out.println(i+". Vous avez cette photo: "+photo.toString());
+				i++;
 			}
 			for(boolean b = true; b; b = 1 != LectureClavier.lireEntier("1.quitter ou 2.continuer"))
 			{
