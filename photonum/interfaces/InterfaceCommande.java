@@ -26,7 +26,7 @@ public class InterfaceCommande {
         Commande cmd = new Commande();
         cmd.setIdCommande(cmdDao.getLastId() + 1);
         cmd.setMail(c.getMail());
-        choixImpression(c, cmd);
+        choixImpression(c, cmd,false);
     }
 
     /**
@@ -34,26 +34,27 @@ public class InterfaceCommande {
      * @param c le {@link Client} courant
      * @param cmd la {@link Commande} courante
      */
-    public static void choixImpression(Client c,Commande cmd){
-        //TODO je suis dans une boucle infini ici a revoir
+    public static void choixImpression(Client c,Commande cmd ,boolean modif){
         List<Impression> impressionClient=impDao.readAllByClient(c);
         List<Article> articleChoisi= new ArrayList<>();
         if(impressionClient.size() != 0) {
             int choix=-1;
-            while(choix!=0){
-                while(!(choix>0 && choix<=impressionClient.size())){
-                    System.out.println("choissiez l'impression");
+            int last=impressionClient.size()+1;
+            while(choix!=last){
+                    String message="choissiez l'impression ou bien terminer :\n";
                     for (int i = 1; i <= impressionClient.size(); i++) {
-                        System.out.println(i + ". " + impressionClient.get(i - 1).getTitre());
+                        message+=i+". " + impressionClient.get(i - 1).getTitre()+"\n";
                     }
-                    choix = LectureClavier.lireEntier(
-                            "choisissez une impression pour la voir plus en detail dans la liste ci-dessus \n"
-                                    + "ou taper sur 0");
-                }
-                articleChoisi.add(new Article(cmd.getIdCommande(), impressionClient.get(choix - 1).getIdImpression(),
+                    message+=last+". Terminer le choix des impression";
+                    choix= LectureClavier.lireEntier(message);
+                    if(choix<0 || choix>last){
+                        System.out.println("vous n'avez pas choissi une impression valide");
+                    }else if (choix!=last) {
+                        articleChoisi.add(new Article(cmd.getIdCommande(), impressionClient.get(choix - 1).getIdImpression(),
                         LectureClavier.lireEntier("Quantite : ")));
-            }
-            InterfaceCodePromo.utilisationCodePromo(c, cmd, articleChoisi);
+                    }
+                }
+                if(modif)InterfaceCodePromo.utilisationCodePromo(c, cmd, articleChoisi,false);else validationCommande(c, cmd, articleChoisi);
         } else {
             System.out.println("Vous n'avez pas d'impressions.");
         }
@@ -64,8 +65,9 @@ public class InterfaceCommande {
      * @param c le {@link Client} courant
      * @param cmd la {@link Commande} courante
      * @param articles la List&lt;{@link Article}&gt; des {@link Article} de la commande cmd
+     * @param modif un boolean<pre>True si on est en train de modifier une commande </pre> <pre>False sinon </pre>
      */
-    public static void livraison(Client c,Commande cmd,List<Article> articles){
+    public static void livraison(Client c,Commande cmd,List<Article> articles,boolean modif){
         Adresse addr =new Adresse();
         if(LectureClavier.lireOuiNon("Voulez vous être livrée chez vous")){
                 cmd.setEstLivreChezClient(true);
@@ -89,16 +91,18 @@ public class InterfaceCommande {
         System.out.println("    " + cmd.toString());
         System.out.println("    Details de vos articles :");
         for (Article a : articles) {
-            System.out.println("        " + a.toString());
+            System.out.println("        " + a.factureString());
         }
 
         if (LectureClavier.lireOuiNon("valider la commande ? (o/n)")) {
             cmd.setDateCommande(Date.valueOf(LocalDate.now()));
+            cmd.setStatus(StatutCommande.EN_COURS);
             if (cmdDao.create(cmd)) {
                 for (Article a : articles)
                     articleDAO.create(a);
                 System.out.println("Votre commande n°" + cmd.getIdCommande()
-                        + " a bien été enregistrer , Merci de votre confiance !");
+                        + " a bien été enregistrer , il ne vous reste plus qu'a payer");
+                payment(cmd);
             } else {
                 System.out
                         .println("desolée mais votre commande n'a pas pus etre enregistrer , veuillez recommencer  !");
@@ -112,17 +116,34 @@ public class InterfaceCommande {
                         + "\n3. Changer l'adresse de livraison" + "\n4. Abandonner\n");
             }
             switch(choix){
-                case 1: choixImpression(c, cmd);
+                case 1: choixImpression(c, cmd,true);
                         break;
-                case 2:InterfaceCodePromo.utilisationCodePromo(c, cmd, articles);
+                case 2:InterfaceCodePromo.utilisationCodePromo(c, cmd, articles,true);
                         break;
-                case 3:livraison(c, cmd, articles);
+                case 3:livraison(c, cmd, articles,true);
                         break;
                 case 4:break;
             }
         }
     }
-
+    /**
+     * cette fonction simule l'etape de payment a un utilisateur
+     * et vas mettre à <pre>PRETE_ENVOI le statut de la commande </pre>
+     * @param cmd La {@link Commande} qu'on veut payer ou non 
+     */
+    public static void payment(Commande cmd){
+        if(LectureClavier.lireOuiNon("voulez vous payer maintenant ? (o/n)")){
+            System.out.println("Voila payer , votre commande et maintenant prete a l'envoie");
+            cmd.setStatus(StatutCommande.PRETE_ENVOI);
+            cmdDao.update(cmd);
+        }else{
+            System.out.println("Pas de souci , vous pourrez modifier votre commande tant qu'elle n'est pas payer ! ");
+        }
+    }
+    /**
+     * Permet d'afficher les commande d'un {@link Client}
+     * @param c le {@link Client} a qui on veut afficher ses commandes
+     */
     public static void affichageCommande(Client c) {
         List<Commande> commandesClient = cmdDao.readAllByClient(c);
         if (commandesClient.size() != 0) {
@@ -155,13 +176,17 @@ public class InterfaceCommande {
             System.out.println("Désolé mais vous n'avez pas fait encore de commande \n");
         }
     }
-
+    /**
+     * Permet d'afficher les détails d'une commande
+     * @param c la {@link Commande} pour laquel on veut afficher ses detail
+     */
     public static void afficherDetailCommande(Commande c) {
         List<Article> tabArticles = articleDAO.readAllByCommande(c);
+        System.out.println(c.toString());
         System.out.println("\n\nLes details de votre commande :");
         if (tabArticles.size() > 0) {
             for (int i = 1; i <= tabArticles.size(); i++) {
-                System.out.println("    " + tabArticles.get(i - 1).toString());
+                System.out.println("    " + tabArticles.get(i - 1).factureString());
             }
         } else {
             System.out.println("    aucun article dans votre commande !\n");

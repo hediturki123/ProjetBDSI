@@ -40,8 +40,9 @@ public class InterfaceCodePromo {
      * @param c        le {@link Client} courant
      * @param cmd      la {@link Commande} courante
      * @param articles List&lt;{@link Article}&gt; les articles de la commande cmd
+     * @param modif un boolean<pre>True si on est en train de modifier une commande </pre> <pre>False sinon </pre>
      */
-    public static void utilisationCodePromo(Client c, Commande cmd, List<Article> articles) {
+    public static void  utilisationCodePromo(Client c, Commande cmd, List<Article> articles, boolean modif) {
         List<CodePromo> cpDispo = cpDao.readAllByClient(c.getMail(), false);
         CodePromo cpUtiliser = new CodePromo();
         if (LectureClavier.lireOuiNon("voulez vous utiliser un code promo ? (o/n)")) {
@@ -63,7 +64,6 @@ public class InterfaceCodePromo {
             System.out.println("pas de souci , mais tant pis pour vous SHA !");
         }
         cmd.setCodePromo(cpUtiliser.getCode());
-        InterfaceCommande.livraison(c, cmd, articles);
-
+        if(modif)InterfaceCommande.validationCommande(c, cmd, articles);else InterfaceCommande.livraison(c, cmd, articles,false);
     }
 }
