@@ -176,7 +176,7 @@ public class Client {
 
 	public static Client connexion(String mail, String mdp) {
 		String[] infos = {mail, mdp};
-		return CL_DAO.read(infos);
+		return CL_DAO.getConnexion(infos);
 	}
 
 	/**
@@ -235,6 +235,7 @@ public class Client {
 	public List<PhotoTirage> getPhotosTirage() {
 		return PT_DAO.readAllPhotosTirageByClient(this);
 	}
+	
 
 	public List<Photo> getPhotos() {
 		return PH_DAO.readAllPhotosByClient(mail);
@@ -244,9 +245,13 @@ public class Client {
 		return PA_DAO.readAllPhotosAlbumByClient(mail);
 	}
 
+	/**
+	 * permet de regarder si l'adresse du client est deja dans la base de donnée pour eviter la redondances de sont adresse 
+	 * @param a une {@link Adresse} qui sera l'adresse des client 
+	 */
 	public void checkAdresseExist(Adresse a){
-		List<Adresse> addrC=AD_DAO.readAllByClient(this);
-		if(addrC.contains(a)){
+		Adresse addrexist =AD_DAO.read(mail);
+		if(!addrexist.equals(a)){
 			ajouterAdresseLivraison(a);
 		}
 	}

@@ -1,5 +1,6 @@
 package photonum.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -311,5 +312,23 @@ public class CommandeDAO extends DAO<Commande>{
 			e.printStackTrace();
 		}
 		return prix;
+	}
+
+	public static boolean ajouterPromo(String mailClient) {
+		boolean success = false;
+		try {
+			CallableStatement cstmt = PhotoNum.conn.prepareCall("{call code_promo_proc (?,?)}");
+			cstmt.setString(1, System.currentTimeMillis()+"");
+			cstmt.setString(2, mailClient);
+			cstmt.execute();
+			success = true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return success;
+	}
+
+	public static boolean ajouterPromo(Client c) {
+		return ajouterPromo(c.getMail());
 	}
 }

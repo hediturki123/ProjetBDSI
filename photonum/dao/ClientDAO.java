@@ -61,6 +61,39 @@ public class ClientDAO extends DAO<Client> {
 	@Override
 	public Client read(Object obj) {
 		try {
+			String arg = (String) obj;
+			Client c;
+			PreparedStatement requete_selection=this.connect.prepareStatement(
+					"SELECT * from LesClients where mail=?");
+			requete_selection.setString(1,arg); // icic l'obj sera l'adresse mail
+			ResultSet resultat=requete_selection.executeQuery();
+			if(!resultat.next()){
+				c=null;
+			} //ici last renvoie false si il n'y a aucune row selectionner
+			else{
+			 c= new Client
+			(
+			resultat.getString("mail"),
+			resultat.getString("nom"),
+			resultat.getString("prenom"),
+			resultat.getString("mdp"),
+			resultat.getInt("numeroRue"),
+			resultat.getString("nomRue"),
+			resultat.getString("ville"),
+			resultat.getInt("cp"),
+			resultat.getString("pays"),
+			resultat.getBoolean("actif"));
+			}
+			requete_selection.close();
+			return c;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public Client getConnexion(Object obj) {
+		try {
 			String [] args=(String[]) obj;
 			Client c;
 			PreparedStatement requete_selection=this.connect.prepareStatement(
@@ -102,7 +135,7 @@ public class ClientDAO extends DAO<Client> {
 	public boolean update(Client obj) {
 		try {
 			PreparedStatement requeteUpdate=this.connect.prepareStatement(
-			"UPDATE LesClients set"+
+			"UPDATE LesClients set "+
 			"mdp=?,"+
 			"nom=?,"+
 			"prenom=?,"+
@@ -110,7 +143,7 @@ public class ClientDAO extends DAO<Client> {
 			"nomRue=?,"+
 			"ville=?,"+
 			"cp=?,"+
-			"pays=?"+
+			"pays=? "+
 			"where mail=?");
 			requeteUpdate.setString(1, obj.getMail());
 			requeteUpdate.setString(2, obj.getNom());

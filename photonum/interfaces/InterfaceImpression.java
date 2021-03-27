@@ -59,7 +59,6 @@ public class InterfaceImpression {
 		InterfacePage.interfaceCreationPage(impression.getIdImpression(), client, page);
 		List<Page> pages = new ArrayList<>();
 		pages.add(page);
-		impression.ajoutPages(pages);
 		createImpression(impression, client);
 	}
 
@@ -68,7 +67,7 @@ public class InterfaceImpression {
 		List<Page> pages = new ArrayList<>();
 		Page page = new Page(impression.getIdImpression(), "");
 		boolean b = true;
-		for(int i = 0; i < 12 && b && page!=null; i++) {
+		for(int i = 1; i < 13 && b && page!=null; i++) {
 			InterfacePage.interfaceCreationPage(impression.getIdImpression(), client, page);
 			pages.add(page);
 			System.out.println("Page n° : " + i);
@@ -76,7 +75,6 @@ public class InterfaceImpression {
 		}
 		if(b && page!=null)
 		{
-			impression.ajoutPages(pages);
 			createImpression(impression,client);
 		}
 		else if(!b && page==null){
@@ -91,11 +89,10 @@ public class InterfaceImpression {
 		List<Page> pages = new ArrayList<>();
 		Page p = new Page(impression.getIdImpression(),"");
 		for(boolean b = true; b; b = 1 != LectureClavier.lireEntier("quitter ou continuer")) {
-			InterfacePage.interfaceCreationPage(impression.getIdImpression(),client,p);
+			InterfacePage.interfaceCreationPageAlbum(impression.getIdImpression(),client,p);
 			pages.add(p);
 			System.out.println("Selectionnez 1 pour quitter et un autre nombre pour continuer la création de pages");
 		}
-		impression.ajoutPages(pages);
 		createImpression(impression,client);
 	}
 
@@ -120,8 +117,11 @@ public class InterfaceImpression {
 			{
 				if(choix <= photosExi.size())
 				{
-					photos.add(photosExi.get(choix-1));
-					System.out.println("La photo numéro " + choix + " a bien été ajoutée.");
+					
+					photosExi.get(choix-1).setIdImpression(impression.getIdImpression());
+					photosExi.get(choix-1).setNbFoisTiree(LectureClavier.lireEntier("Nombre de tirages de la photo :"));
+					photosExi.get(choix-1).mettreAJour();
+					System.out.println("La photo numéro " + choix + " a bien été modifée.");
 				}
 				choix = LectureClavier.lireEntier("0 Pour quitter, un autre nombre pour selectionner la photo liée");
 			}
@@ -171,12 +171,12 @@ public class InterfaceImpression {
 			}
 		}
 
-		impression.ajoutPhotosTirage(photos);
+		//impression.ajoutPhotosTirage(photos);
 		createImpression(impression,client);
 	}
 
 	private static void createImpression(Impression impression, Client client) {
-
+		System.out.println("Je suis dans createImpression");
 		if(impression.getType() == TypeImpression.TIRAGE)
 		{
 			List<PhotoTirage> listPhoto = impression.getPhotosTirage();
@@ -212,12 +212,23 @@ public class InterfaceImpression {
 					System.out.println("Une erreur est survenue, votre " + impression.getType() + " n'a pas pu être créée. Veuillez réessayer.");
 				}
 			}
+			else{
+				System.out.println("Il n'y a aucune photo Tirage");
+			}
 		}
 		else
 		{
 			List<Page> listPage = impression.getPages();
 			if(listPage.size() != 0){
-				if(listPage.get(0).getPhotos() != null && listPage.get(0).getPhotos().size() != 0) {
+				int k = 0;
+				for(Page page : listPage)
+				{
+					System.out.println("index = "+k+" size = "+page.getPhotos());
+					k++;
+				}
+				List<Photo> listPhoto = listPage.get(0).getPhotos();
+				System.out.println("size: "+listPhoto.size());
+				if(listPhoto != null && listPhoto.size() != 0) {
 					List<Produit> listProd = Produit.getAll();
 
 					int i = 1;

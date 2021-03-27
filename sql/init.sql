@@ -11,3 +11,5 @@ START procedures/procCodePromo.sql;
 
 START triggers/trigExpirationImage.sql;
 START triggers/trigUtilisationPromo.sql;
+
+START insertPhotoNum.sql;

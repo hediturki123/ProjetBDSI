@@ -1,15 +1,10 @@
 package photonum.objects;
 
-import photonum.PhotoNum;
-import photonum.dao.CodePromoDAO;
-
 public class CodePromo  {
 
     private String mailClient;
     private String code;
     private boolean estUtilise;
-
-    private final static CodePromoDAO CP_DAO = new CodePromoDAO(PhotoNum.conn);
 
     public CodePromo() {}
 
@@ -46,14 +41,5 @@ public class CodePromo  {
 
     public void utilise(boolean estUtilise) {
         this.estUtilise = estUtilise;
-    }
-
-    public static void ajouterPromo(String mail) {
-        CodePromo cp = new CodePromo(null, mail);
-        CP_DAO.create(cp);
-    }
-
-    public static void ajouterPromo(Client c) {
-        ajouterPromo(c.getMail());
     }
 }

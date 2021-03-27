@@ -13,7 +13,7 @@ CREATE TABLE LesClients (
 );
 
 CREATE TABLE LesCodesPromo (
-	code varchar2(10), -- Attention si de manière procédurale.
+	code varchar2(15), -- Attention si de manière procédurale.
 	mail varchar2(80),
 	estUtilise number(1),
 	constraint priCP1 primary key (code),-- Genéré de manière procédurale.
@@ -37,7 +37,7 @@ CREATE TABLE LesCommandes (
 	dateCommande date not null,
 	estLivreChezClient number(1) not null,
 	status varchar2(20) not null,
-	codePromo varchar2(10) null,
+	codePromo varchar2(15) null,
 	numeroRue number(4) not null,
 	nomRue varchar2(80) not null,
 	ville varchar2(30) not null,

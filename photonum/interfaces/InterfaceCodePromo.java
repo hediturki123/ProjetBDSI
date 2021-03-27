@@ -54,12 +54,12 @@ public class InterfaceCodePromo {
                 cpUtilise = new CodePromo(cpDispo.get(choix - 1).getMailClient(), cpDispo.get(choix - 1).getCode(),
                         cpDispo.get(choix - 1).estUtilise());
             } else {
-                System.out.println("Sha !! pas assez bon client pour avoir un code promo baltringue !!");
+                System.out.println("Faite une commande de plus de 100 euro pour avoir un code promo ");
             }
         } else {
-            System.out.println("pas de souci , mais tant pis pour vous SHA !");
+            System.out.println("pas de souci , mais tant pis pour vous !");
         }
         cmd.setCodePromo(cpUtilise.getCode());
-        if(modif)InterfaceCommande.validationCommande(c, cmd, articles);else InterfaceCommande.livraison(c, cmd, articles,false);
+        if(modif)InterfaceCommande.validationCommande(c, cmd, articles,true);else InterfaceCommande.livraison(c, cmd, articles,false);
     }
 }

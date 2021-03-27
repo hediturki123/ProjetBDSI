@@ -45,4 +45,13 @@ public class PhotoParPage{
 	public boolean associerPhotoPage() {
 		return PP_DAO.create(this);
 	}
+
+	public static PhotoParPage get(int idPhoto, int idPage) {
+		int[] ids = {idPhoto, idPage};
+		return PP_DAO.read(ids);
+	}
+
+	public boolean mettreAJour() {
+		return PP_DAO.update(this);
+	}
 }

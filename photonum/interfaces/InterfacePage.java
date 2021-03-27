@@ -3,8 +3,6 @@ package photonum.interfaces;
 import java.util.ArrayList;
 import java.util.List;
 
-import photonum.PhotoNum;
-import photonum.dao.*;
 import photonum.objects.*;
 import photonum.utils.LectureClavier;
 /**
@@ -21,9 +19,9 @@ public class InterfacePage {
 		System.out.println("Vous allez ici créer une page pour votre impression.");
 
 		List<Photo> resultat = new ArrayList<>();
-
+		PhotoParPage pp = null;
 		List<Photo> photosExi = client.getPhotos();
-
+		page.nouvellePage();
 		if(photosExi.size()!=0) {
 			System.out.println("Votre liste de photo:");
 			int i = 1;
@@ -40,19 +38,20 @@ public class InterfacePage {
 						"choisissez une photo existante.\n"
 					);
 				}
-				resultat.add(photosExi.get(choix-1));
+				pp = new PhotoParPage(photosExi.get(choix-1).getIdPhoto(), page.getIdPage());
+				if(PhotoParPage.get(pp.getIdPhoto(),pp.getIdPage())==null)
+					pp.associerPhotoPage();
 			}
 		}else {
 			System.out.println("Vous n'avez pas de photos.");
 		}
-		page.nouvellePage();
-		
+		page.mettreAJour();
 
 		System.out.println("Voulez vous créer des photos à mettre dans votre page?");
 		int choix = LectureClavier.lireEntier("1.Oui/2.Non");
-		List<FichierImage> listImg = client.getImages();
-		if(listImg.size()!=0){
-			if(choix == 1) {
+		if(choix == 1) {
+			List<FichierImage> listImg = client.getImages();
+			if(listImg.size()!=0){
 				Photo photo = new Photo("",client.getMail());
 				int i = 1;
 				System.out.println("Vos fichiers images disponibles:");
@@ -74,18 +73,17 @@ public class InterfacePage {
 					InterfacePhoto.creationPhoto(page.getIdPage(),listImg.get(choix2-1).getChemin(),photo);
 					resultat.add(photo);
 				}
-				page.setPhotos(resultat);
 
 				System.out.println("Rentrez votre mise en forme");
 				String mef = LectureClavier.lireChaine();
 				page.setMiseEnForme(mef);
 				page.mettreAJour();
 			}
-		}
-		else{
-			System.out.println("Vous n'avez pas de fichier image pour créer des photos, téléchargez-en.");
-			page=null;
+			else{
+				System.out.println("Vous n'avez pas de fichier image pour créer des photos, téléchargez-en.");
+				page=null;
 
+			}
 		}
 
 	}
@@ -97,18 +95,19 @@ public class InterfacePage {
 	 * @param page
 	 */
 	public static void interfaceCreationPageAlbum(int idImpression, Client client, Page page) {
+
 		System.out.println("Vous allez ici créer une page pour votre impression.");
 
-		List<Photo> resultat = new ArrayList<>();
-
 		List<PhotoAlbum> photosExi = client.getPhotosAlbum();
-
+		PhotoParPage pp = null;
+		page.nouvellePage();
 		if(photosExi.size()!=0) {
 			System.out.println("Votre liste de photo:");
 			int i = 1;
 			int choix;
 			for(PhotoAlbum photo: photosExi) {
-				System.out.println(i+".Vous avez cette photo: "+photo.toString());
+
+				System.out.println(i+".Vous avez cette photo:\n"+photo.toString());
 				i++;
 			}
 			for(boolean b = true; b; b = 1 != LectureClavier.lireEntier("1.quitter ou 2.continuer"))
@@ -119,21 +118,24 @@ public class InterfacePage {
 						"choisissez une photo existante.\n"
 					);
 				}
-				resultat.add(photosExi.get(choix-1));
+				
+				pp = new PhotoParPage(photosExi.get(choix-1).getIdPhoto(), page.getIdPage());
+				if(PhotoParPage.get(pp.getIdPhoto(), pp.getIdPhoto())==null)
+					pp.associerPhotoPage();
 			}
 
 		}else {
 			System.out.println("Vous n'avez pas de photos.");
 		}
-		DAO<Page> pageDAO = new PageDAO(PhotoNum.conn);
-		pageDAO.create(page);
+		page.mettreAJour();
+		
 
 
 		System.out.println("Voulez vous créer des photos à mettre dans votre page?");
 		int choix = LectureClavier.lireEntier("1.Oui/2.Non");
-		List<FichierImage> listImg = client.getImages();
-		if(listImg.size()!=0){
-			if(choix == 1) {
+		if(choix == 1) {
+			List<FichierImage> listImg = client.getImages();
+			if(listImg.size()!=0){
 				PhotoAlbum photo = new PhotoAlbum("",client.getMail(),"");
 				int i =1;
 				System.out.println("Vos fichiers images disponibles:");
@@ -154,19 +156,17 @@ public class InterfacePage {
 					System.out.println("Rentrez le texte descriptif.");
 					String texte = LectureClavier.lireChaine();
 					InterfacePhoto.creationPhotoAlbum(page.getIdPage(),listImg.get(choix2-1).getChemin(),photo,texte);
-					resultat.add(photo);
 				}
-				page.setPhotos(resultat);
 
 				System.out.println("Rentrez votre mise en forme");
 				String mef = LectureClavier.lireChaine();
 				page.setMiseEnForme(mef);
 
-				pageDAO.update(page);
+				page.mettreAJour();
 			}
-		}
-		else{
-			System.out.println("Vous n'avez pas de fichier image pour créer des photos, téléchargez-en.");
+			else{
+				System.out.println("Vous n'avez pas de fichier image pour créer des photos, téléchargez-en.");
+			}
 		}
 	}
 }

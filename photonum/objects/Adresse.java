@@ -92,4 +92,9 @@ public class Adresse {
 		return CL_DAO.read(mailClient);
 	}
 
+	@Override
+	public boolean equals(Object a){
+		Adresse addr = (Adresse) a;
+		return addr.getMailClient().equals(mailClient) && addr.getNumeroRue()==numeroRue && addr.getNomRue().equals(nomRue) && addr.getPays().equals(pays) && addr.getVille().equals(ville) && addr.getCp()==cp;
+	}
 }
