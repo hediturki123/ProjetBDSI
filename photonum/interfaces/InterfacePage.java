@@ -46,7 +46,7 @@ public class InterfacePage {
 			System.out.println("Vous n'avez pas de photos.");
 		}
 		page.nouvellePage();
-
+		
 
 		System.out.println("Voulez vous créer des photos à mettre dans votre page?");
 		int choix = LectureClavier.lireEntier("1.Oui/2.Non");
@@ -109,6 +109,7 @@ public class InterfacePage {
 			int choix;
 			for(PhotoAlbum photo: photosExi) {
 				System.out.println(i+".Vous avez cette photo: "+photo.toString());
+				i++;
 			}
 			for(boolean b = true; b; b = 1 != LectureClavier.lireEntier("1.quitter ou 2.continuer"))
 			{
