@@ -176,7 +176,7 @@ public class Client {
 
 	public static Client connexion(String mail, String mdp) {
 		String[] infos = {mail, mdp};
-		return CL_DAO.read(infos);
+		return CL_DAO.getConnexion(infos);
 	}
 
 	/**

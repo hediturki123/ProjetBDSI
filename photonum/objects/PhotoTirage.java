@@ -35,4 +35,8 @@ public class PhotoTirage extends Photo {
 	public boolean nouveauTirage() {
 		return PT_DAO.create(this);
 	}
+
+	public boolean mettreAJour(){
+		return PT_DAO.update(this);
+	}
 }

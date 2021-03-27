@@ -39,7 +39,8 @@ public class InterfacePage {
 					);
 				}
 				pp = new PhotoParPage(photosExi.get(choix-1).getIdPhoto(), page.getIdPage());
-				pp.associerPhotoPage();
+				if(PhotoParPage.get(pp.getIdPhoto(),pp.getIdPage())==null)
+					pp.associerPhotoPage();
 			}
 		}else {
 			System.out.println("Vous n'avez pas de photos.");
@@ -106,7 +107,7 @@ public class InterfacePage {
 			int i = 1;
 			int choix;
 			for(PhotoAlbum photo: photosExi) {
-				System.out.println(i+".Vous avez cette photo: "+photo.toString());
+				System.out.println(i+".Vous avez cette photo:\n"+photo.toString());
 				i++;
 			}
 			for(boolean b = true; b; b = 1 != LectureClavier.lireEntier("1.quitter ou 2.continuer"))
@@ -119,7 +120,8 @@ public class InterfacePage {
 				}
 				
 				pp = new PhotoParPage(photosExi.get(choix-1).getIdPhoto(), page.getIdPage());
-				pp.associerPhotoPage();
+				if(PhotoParPage.get(pp.getIdPhoto(), pp.getIdPhoto())==null)
+					pp.associerPhotoPage();
 			}
 
 		}else {

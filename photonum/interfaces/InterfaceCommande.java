@@ -85,7 +85,7 @@ public class InterfaceCommande {
      * @param articles la List&lt;{@link Article}&gt; des {@link Article} de la commande cmd
      */
     public static void validationCommande(Client c, Commande cmd, List<Article> articles,boolean modif){
-        cmd.setDateCommande(Date.valueOf(LocalDate.now()));
+        if(!modif)cmd.setDateCommande(Date.valueOf(LocalDate.now()));
         if(!modif)cmd.setStatus(StatutCommande.EN_COURS);
         System.out.println("voici le descriptif de votre commande :");
         System.out.println(cmd.toString());

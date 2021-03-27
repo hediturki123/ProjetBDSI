@@ -43,8 +43,8 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 			requeteCreate2.setString(2, obj.getChemin());
 			requeteCreate2.setString(3, obj.getMailClient());
 			
-			int reussi1=requeteCreate.executeUpdate();
 			int reussi2=requeteCreate2.executeUpdate();
+			int reussi1=requeteCreate.executeUpdate();
 			
 			requeteCreate.close();
 			requeteCreate2.close();
@@ -125,9 +125,10 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 						result.getString("mailClient"),
 						result.getInt("nbPhotoTirees"),
 						result.getInt("idImpression"));
-				requete_select.close();
+				res.setIdPhoto(result.getInt("idPhoto"));
 				tab.add(res);
 			}
+			requete_select.close();
 			return tab;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -144,28 +145,29 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 		try {
 			PreparedStatement requete_update = this.connect.prepareStatement(
 					"UPDATE LesPhotosTirees SET "
-					+ "idPhoto=?,"
-					+ "nbPhotoTirees=?");
+					+ "nbPhotoTirees=?, "
+					+ "idImpression=? "
+					+ "WHERE idPhoto=? ");
 			PreparedStatement requete_update2 = this.connect.prepareStatement(
 					"UPDATE LesPhotos SET "
-					+ "idPhoto=?,"
-					+ "chemin=?,"
-					+ "mailClient=?");
+					+ "chemin=?, "
+					+ "mailClient=? WHERE idPhoto=?");
 			
-			requete_update.setInt(1, obj.getIdPhoto());
-			requete_update.setInt(2, obj.getNbFoisTiree());
+			requete_update.setInt(1, obj.getNbFoisTiree());
+			requete_update.setInt(2, obj.getIdImpression());
+			requete_update.setInt(3, obj.getIdPhoto());
 			
-			requete_update2.setInt(1, obj.getIdPhoto());
-			requete_update2.setString(2, obj.getChemin());
-			requete_update2.setString(3, obj.getMailClient());
+			requete_update2.setString(1, obj.getChemin());
+			requete_update2.setString(2, obj.getMailClient());
+			requete_update2.setInt(3, obj.getIdPhoto());
 			
-			boolean b1 = requete_update.execute();
-			boolean b2 = requete_update2.execute();
+			int b2 = requete_update2.executeUpdate();
+			int b1 = requete_update.executeUpdate();
 			
 			requete_update.close();
 			requete_update2.close();
 			
-			return b1 && b2;
+			return b1==1 && b2==1;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -212,7 +214,7 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 				PhotoTirage res = new PhotoTirage(
 						result.getString("chemin"),
 						result.getString("mailClient"),
-						result.getInt("nbFois"),
+						result.getInt("nbPhotoTirees"),
 						result.getInt("idImpression"));
 				res.setIdPhoto(result.getInt("idPhoto"));
 				tab.add(res);
