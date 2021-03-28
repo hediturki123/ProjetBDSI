@@ -12,6 +12,7 @@ import photonum.objects.Client;
 import photonum.PhotoNum;
 import photonum.objects.Commande;
 import photonum.objects.StatutCommande;
+import photonum.utils.AB64H;
 
 public class CommandeDAO extends DAO<Commande>{
 
@@ -318,7 +319,7 @@ public class CommandeDAO extends DAO<Commande>{
 		boolean success = false;
 		try {
 			CallableStatement cstmt = PhotoNum.conn.prepareCall("{call code_promo_proc (?,?)}");
-			cstmt.setString(1, System.currentTimeMillis()+"");
+			cstmt.setString(1, AB64H.encode(System.currentTimeMillis()));
 			cstmt.setString(2, mailClient);
 			cstmt.execute();
 			success = true;
