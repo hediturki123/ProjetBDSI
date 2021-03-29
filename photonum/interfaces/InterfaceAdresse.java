@@ -73,7 +73,7 @@ public class InterfaceAdresse {
                 for (int i = 1; i <= addrLivraison.size(); i++) {
                     System.out.println(i + ". " + addrLivraison.get(i - 1).toString());
                 }
-                choix = LectureClavier.lireEntier("À quelle adresse de livraison voulez-vous envoyer votre commande ? ");
+                choix = LectureClavier.lireEntier("À quelle adresse de livraison voulez-vous envoyer votre commande ?");
             }
             Adresse a = addrLivraison.get(choix - 1);
         addr.setCp(a.getCp());

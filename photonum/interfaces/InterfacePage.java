@@ -17,44 +17,41 @@ public class InterfacePage {
 	 */
 	public static void interfaceCreationPage(int idImpression, Client client,Page page) {
 		System.out.println("Vous allez ici créer une page pour votre impression.");
-
 		List<Photo> resultat = new ArrayList<>();
 		PhotoParPage pp = null;
 		List<Photo> photosExi = client.getPhotos();
 		page.nouvellePage();
-		if(photosExi.size()!=0) {
-			System.out.println("Votre liste de photo:");
+		if (photosExi.size() != 0) {
+			System.out.println("Votre liste de photos :");
 			int i = 1;
 			int choix;
-			for(Photo photo: photosExi) {
-				System.out.println(i+". Vous avez cette photo: "+photo.toString());
+			for (Photo photo : photosExi) {
+				System.out.println(i + ". Vous avez cette photo: " + photo.toString());
 				i++;
 			}
-			for(boolean b = true; b; b = 1 != LectureClavier.lireEntier("1.Arrêter d'ajouter des photos ou 2.continuer"))
-			{
-				choix = LectureClavier.lireEntier("Choisissez la photo que vous voulez pour votre page");
-				while(choix<1 && choix>photosExi.size()){
-					choix=LectureClavier.lireEntier(
-						"choisissez une photo existante.\n"
-					);
+			for (boolean b = true; b; b = 1 != LectureClavier.lireEntier(
+				"1. Arrêter d'ajouter des photos / 2. Continuer"
+			)) {
+				choix = LectureClavier.lireEntier("Choisissez la photo que vous voulez pour votre page.");
+				while (choix < 1 && choix > photosExi.size()) {
+					choix = LectureClavier.lireEntier("choisissez une photo existante.\n");
 				}
-				pp = new PhotoParPage(photosExi.get(choix-1).getIdPhoto(), page.getIdPage());
-				if(PhotoParPage.get(pp.getIdPhoto(),pp.getIdPage())==null)
+				pp = new PhotoParPage(photosExi.get(choix - 1).getIdPhoto(), page.getIdPage());
+				if (PhotoParPage.get(pp.getIdPhoto(), pp.getIdPage()) == null)
 					pp.associerPhotoPage();
 			}
-		}else {
-			System.out.println("Vous n'avez pas de photos.");
+		} else {
+			System.out.println("Vous n'avez pas de photo.");
 		}
 		page.mettreAJour();
 
-		System.out.println("Voulez vous créer des photos à mettre dans votre page?");
-		int choix = LectureClavier.lireEntier("1.Oui/2.Non");
-		if(choix == 1) {
+		boolean choix = LectureClavier.lireOuiNon("Voulez-vous créer des photos à mettre dans votre page ? (o/n)");
+		if (choix) {
 			List<FichierImage> listImg = client.getImages();
 			if(listImg.size()!=0){
 				Photo photo = new Photo("",client.getMail());
 				int i = 1;
-				System.out.println("Vos fichiers images disponibles:");
+				System.out.println("Fichiers images disponibles:");
 				for(FichierImage img : listImg)
 				{
 					System.out.println(i + ". " + img.getChemin());
@@ -101,44 +98,37 @@ public class InterfacePage {
 		List<PhotoAlbum> photosExi = client.getPhotosAlbum();
 		PhotoParPage pp = null;
 		page.nouvellePage();
-		if(photosExi.size()!=0) {
-			System.out.println("Votre liste de photo:");
+		if (photosExi.size()!=0) {
+			System.out.println("Votre liste de photo :");
 			int i = 1;
 			int choix;
 			for(PhotoAlbum photo: photosExi) {
-
 				System.out.println(i+".Vous avez cette photo:\n"+photo.toString());
 				i++;
 			}
-			for(boolean b = true; b; b = 1 != LectureClavier.lireEntier("1.quitter ou 2.continuer"))
-			{
+			for (boolean b = true; b; b = LectureClavier.lireOuiNon("Quitter (n) / Continuer (o)")) {
 				choix = LectureClavier.lireEntier("Choisissez la photo que vous voulez pour votre page");
-				while(choix<1 && choix>photosExi.size()){
-					choix=LectureClavier.lireEntier(
-						"choisissez une photo existante.\n"
-					);
+				while (choix < 1 && choix > photosExi.size()) {
+					choix = LectureClavier.lireEntier("Choisissez une photo existante.");
 				}
-				
-				pp = new PhotoParPage(photosExi.get(choix-1).getIdPhoto(), page.getIdPage());
-				if(PhotoParPage.get(pp.getIdPhoto(), pp.getIdPhoto())==null)
+				pp = new PhotoParPage(photosExi.get(choix - 1).getIdPhoto(), page.getIdPage());
+				if (PhotoParPage.get(pp.getIdPhoto(), pp.getIdPhoto()) == null)
 					pp.associerPhotoPage();
 			}
-
-		}else {
+		} else {
 			System.out.println("Vous n'avez pas de photos.");
 		}
 		page.mettreAJour();
-		
 
 
-		System.out.println("Voulez vous créer des photos à mettre dans votre page?");
-		int choix = LectureClavier.lireEntier("1.Oui/2.Non");
-		if(choix == 1) {
+
+		boolean choix = LectureClavier.lireOuiNon("Voulez-vous créer des photos à mettre dans votre page ? (o/n)");
+		if (choix) {
 			List<FichierImage> listImg = client.getImages();
-			if(listImg.size()!=0){
-				PhotoAlbum photo = new PhotoAlbum("",client.getMail(),"");
+			if (listImg.size() != 0){
+				PhotoAlbum photo = new PhotoAlbum("", client.getMail(),"");
 				int i =1;
-				System.out.println("Vos fichiers images disponibles:");
+				System.out.println("Fichiers images disponibles :");
 				for(FichierImage img : listImg)
 				{
 					System.out.println(i + ". " + img.getChemin());
@@ -146,19 +136,19 @@ public class InterfacePage {
 
 				int choix2;
 
-				for(boolean b = true; b; b = 1 != LectureClavier.lireEntier("1.quitter ou 2.continuer")) {
-					choix2 = LectureClavier.lireEntier("Choisissez le fichier image que vous voulez pour créer votre photo");
+				for(boolean b = true; b; b = LectureClavier.lireOuiNon("Quitter (n) / Continuer (o)")) {
+					choix2 = LectureClavier.lireEntier("Choisissez une image pour créer votre photo.");
 					while(choix2<1 && choix2>listImg.size()){
 						choix2=LectureClavier.lireEntier(
-							"choisissez un fichier image existant.\n"
+							"Choisissez un fichier image existant."
 						);
 					}
-					System.out.println("Rentrez le texte descriptif.");
+					System.out.println("Texte descriptif :");
 					String texte = LectureClavier.lireChaine();
 					InterfacePhoto.creationPhotoAlbum(page.getIdPage(),listImg.get(choix2-1).getChemin(),photo,texte);
 				}
 
-				System.out.println("Rentrez votre mise en forme");
+				System.out.println("Mise en forme :");
 				String mef = LectureClavier.lireChaine();
 				page.setMiseEnForme(mef);
 

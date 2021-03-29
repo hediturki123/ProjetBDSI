@@ -34,6 +34,11 @@ public enum TypeImpression {
         return ti;
     }
 
+    @Override
+    public String toString() {
+        return getString();
+    }
+
 }
 
 

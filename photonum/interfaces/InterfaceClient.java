@@ -96,26 +96,26 @@ public class InterfaceClient  {
 	 * Au moment ou le mail
 	 * <h3>Exemple :</h3>
 	 * <table>
-	 		<tr><td>Veuillez entrer votre adresse mail : </td></tr>
-			<tr><td>XXXXXXX@XXX.XX</td></tr>
-			<tr><td>Mot de passe :</td></tr>
-			<tr><td>************</td></tr>
-			<tr><td>Veuillez entrer votre nom :</td></tr>
-			<tr><td>XXXX</td></tr>
-			<tr><td>Veuillez entrer votre prenom :</td></tr>
-			<tr><td>XXXX</td></tr>
-			<tr><td>veuillez entrez votre numero de rue</td></tr>
-	 		<tr><td> XXX</td></tr>
-			<tr><td>veuillez entrez votre rue</td></tr>
-			<tr><td>XXXXX XXXXXX XXXXXXX</td></tr>
-			<tr><td>veuillez entrez votre ville</td></tr>
-            <tr><td>XXXXXXX</td></tr>
-            <tr><td>veuillez entrez votre code postal</td></tr>
-            <tr><td>XXXXX</td></tr>
-            <tr><td>veuillez entrez votre pays</td></tr>
-            <tr><td>XXXXX</td></tr>
-	* </table>
-	<h4>Probleme</h4>
+	 *	<tr><td>Veuillez entrer votre adresse mail : </td></tr>
+	 *	<tr><td>XXXXXXX@XXX.XX</td></tr>
+	 *	<tr><td>Mot de passe :</td></tr>
+	 *	<tr><td>************</td></tr>
+	 *	<tr><td>Veuillez entrer votre nom :</td></tr>
+	 *	<tr><td>XXXX</td></tr>
+	 *	<tr><td>Veuillez entrer votre prenom :</td></tr>
+	 *	<tr><td>XXXX</td></tr>
+	 *	<tr><td>veuillez entrez votre numero de rue</td></tr>
+	 *	<tr><td> XXX</td></tr>
+	 *	<tr><td>veuillez entrez votre rue</td></tr>
+	 *	<tr><td>XXXXX XXXXXX XXXXXXX</td></tr>
+	 *	<tr><td>veuillez entrez votre ville</td></tr>
+	 *	<tr><td>XXXXXXX</td></tr>
+	 *	<tr><td>veuillez entrez votre code postal</td></tr>
+	 *	<tr><td>XXXXX</td></tr>
+	 *	<tr><td>veuillez entrez votre pays</td></tr>
+     *  <tr><td>XXXXX</td></tr>
+	 * </table>
+	 * <h4>Probleme</h4>
 	 */
     private static void creationCompte(){
 		System.out.println(">>> Veuillez remplir les champs suivants s'il vous plaît.");
@@ -159,14 +159,14 @@ public class InterfaceClient  {
 	 * Le menu ce presente de la maniere suivante :
 	 * <h3>Exemple :</h3>
 	 * <table>
-	 		<tr><td>--- Menu Client ---</td></tr>
-	 		<tr><td>1. Afficher mes informations</td></tr>
-			<tr><td>2. Gérer les fichiers </td></tr>
-			<tr><td>3. Gérer une impression </td></tr>
-			<tr><td>4. Passer une commande</td></tr>
-			<tr><td>5. Modifier une commande</td></tr>
-			<tr><td>6. Se deconnecter</td></tr>
-	* </table>
+	 *		<tr><td>--- Menu Client ---</td></tr>
+	 *		<tr><td>1. Afficher mes informations</td></tr>
+	 *		<tr><td>2. Gérer les fichiers </td></tr>
+	 *		<tr><td>3. Gérer une impression </td></tr>
+	 *		<tr><td>4. Passer une commande</td></tr>
+	 *		<tr><td>5. Modifier une commande</td></tr>
+	 *		<tr><td>6. Se deconnecter</td></tr>
+	 * </table>
 	 * @param c le {@link Client} courant
 	 */
     public static void menu(Client c) {
@@ -226,7 +226,7 @@ public class InterfaceClient  {
 			);
 			switch(choix){
 				case 1: afficherInfo(c); break;
-				case 2: InterfaceCodePromo.PresentationCodePromo(c); break;
+				case 2: InterfaceCodePromo.presentationCodePromo(c); break;
 				case 3: InterfaceCommande.affichageCommande(c); break;
 				case 4: InterfaceImpression.interfaceVueImpression(c); break;
 				case 5: InterfaceFichier.afficherImagesPartage(c); break;

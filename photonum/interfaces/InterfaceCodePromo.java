@@ -18,15 +18,15 @@ public class InterfaceCodePromo {
      * Presente tous les {@link CodePromo} actif du client
      * @param c le {@link Client}
      */
-    public static void PresentationCodePromo(Client c) {
+    public static void presentationCodePromo(Client c) {
         List<CodePromo> codeClients = c.getCodesPromo(false);
         if (codeClients.size() != 0) {
-            System.out.println("voici vos codes promo toujours actif :");
+            System.out.println("Vos codes promo :");
             for (int i = 1; i <= codeClients.size(); i++) {
-                System.out.println("code n°" + i + " :" + codeClients.get(i - 1).getCode());
+                System.out.println("Code n°" + i + " : " + codeClients.get(i - 1).getCode());
             }
         } else {
-            System.out.println("Désolé mais vous n'avez aucun code promo ....\n");
+            System.out.println("Désolé, vous n'avez aucun code promo ....\n");
         }
     }
 
@@ -41,23 +41,23 @@ public class InterfaceCodePromo {
     public static void  utilisationCodePromo(Client c, Commande cmd, List<Article> articles, boolean modif) {
         List<CodePromo> cpDispo = c.getCodesPromo(false);
         CodePromo cpUtilise = new CodePromo();
-        if (LectureClavier.lireOuiNon("voulez vous utiliser un code promo ? (o/n)")) {
+        if (LectureClavier.lireOuiNon("Voulez-vous utiliser un code promo ? (o/n)")) {
             if (cpDispo.size() > 0) {
                 int choix = -1;
                 while (!(choix > 0 && choix <= cpDispo.size())) {
-                    System.out.println("vos code promo :");
+                    System.out.println("Vos codes promo :");
                     for (int i = 1; i <= cpDispo.size(); i++) {
-                        System.out.println("    " + i + ". " + cpDispo.get(i - 1));
+                        System.out.println("\t" + i + ". " + cpDispo.get(i - 1));
                     }
-                    choix = LectureClavier.lireEntier(" choissisez dans la liste ci-dessus");
+                    choix = LectureClavier.lireEntier("Choisissez un code à utiliser dans la liste ci-dessus :");
                 }
                 cpUtilise = new CodePromo(cpDispo.get(choix - 1).getMailClient(), cpDispo.get(choix - 1).getCode(),
                         cpDispo.get(choix - 1).estUtilise());
             } else {
-                System.out.println("Faite une commande de plus de 100 euro pour avoir un code promo ");
+                System.out.println("Vous n'avez aucun code promo à utiliser.");
             }
         } else {
-            System.out.println("pas de souci , mais tant pis pour vous !");
+            System.out.println("Vous n'utilisez pas de code promo.");
         }
         cmd.setCodePromo(cpUtilise.getCode());
         if(modif)InterfaceCommande.validationCommande(c, cmd, articles,true);else InterfaceCommande.livraison(c, cmd, articles,false);

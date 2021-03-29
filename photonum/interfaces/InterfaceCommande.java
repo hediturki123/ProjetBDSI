@@ -87,7 +87,7 @@ public class InterfaceCommande {
     public static void validationCommande(Client c, Commande cmd, List<Article> articles,boolean modif){
         if(!modif)cmd.setDateCommande(Date.valueOf(LocalDate.now()));
         if(!modif)cmd.setStatus(StatutCommande.EN_COURS);
-        System.out.println("voici le descriptif de votre commande :");
+        System.out.println("Voici le descriptif de votre commande.");
         System.out.println(cmd.toString());
         System.out.println("Details de vos articles :");
         for (Article a : articles) {
@@ -106,19 +106,21 @@ public class InterfaceCommande {
         } else {
             int choix = -1;
             while (!(choix > 0 && choix <= 4)) {
-                choix = LectureClavier.lireEntier("Voulez vous revenir a une etape ou quitter ? "
-                        + "\n(attention reneir a une etape vous oblige a faire les suivantes)"
-                        + "\n1. Choisir les Impressions" + "\n2. Choisir le CodePromo"
-                        + "\n3. Changer l'adresse de livraison" + "\n4. Abandonner\n");
+                choix = LectureClavier.lireEntier(
+                    "Voulez vous revenir a une etape ou quitter ? (Attention, revenir à une etape vous oblige à faire les suivantes.)\n"+
+                    "\t1. Choisir les impressions\n" +
+                    "\t2. Appliquer un code promo\n" +
+                    "\t3. Changer l'adresse de livraison\n" +
+                    "\t4. Abandonner\n"+
+                    "> "
+                );
             }
-            switch(choix){
-                case 1: choixImpression(c, cmd,true);
-                        break;
-                case 2:InterfaceCodePromo.utilisationCodePromo(c, cmd, articles,true);
-                        break;
-                case 3:livraison(c, cmd, articles,true);
-                        break;
+            switch (choix){
+                case 1: choixImpression(c, cmd,true); break;
+                case 2: InterfaceCodePromo.utilisationCodePromo(c, cmd, articles,true); break;
+                case 3: livraison(c, cmd, articles,true); break;
                 case 4:break;
+                default: 
             }
         }
     }
@@ -156,17 +158,17 @@ public class InterfaceCommande {
             for (int i = 1; i <= commandesClient.size(); i++) {
                 System.out.println(i + ". " + commandesClient.get(i - 1).toString());
             }
-            int choix = LectureClavier.lireEntier("Si vous voulez plus de details sur une commande, choisissez une commande dans la liste ci-dessus (sinon taper 0).");
+            int choix = LectureClavier.lireEntier("Si vous voulez plus de details sur une commande, choisissez-en une dans la liste ci-dessus ; sinon, taper 0.");
 
                     //reafire la boucle ici
             while (choix != 0) {
                 while (!(choix > 0 && choix <= commandesClient.size())) {
-                    System.out.println("\nVous n'avez pas mis un numero de commande valide.");
+                    System.out.println("\nVous n'avez pas mis un numéro de commande valide.");
                     System.out.println("Voici toutes vos commandes :");
                     for (int i = 1; i <= commandesClient.size(); i++) {
-                        System.out.println(i + ". " + commandesClient.get(i - 1).toString());
+                        System.out.println("\t"+ i + ". " + commandesClient.get(i - 1).toString());
                     }
-                    choix = LectureClavier.lireEntier("Si vous voulez plus de details sur une commande, choisissez une commande dans la liste ci-dessus (sinon taper 0).");
+                    choix = LectureClavier.lireEntier("Si vous voulez plus de details sur une commande, choisissez-en une dans la liste ci-dessus ; sinon, taper 0.");
                 }
                 afficherDetailCommande(commandesClient.get(choix - 1));
 
