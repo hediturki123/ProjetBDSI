@@ -181,7 +181,7 @@ public class Commande {
 
 	@Override
 	public String toString() {
-		CodePromo cp = getCodePromoStruct();
+		//CodePromo cp = getCodePromoStruct();
 		String s = String.join(" | ",
 			idCommande+"",
 			mail,

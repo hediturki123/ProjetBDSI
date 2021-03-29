@@ -27,7 +27,7 @@ public class InterfaceImpression {
 			choix = LectureClavier.lireEntier(">");
 		}
 		Impression impression = new Impression();
-		String reference = "reference1";
+		String reference = "CARTA7BRIL";
 		impression.setReference(reference);
 		impression.setType(TypeImpression.TIRAGE);
 		impression.nouvelleImpression();
