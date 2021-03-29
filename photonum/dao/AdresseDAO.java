@@ -1,14 +1,16 @@
 package photonum.dao;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import photonum.PhotoNum;
 import photonum.objects.*;
 
 public class AdresseDAO extends DAO<Adresse>{
-	
+
 	/**
 	 * Creation de l'objet DAO
 	 * @param conn la connection a la base de donnée
@@ -16,7 +18,7 @@ public class AdresseDAO extends DAO<Adresse>{
 	public AdresseDAO(Connection conn) {
 		super(conn);
 	}
-	
+
 	/**
 	 * @param obj une {@link Adresse} de livraison à creer dans la BD
 	 * @return <b>boolean</b> l'action c'est bien passée
@@ -39,12 +41,20 @@ public class AdresseDAO extends DAO<Adresse>{
 			requeteCreate.close();
 			return reussi==1;
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				if (e.getClass().getSimpleName().equals("SQLIntegrityConstraintViolationException")) {
+					System.err.println("L'adresse existe déjà !");
+				} else {
+					System.err.println("Quelque chose s'est mal passé avec l'adresse...");
+				}
+			}
 		}
 		return false;
 	}
 	/**
-	 * 
+	 *
 	 * @param id le mail du client
 	 * @return La premiere {@link Adresse} de livraison du client
 	 * @exception SQLException;
@@ -73,7 +83,11 @@ public class AdresseDAO extends DAO<Adresse>{
 			requeteRead.close();
 			return addr;
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec l'adresse...");
+			}
 		}
 		return null;
 	}
@@ -106,7 +120,11 @@ public class AdresseDAO extends DAO<Adresse>{
 			return reussi==1;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec l'adresse...");
+			}
 		}
 		return false;
 	}
@@ -135,7 +153,11 @@ public class AdresseDAO extends DAO<Adresse>{
 			requeteDelete.close();
 			return reussi==1;
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec l'adresse...");
+			}
 		}
 		return false;
 	}
@@ -172,7 +194,7 @@ public class AdresseDAO extends DAO<Adresse>{
 	}
 
 	/**
-	 * @param c le {@link Client} pour lequel on chercher ses adresses de livraison 
+	 * @param c le {@link Client} pour lequel on chercher ses adresses de livraison
 	 * @return <b>List&lt;{@link Adresse}&gt;</b>  la liste de toutes les adresseDeLivraison de la base en fonction du {@link Client}
 	 * @exception SQLException;
 	 */

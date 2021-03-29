@@ -23,9 +23,9 @@ public class Page{
 	@Override
 	public String toString() {
 		String s = "Cette page a pour ID: "+getIdPage();
-		s += ".\nElle est liée a l'impression d'ID: "+getIdImpression();
-		s += ".\nElle a comme mise en forme: "+getMiseEnForme();
-		s += ".\nElle est composé de ces photos:\n";
+		s += ".\n\t\tElle est liée a l'impression d'ID: "+getIdImpression();
+		s += ".\n\t\tElle a comme mise en forme: "+getMiseEnForme();
+		s += ".\n\t\tElle est composée de ces photos:\n";
 		for(Photo p : getPhotos()) {
 			s += "\t" + p.toString() + ".\n";
 		}

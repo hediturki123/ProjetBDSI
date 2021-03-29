@@ -54,13 +54,13 @@ public class InterfaceFichier {
         if (imagesClient.size() > 0) {
             int last=imagesClient.size()+1;
             boolean choisi=false;
-            while (choix!=last && !choisi) {  
+            while (choix!=last && !choisi) {
                 String message="Vos fichiers d'image : \n";
                  for (int i = 1; i <= imagesClient.size(); i++) {
                     message+="\t"+i + ". " + imagesClient.get(i - 1).getChemin()+"\n";
                 }
                 message+="\t"+last+". Sortir";
-                message+="\nchoissisez quel fichier voulez-vous paratger ? ";
+                message+="\nChoisissez quel fichier voulez-vous partager :";
                 choix=LectureClavier.lireEntier(message);
 
                 if(choix<0 || choix>last){
@@ -80,11 +80,11 @@ public class InterfaceFichier {
                 } else {
                     System.out.println("Votre image n'a pas été partagée.");
                 }
-                if(c.getImages(false).size() > 0)
+                if(c.getImages(false).size() > 0){
                     if (LectureClavier.lireOuiNon("\nVoulez-vous partager une autre image ? (o/n)")) {
                         partagerFichier(c);
                     }
-                else{
+                }else{
                     System.out.println("Toutes vos images sont déjà publiques.");
                 }
             }
@@ -106,7 +106,7 @@ public class InterfaceFichier {
             choix = LectureClavier.lireEntier("Choisissez son format :\n1. Paysage\n2. Portrait");
         }
         String infoPVD = choix == 1 ? "Paysage" : "Portrait";
-        int resolution = LectureClavier.lireEntier("donnez moi la resolution(entier)");
+        int resolution = LectureClavier.lireEntier("Quelle résolution ? (entier ; en megapixel)");
         img = new FichierImage(chemin, c.getMail(), infoPVD, resolution, false, Date.valueOf(LocalDate.now()));
         img.nouvelleImage();
     }
@@ -128,7 +128,7 @@ public class InterfaceFichier {
                 System.out.println("\nVous n'avez pas choissi un image existantes, veuillez recommencer");
                 System.out.println("Vos fichiers d'image : ");
                 for (int i = 1; i <= imageClient.size(); i++) {
-                    System.out.println(i + ". " + imageClient.get(i - 1).toString());
+                    System.out.println("\t" + i + ". " + imageClient.get(i - 1).toString());
                 }
                 choix = LectureClavier.lireEntier("Choisissez quelles photos vous voulez supprimer :");
             }
@@ -141,11 +141,11 @@ public class InterfaceFichier {
             } else {
                 System.out.println("Votre image n'a pas été supprimée.");
             }
-            if (c.getImages(false).size() > 0)
-                if (LectureClavier.lireOuiNon("\nVoulez-vous supprimer une autre image ? (o/n)")) {
+            if (c.getImages(false).size() > 0) {
+                if (LectureClavier.lireOuiNon("Voulez-vous supprimer une autre image ? (o/n)")) {
                     supprimerFichierImage(c);
                 }
-            else{
+            } else {
                 System.out.println("Vous n'avez plus aucun fichier à supprimer.");
             }
         } else {
@@ -159,12 +159,12 @@ public class InterfaceFichier {
     public static void afficherImagesPartage(Client c){
         List<FichierImage> imagePartageClient = c.getImages(true);
         if (imagePartageClient.size() > 0) {
-            System.out.println("\nVos images partagé sont : ");
+            System.out.println("\nVos images partagées sont : ");
             for (int i = 1; i <= imagePartageClient.size(); i++) {
-                System.out.println(i + ". " + imagePartageClient.get(i - 1).toString());
+                System.out.println("\t" + i + ". " + imagePartageClient.get(i - 1).toString());
             }
         } else {
-            System.out.println("vous n'avez aucune image partagées");
+            System.out.println("Vous n'avez aucune image partagée.");
         }
     }
 

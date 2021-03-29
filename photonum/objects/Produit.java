@@ -46,11 +46,9 @@ public class Produit {
 
     @Override
     public String toString() {
-        return "{" +
-            " reference='" + getReference() + "'" +
-            ", prix='" + getPrix() + "'" +
-            ", stock='" + getStock() + "'" +
-            "}";
+        return 
+            " reference = " + getReference() +
+            ", prix = " + getPrix();
     }
 
     public static List<Produit> getAll() {

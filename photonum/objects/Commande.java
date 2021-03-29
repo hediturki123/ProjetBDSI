@@ -8,6 +8,7 @@ import photonum.PhotoNum;
 import photonum.dao.ArticleDAO;
 import photonum.dao.ClientDAO;
 import photonum.dao.CommandeDAO;
+import photonum.dao.CodePromoDAO;
 
 public class Commande {
 
@@ -26,6 +27,7 @@ public class Commande {
 	private final static ArticleDAO AT_DAO = new ArticleDAO(PhotoNum.conn);
 	private final static CommandeDAO CM_DAO = new CommandeDAO(PhotoNum.conn);
 	private final static ClientDAO CL_DAO = new ClientDAO(PhotoNum.conn);
+	private final static CodePromoDAO CP_DAO = new CodePromoDAO(PhotoNum.conn);
 
 	public Commande() {}
 
@@ -178,13 +180,14 @@ public class Commande {
 
 	@Override
 	public String toString() {
+		CodePromo cp = getCodePromoStruct();
 		String s = String.join(" | ",
 			idCommande+"",
 			mail,
 			new SimpleDateFormat("dd/MM/yyyy").format(dateCommande),
 			estLivreChezClient ? "Domicile" : "Point relais",
 			status.getFancyString(),
-			(codePromo == null ? "---" : codePromo),
+			codePromo == null ? "---" : codePromo,
 			numeroRue+", "+nomRue+", "+codePostal+" "+ville.toUpperCase()+" ("+pays+")"
 		);
 		return s;
@@ -196,12 +199,12 @@ public class Commande {
 
 		String f = "< FACTURE n°"+idCommande+" >\n"+"-".repeat(10)+"\n";
 		f += "Vous avez commandé "+(articles.size() > 1 ? "les "+articles.size()+" suivants" : "l'article suivant")+" :\n";
-		f += "Référence | Prix / u. | Quantité | Prix";
+		f += "Référence | Prix / u. | Quantité | Prix\n";
 		for (Article a : articles) {
 			f += "\t"+a.factureString()+"\n";
 		}
 		f += "-".repeat(10)+"\n";
-		f += "PRIX HT : "+(PRIX_TOTAL*0.8)+"€ / PRIX TTC : "+PRIX_TOTAL+"€";
+		f += "PRIX HT : "+(PRIX_TOTAL*0.8)+"€ / PRIX TTC : "+PRIX_TOTAL+"€\n";
 
 		return f;
 	}
@@ -242,5 +245,9 @@ public class Commande {
 
 	public Client getClient() {
 		return CL_DAO.read(mail);
+	}
+
+	public CodePromo getCodePromoStruct() {
+		return CP_DAO.read(codePromo);
 	}
 }

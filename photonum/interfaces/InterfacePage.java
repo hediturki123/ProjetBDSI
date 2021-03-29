@@ -26,15 +26,13 @@ public class InterfacePage {
 			int i = 1;
 			int choix;
 			for (Photo photo : photosExi) {
-				System.out.println(i + ". Vous avez cette photo: " + photo.toString());
+				System.out.println("\t" + i + ". " + photo.toString());
 				i++;
 			}
-			for (boolean b = true; b; b = 1 != LectureClavier.lireEntier(
-				"1. Arrêter d'ajouter des photos / 2. Continuer"
-			)) {
+			for (boolean b = true; b; b = LectureClavier.lireOuiNon("Continuer à créer des photos (o) / Terminer (n)")) {
 				choix = LectureClavier.lireEntier("Choisissez la photo que vous voulez pour votre page.");
 				while (choix < 1 && choix > photosExi.size()) {
-					choix = LectureClavier.lireEntier("choisissez une photo existante.\n");
+					choix = LectureClavier.lireEntier("Choisissez une photo existante :");
 				}
 				pp = new PhotoParPage(photosExi.get(choix - 1).getIdPhoto(), page.getIdPage());
 				if (PhotoParPage.get(pp.getIdPhoto(), pp.getIdPage()) == null)
@@ -51,27 +49,27 @@ public class InterfacePage {
 			if(listImg.size()!=0){
 				Photo photo = new Photo("",client.getMail());
 				int i = 1;
-				System.out.println("Fichiers images disponibles:");
+				System.out.println("Fichiers images disponibles :");
 				for(FichierImage img : listImg)
 				{
-					System.out.println(i + ". " + img.getChemin());
+					System.out.println("\t" + i + ". " + img.getChemin());
 					i++;
 				}
 
 				int choix2;
 
-				for(boolean b = true; b; b = 1 != LectureClavier.lireEntier("1.quitter ou 2.continuer")) {
+				for(boolean b = true; b; b = LectureClavier.lireOuiNon("Continuer à créer des photos (o) / Terminer (n)")) {
 					choix2 = LectureClavier.lireEntier("Choisissez le fichier image que vous voulez pour créer votre photo");
 					while(choix2<1 && choix2>listImg.size()){
 						choix2=LectureClavier.lireEntier(
-							"choisissez un fichier image existant.\n"
+							"Choisissez un fichier image existant :"
 						);
 					}
 					InterfacePhoto.creationPhoto(page.getIdPage(),listImg.get(choix2-1).getChemin(),photo);
 					resultat.add(photo);
 				}
 
-				System.out.println("Rentrez votre mise en forme");
+				System.out.println("Mise en forme :");
 				String mef = LectureClavier.lireChaine();
 				page.setMiseEnForme(mef);
 				page.mettreAJour();

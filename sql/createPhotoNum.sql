@@ -47,7 +47,8 @@ CREATE TABLE LesCommandes (
 	constraint frClientCom foreign key (mail) references LesClients(mail),
 	constraint frCodeProm foreign key (codePromo) references LesCodesPromo(code),
 	constraint frAdrLivr foreign key (mail,numeroRue,nomRue,ville,cp,pays) references LesAdressesDeLivraison(mailClient,numeroRue,nomRue,ville,cp,pays),
-	constraint ckStat check (status in ('enCours','preteEnvoi','envoyee'))
+	constraint ckStat check (status in ('enCours','preteEnvoi','envoyee')),
+	constraint unCodeProm unique (codePromo)
 );
 
 CREATE TABLE LesProduits (

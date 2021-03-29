@@ -36,9 +36,7 @@ public class PageDAO extends DAO<Page>{
 			requeteCreate.setInt(1,obj.getIdPage());
 			requeteCreate.setInt(2, obj.getIdImpression());
 			requeteCreate.setString(3, obj.getMiseEnForme());
-			System.out.println("Je suis juste avant la création de la page");
 			int reussi = requeteCreate.executeUpdate();
-			System.out.println("Je créer bien la page");
 			requeteCreate.close();
 			return reussi==1;
 		} catch (Exception e) {
@@ -48,10 +46,10 @@ public class PageDAO extends DAO<Page>{
 	}
 
 	/**
-	 * 
+	 *
 	 * @param id un <b>Int[2]</b> contenant <b>IdPage</b> et <b>idImpression</b>
 	 * @return {@link Page} appartenant à l'impression <b>idImpression</b>
-	 * @exception SQLException;	 
+	 * @exception SQLException;
 	 * */
 
 	@Override
@@ -155,7 +153,7 @@ public class PageDAO extends DAO<Page>{
 		}
 		return null;
 	}
-	
+
 	public List<Page> readAllByImpression(Impression impression){
 		ArrayList<Page> tab = new ArrayList<>();
 		try {

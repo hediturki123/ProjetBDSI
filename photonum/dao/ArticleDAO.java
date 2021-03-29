@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import photonum.PhotoNum;
 import photonum.objects.Article;
 import photonum.objects.Commande;
 
@@ -39,7 +40,15 @@ public class ArticleDAO extends DAO<Article> {
 			requeteCreate.close();
 			return reussi==1;
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				if (e.getClass().getSimpleName().equals("SQLIntegrityConstraintViolationException")) {
+					System.err.println("L'article existe déjà !");
+				} else {
+					System.err.println("Quelque chose s'est mal passé avec l'article...");
+				}
+			}
 		}
 		return false;
 	}
@@ -69,7 +78,11 @@ public class ArticleDAO extends DAO<Article> {
 			}
 			requeteRead.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec l'article...");
+			}
 		}
 		return art;
 	}
@@ -95,7 +108,11 @@ public class ArticleDAO extends DAO<Article> {
 			}
 			requeteAll.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec l'article...");
+			}
 		}
 		return tabArticle;
 	}
@@ -125,7 +142,11 @@ public class ArticleDAO extends DAO<Article> {
 			requeteCreate.close();
 			return reussi==1;
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec l'article...");
+			}
 		}
 		return false;
 	}
@@ -148,7 +169,11 @@ public class ArticleDAO extends DAO<Article> {
 			requeteDelete.close();
 			return reussi==1;
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec l'article...");
+			}
 		}
 		return false;
 	}
@@ -175,7 +200,11 @@ public class ArticleDAO extends DAO<Article> {
 			}
 			requeteAll.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec l'article...");
+			}
 		}
 		return tabArticle;
 	}

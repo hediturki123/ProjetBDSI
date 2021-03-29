@@ -14,7 +14,7 @@ public class InterfaceImpression {
 	public static void interfaceCreationImpression(Client client) {
 
 		System.out.println(
-			"Quel type d'impression voulez-vous créer ?"+
+			"Quel type d'impression voulez-vous créer ?\n"+
 			"\t1. Tirage\n"+
 			"\t2. Album\n"+
 			"\t3. Calendrier\n"+
@@ -68,7 +68,7 @@ public class InterfaceImpression {
 	}
 
 	private static void createCalendrier(Impression impression, Client client) {
-		System.out.println("Vous allez ici créer votre Calendrier.\nVous devez donc créer 12 pages.");
+		System.out.println("Vous allez ici créer votre calendrier.\nVous devez donc créer 12 pages.");
 		List<Page> pages = new ArrayList<>();
 		Page page = new Page(impression.getIdImpression(), "");
 		boolean b = true;
@@ -76,7 +76,7 @@ public class InterfaceImpression {
 			InterfacePage.interfaceCreationPage(impression.getIdImpression(), client, page);
 			pages.add(page);
 			System.out.println("Page n°" + i + " :");
-			b = LectureClavier.lireEntier("\t1. Quitter la création.\n\t2.Continuer la création.") != 1;
+			b = LectureClavier.lireOuiNon("\tQuitter la création (n) / Continuer la création");
 		}
 		if(b && page!=null)
 		{
@@ -90,10 +90,10 @@ public class InterfaceImpression {
 	}
 
 	private static void createAlbum(Impression impression, Client client) {
-		System.out.println("Vous allez ici créer votre Album.\nVous pouvez donc créer le nombre de pages que vous voulez.");
+		System.out.println("Vous allez ici créer votre album.\nVous pouvez donc créer le nombre de pages que vous voulez.");
 		List<Page> pages = new ArrayList<>();
 		Page p = new Page(impression.getIdImpression(),"");
-		for(boolean b = true; b; b = LectureClavier.lireOuiNon("Continuer (o) / Quitter (n)")) {
+		for(boolean b = true; b; b = LectureClavier.lireOuiNon("Continuer l'ajout de photos (o) / Terminer (n)")) {
 			InterfacePage.interfaceCreationPageAlbum(impression.getIdImpression(),client,p);
 			pages.add(p);
 			System.out.println("Selectionnez 1 pour quitter, ou un autre nombre pour continuer la création des pages.");
@@ -115,8 +115,8 @@ public class InterfaceImpression {
 				i++;
 			}
 
-			System.out.println("Selectionnez la photo que vous voulez ajouter à votre tirage");
-			int choix = LectureClavier.lireEntier("0 Pour quitter, un autre nombre pour selectionner la photo liée");
+			System.out.println("Selectionnez la photo que vous voulez ajouter à votre tirage.");
+			int choix = LectureClavier.lireEntier("0 Pour quitter, un autre nombre pour selectionner la photo liée :");
 
 			while(choix!=0)
 			{
@@ -153,8 +153,8 @@ public class InterfaceImpression {
 
 				int choix3;
 
-				for(boolean b = true; b; b = LectureClavier.lireOuiNon("Continuer (o) / Quitter (n)")) {
-					choix3 = LectureClavier.lireEntier("Choisissez le fichier image que vous voulez pour créer votre photo");
+				for(boolean b = true; b; b = LectureClavier.lireOuiNon("Continuer l'ajout de photos (o) / Terminer (n)")) {
+					choix3 = LectureClavier.lireEntier("Choisissez le fichier image que vous voulez pour créer votre photo :");
 					while(!(choix3 > 0 && choix3 <= listImg.size())){
 						choix3 = LectureClavier.lireEntier(
 							"Choisissez un fichier image existant :"
@@ -217,19 +217,10 @@ public class InterfaceImpression {
 			else{
 				System.out.println("Il n'y a aucune photo prévue pour un tirage.");
 			}
-		}
-		else
-		{
+		} else {
 			List<Page> listPage = impression.getPages();
 			if(listPage.size() != 0){
-				int k = 0;
-				for(Page page : listPage)
-				{
-					System.out.println("index = "+k+" size = "+page.getPhotos());
-					k++;
-				}
 				List<Photo> listPhoto = listPage.get(0).getPhotos();
-				System.out.println("size: "+listPhoto.size());
 				if(listPhoto != null && listPhoto.size() != 0) {
 					List<Produit> listProd = Produit.getAll();
 
@@ -242,7 +233,7 @@ public class InterfaceImpression {
 							"Choisissez une référence pour votre impression :"
 						);
 					while(choix > i) {
-						System.out.println("Prenez une référence qui existe");
+						System.out.println("Prenez une référence qui existe.");
 						choix = LectureClavier.lireEntier(
 								"Choisissez une référence pour votre impression :"
 							);
@@ -262,12 +253,12 @@ public class InterfaceImpression {
 				}
 				else
 				{
-					System.out.println("Il n'y a pas de photos dans la page");
+					System.out.println("Il n'y a pas de photos dans la page.");
 				}
 			}
 			else
 			{
-				System.out.println("Il n'y a pas de pages");
+				System.out.println("Il n'y a pas de page.");
 			}
 		}
 	}
@@ -283,9 +274,9 @@ public class InterfaceImpression {
 			while(choix!=last){
 				String menu="";
 				for(int i=1;i<=list.size();i++){
-					menu+=i+". "+list.get(i-1).getTitre()+"\n";
+					menu += "\t" + i +". "+list.get(i-1).getTitre()+"\n";
 				}
-				menu+=last+". Sortir";
+				menu += "\t" + last + ". Sortir";
 
 				choix=LectureClavier.lireEntier(menu);
 				if(choix<0 || choix>last){
@@ -338,7 +329,7 @@ public class InterfaceImpression {
 					for(int i=1;i<=list.size();i++){
 						message+=i+". "+list.get(i-1).getTitre()+"\n";
 					}
-					message+=last+". Suivant";
+					message+=last+". Sortir";
 					choix=LectureClavier.lireEntier(message);
 					if(choix<0 || choix>last){
 						System.out.println("Vous n'avez pas choisi d'impression.");

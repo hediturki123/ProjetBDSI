@@ -47,11 +47,11 @@ public class InterfaceCodePromo {
                 while (!(choix > 0 && choix <= cpDispo.size())) {
                     System.out.println("Vos codes promo :");
                     for (int i = 1; i <= cpDispo.size(); i++) {
-                        System.out.println("\t" + i + ". " + cpDispo.get(i - 1));
+                        System.out.println("\t" + i + ". " + cpDispo.get(i - 1).toString());
                     }
                     choix = LectureClavier.lireEntier("Choisissez un code à utiliser dans la liste ci-dessus :");
                 }
-                cpUtilise = new CodePromo(cpDispo.get(choix - 1).getMailClient(), cpDispo.get(choix - 1).getCode(),
+                cpUtilise = new CodePromo(cpDispo.get(choix - 1).getCode(),cpDispo.get(choix - 1).getMailClient(),
                         cpDispo.get(choix - 1).estUtilise());
             } else {
                 System.out.println("Vous n'avez aucun code promo à utiliser.");

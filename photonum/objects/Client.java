@@ -143,10 +143,10 @@ public class Client {
 	@Override
 	public String toString() {
 		String descriptif =
-			"┌"+"─".repeat(12)+"┐\n"+
+			"┌"+"─".repeat(32)+"┐\n"+
 			prenom+" "+nom+" <"+mail+">\n" + (isActif() ? "" : "(INACTIF)") +
-			numeroRue +", "+nomRue+", "+cp+" "+ville.toUpperCase()+" ("+pays+")"+
-			"└"+"─".repeat(12)+"┘\n";
+			numeroRue +", "+nomRue+", "+cp+" "+ville.toUpperCase()+" ("+pays+")\n"+
+			"└"+"─".repeat(32)+"┘\n";
 		return descriptif;
 	}
 
@@ -235,7 +235,7 @@ public class Client {
 	public List<PhotoTirage> getPhotosTirage() {
 		return PT_DAO.readAllPhotosTirageByClient(this);
 	}
-	
+
 
 	public List<Photo> getPhotos() {
 		return PH_DAO.readAllPhotosByClient(mail);
@@ -246,12 +246,16 @@ public class Client {
 	}
 
 	/**
-	 * permet de regarder si l'adresse du client est deja dans la base de donnée pour eviter la redondances de sont adresse 
-	 * @param a une {@link Adresse} qui sera l'adresse des client 
+	 * permet de regarder si l'adresse du client est deja dans la base de donnée pour eviter la redondances de sont adresse
+	 * @param a une {@link Adresse} qui sera l'adresse des client
 	 */
 	public void checkAdresseExist(Adresse a){
 		Adresse addrexist =AD_DAO.read(mail);
-		if(!addrexist.equals(a)){
+		if(addrexist!=null){
+			if(!addrexist.equals(a)){
+				ajouterAdresseLivraison(a);
+			}
+		}else{
 			ajouterAdresseLivraison(a);
 		}
 	}

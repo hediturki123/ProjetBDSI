@@ -121,7 +121,7 @@ public class ImpressionDAO extends DAO<Impression> {
 			requete_delete.close();
 			return b == 1;
 		} catch (SQLException e) {
-			System.out.println("Impossible car votre impression depend d'une commande");
+			System.out.println("Impossible de supprimer une impression");
 		}
 		return false;
 	}

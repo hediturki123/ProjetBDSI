@@ -10,6 +10,7 @@ import photonum.utils.DatabaseAccessProperties;
 public class PhotoNum {
     private static final String configurationFile = "BD.properties";
     public static Connection conn;
+    public final static boolean DEBUG = true;
 
     public static void main(String[] args) {
 

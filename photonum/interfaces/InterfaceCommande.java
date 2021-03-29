@@ -94,14 +94,19 @@ public class InterfaceCommande {
             System.out.println("\t" + a.factureString());
         }
         if (LectureClavier.lireOuiNon("Valider la commande ? (o/n)")) {
-            if (cmd.nouvelleCommande()) {
-                if(!modif)cmd.ajouterArticles(articles);else cmd.mettreAJour();
-                System.out.println(
-                    "Votre commande (n°"+cmd.getIdCommande()+") a bien été enregistrée. Il ne vous reste plus qu'à payer !"
-                );
-                if(cmd.getStatus()!=StatutCommande.PRETE_ENVOI)paiement(cmd);
+            if (!modif) {
+                cmd.ajouterArticles(articles);
+                if(cmd.nouvelleCommande()){
+                     System.out.println(
+                        "Votre commande (n°"+cmd.getIdCommande()+") a bien été enregistrée. Il ne vous reste plus qu'à payer !"
+                    );
+                    paiement(cmd);
+                } else {
+                    System.out.println("Desolé, mais votre commande n'a pas pu etre enregistrée ! Veuillez essayer à nouveau.");
+                }
             } else {
-                System.out.println("Desolé, mais votre commande n'a pas pu etre enregistrée ! Veuillez essayer à nouveau.");
+                if(cmd.mettreAJour()) System.out.println("Votre commande (n°"+cmd.getIdCommande()+") a bien été modifiée.");
+                else System.out.println("Votre commande (n°"+cmd.getIdCommande()+") n'a pas pu être modifiée.");
             }
         } else {
             int choix = -1;
@@ -241,7 +246,11 @@ public class InterfaceCommande {
      * @param cmd la {@link Commande} a modifieé
      */
     public static void  modificationCommande(Client c,Commande cmd){
-        if (cmd.getStatus() != StatutCommande.ENVOYEE){
+        if (cmd.getStatus() == StatutCommande.ENVOYEE) {
+            System.out.println("Votre commande a déjà été envoyée et ne peut donc pas être modifiée.");
+        } else if (cmd.getStatus() == StatutCommande.PRETE_ENVOI) {
+            System.out.println("Votre commande est en cours de préparation, et ne peut donc pas être modifiée.");
+        } else {
             int choix = -1; 
             List<Article> listePanier = cmd.getArticles();
             while (choix != 5) {
@@ -258,14 +267,12 @@ public class InterfaceCommande {
                     case 1: choixImpression(c, cmd, true);break;
                     case 2: InterfaceCodePromo.utilisationCodePromo(c, cmd,listePanier,true);break;
                     case 3: livraison(c, cmd,listePanier, true); break;
-                    case 4: if(cmd.getStatus()!=StatutCommande.PRETE_ENVOI)paiement(cmd);else System.out.println("votre commande est déja payé !");break;
+                    case 4: if(cmd.getStatus()!=StatutCommande.PRETE_ENVOI)paiement(cmd);else System.out.println("Votre commande est déja payée !");break;
                     case 5: break;
                     default: System.err.println("Veuillez indiquer un nombre entre 1 et 5."); break;
                 }
             }
             System.out.println("Merci d'utiliser nos services !");
-        }else{
-            System.out.println("votre commande a déjà été envoyée et ne peut donc pas être modifiée");
         }
     }
 }

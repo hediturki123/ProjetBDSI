@@ -34,14 +34,14 @@ public class PhotoAlbumDAO extends DAO<PhotoAlbum>{
 			obj.setIdPhoto(id);
 			requete_imp.setInt(1, obj.getIdPhoto());
 			requete_imp.setString(2, obj.getTexteDescriptif());
-			
+
 			requete_imp2.setInt(1, obj.getIdPhoto());
 			requete_imp2.setString(2, obj.getChemin());
 			requete_imp2.setString(3, obj.getMailClient());
-			
-			int resultat1=requete_imp.executeUpdate();
-			int result2=requete_imp2.executeUpdate();
-			
+
+			int resultat1=requete_imp2.executeUpdate();
+			int result2=requete_imp.executeUpdate();
+
 			requete_imp.close();
 			requete_imp2.close();
 			return resultat1==1 && result2==1;
@@ -52,10 +52,10 @@ public class PhotoAlbumDAO extends DAO<PhotoAlbum>{
 	}
 
 	/**
-	 * 
+	 *
 	 * @param id un <b>Int</b> correspondant à l'<b>idPhoto</b>
 	 * @return {@link PhotoAlbum} correspondante
-	 * @exception SQLException;	 
+	 * @exception SQLException;
 	 * */
 
 	@Override
@@ -103,14 +103,14 @@ public class PhotoAlbumDAO extends DAO<PhotoAlbum>{
 					+ "mailClient=?");
 			requete_update.setInt(1, obj.getIdPhoto());
 			requete_update.setString(2, obj.getTexteDescriptif());
-			
+
 			requete_update2.setInt(1, obj.getIdPhoto());
 			requete_update2.setString(2, obj.getChemin());
 			requete_update2.setString(3, obj.getMailClient());
-			
+
 			boolean b1 = requete_update.execute();
 			boolean b2 = requete_update2.execute();
-			
+
 			requete_update.close();
 			requete_update2.close();
 			return b1 && b2;
@@ -133,13 +133,13 @@ public class PhotoAlbumDAO extends DAO<PhotoAlbum>{
 					"DELETE FROM LesPhotos WHERE idPhoto=?");
 			requete_delete.setInt(1, obj.getIdPhoto());
 			requete_delete2.setInt(1, obj.getIdPhoto());
-			
+
 			boolean b1 = requete_delete.execute();
 			boolean b2 = requete_delete2.execute();
-			
+
 			requete_delete.close();
 			requete_delete2.close();
-			
+
 			return b1 && b2;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -155,7 +155,7 @@ public class PhotoAlbumDAO extends DAO<PhotoAlbum>{
 	public List<PhotoAlbum> readAll() {
 		try {
 			PreparedStatement requete_select = this.connect.prepareStatement("SELECT * FROM LesPhotosAlbum NATURAL JOIN LesPhotos");
-			
+
 			ResultSet result = requete_select.executeQuery();
 			ArrayList<PhotoAlbum> tab  = new ArrayList<PhotoAlbum>();
 			PhotoAlbum res;
@@ -184,7 +184,7 @@ public class PhotoAlbumDAO extends DAO<PhotoAlbum>{
 		try {
 			PreparedStatement requete_select = PhotoNum.conn.prepareStatement("SELECT * FROM LesPhotosAlbum NATURAL JOIN LesPhotos WHERE mailClient=?");
 			requete_select.setString(1, mail);
-			
+
 			ResultSet result = requete_select.executeQuery();
 			ArrayList<PhotoAlbum> tab  = new ArrayList<PhotoAlbum>();
 			while(result.next())

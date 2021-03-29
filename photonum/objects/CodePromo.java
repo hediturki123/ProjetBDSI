@@ -42,4 +42,9 @@ public class CodePromo  {
     public void utilise(boolean estUtilise) {
         this.estUtilise = estUtilise;
     }
+
+    @Override
+    public String toString() {
+        return this.getCode();
+    }
 }

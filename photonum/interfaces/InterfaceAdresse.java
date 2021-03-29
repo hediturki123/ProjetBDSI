@@ -66,23 +66,31 @@ public class InterfaceAdresse {
      */
     public static void choixAdresseLivraison(Client c, Adresse addr) {
         List<Adresse> addrLivraison = c.getAdressesLivraison();
-        if (addrLivraison.size() > 0) {
+        int last = addrLivraison.size();
+        if (last > 0) {
             int choix = -1;
-            while (!(choix > 0 && choix <= addrLivraison.size())) {
+            while (!(choix > 0 && choix <= last+1)) {
                 System.out.println("Vos adresses de livraison :");
-                for (int i = 1; i <= addrLivraison.size(); i++) {
-                    System.out.println(i + ". " + addrLivraison.get(i - 1).toString());
+                for (int i = 1; i <= last; i++) {
+                    System.out.println("\t" + i + ". " + addrLivraison.get(i - 1).toString());
                 }
+                System.out.println("\t" + last+1 + ". Créer un nouveau point relais");
                 choix = LectureClavier.lireEntier("À quelle adresse de livraison voulez-vous envoyer votre commande ?");
             }
-            Adresse a = addrLivraison.get(choix - 1);
-        addr.setCp(a.getCp());
-        addr.setMailClient(a.getMailClient());
-        addr.setNomRue(a.getNomRue());
-        addr.setNumeroRue(a.getNumeroRue());
-        addr.setPays(a.getPays());
-        addr.setVille(a.getVille());
-
+            Adresse a;
+            if (choix == last+1) {
+                a = new Adresse();
+                creerAdresse(c.getMail(), a);
+                c.ajouterAdresseLivraison(a);
+            } else {
+                a = addrLivraison.get(choix - 1);
+            }
+            addr.setCp(a.getCp());
+            addr.setMailClient(a.getMailClient());
+            addr.setNomRue(a.getNomRue());
+            addr.setNumeroRue(a.getNumeroRue());
+            addr.setPays(a.getPays());
+            addr.setVille(a.getVille());
         } else {
             System.out.println("Vous n'avez aucune adresse de livraison. Créez-en une maintenant !");
             creerAdresse(c.getMail(), addr);
