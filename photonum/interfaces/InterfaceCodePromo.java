@@ -23,10 +23,10 @@ public class InterfaceCodePromo {
         if (codeClients.size() != 0) {
             System.out.println("Vos codes promo :");
             for (int i = 1; i <= codeClients.size(); i++) {
-                System.out.println("Code n°" + i + " : " + codeClients.get(i - 1).getCode());
+                System.out.println("\tCode n°" + i + " : " + codeClients.get(i - 1).getCode());
             }
         } else {
-            System.out.println("Désolé, vous n'avez aucun code promo ....\n");
+            System.out.println("Désolé, vous n'avez aucun code promo...");
         }
     }
 

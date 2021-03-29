@@ -37,7 +37,15 @@ public class PhotoDAO extends DAO<Photo>{
 			requete_imp.close();
 			return b;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				if (e.getClass().getSimpleName().equals("SQLIntegrityConstraintViolationException")) {
+					System.err.println("La photo existe déjà !");
+				} else {
+					System.err.println("Quelque chose s'est mal passé avec la photo ...");
+				}
+			}
 		}
 		return false;
 	}
@@ -67,7 +75,11 @@ public class PhotoDAO extends DAO<Photo>{
 			requete_select.close();
 			return res;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec la photo...");
+			}
 		}
 		return null;
 	}
@@ -91,7 +103,11 @@ public class PhotoDAO extends DAO<Photo>{
 			requete_update.close();
 			return b;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec la photo...");
+			}
 		}
 		return false;
 	}
@@ -110,7 +126,11 @@ public class PhotoDAO extends DAO<Photo>{
 			requete_delete.close();
 			return b;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec la photo...");
+			}
 		}
 		return false;
 	}
@@ -138,7 +158,11 @@ public class PhotoDAO extends DAO<Photo>{
 			requete_select.close();
 			return tab;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec la lecture des photos...");
+			}
 		}
 		return null;
 	}
@@ -164,7 +188,11 @@ public class PhotoDAO extends DAO<Photo>{
 			requete_select.close();
 			return tab;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec la lecture des photos...");
+			}
 		}
 		return null;
 	}
@@ -191,7 +219,11 @@ public class PhotoDAO extends DAO<Photo>{
 			requete_select.close();
 			return tab;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec la lecture des photos...");
+			}
 		}
 		return null;
 	}
@@ -208,7 +240,11 @@ public class PhotoDAO extends DAO<Photo>{
 				return res.getInt(1);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec la lecture du dernier ID...");
+			}
 		}
 		return 0;
 	}

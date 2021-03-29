@@ -145,7 +145,7 @@ public class ArticleDAO extends DAO<Article> {
 			if (PhotoNum.DEBUG) {
 				e.printStackTrace();
 			} else {
-				System.err.println("Quelque chose s'est mal passé avec l'article...");
+				System.err.println("Quelque chose s'est mal passé à la mise à jour de l'article...");
 			}
 		}
 		return false;
@@ -172,7 +172,7 @@ public class ArticleDAO extends DAO<Article> {
 			if (PhotoNum.DEBUG) {
 				e.printStackTrace();
 			} else {
-				System.err.println("Quelque chose s'est mal passé avec l'article...");
+				System.err.println("Quelque chose s'est mal passé à la suppression l'article...");
 			}
 		}
 		return false;
@@ -203,7 +203,7 @@ public class ArticleDAO extends DAO<Article> {
 			if (PhotoNum.DEBUG) {
 				e.printStackTrace();
 			} else {
-				System.err.println("Quelque chose s'est mal passé avec l'article...");
+				System.err.println("Quelque chose s'est mal passé à la lecture des articles...");
 			}
 		}
 		return tabArticle;

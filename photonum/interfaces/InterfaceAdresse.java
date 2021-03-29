@@ -71,10 +71,11 @@ public class InterfaceAdresse {
             int choix = -1;
             while (!(choix > 0 && choix <= last+1)) {
                 System.out.println("Vos adresses de livraison :");
-                for (int i = 1; i <= last; i++) {
+                int i;
+                for (i = 1; i <= last; i++) {
                     System.out.println("\t" + i + ". " + addrLivraison.get(i - 1).toString());
                 }
-                System.out.println("\t" + last+1 + ". Créer un nouveau point relais");
+                System.out.println("\t" +(++i)+ ". Créer un nouveau point relais");
                 choix = LectureClavier.lireEntier("À quelle adresse de livraison voulez-vous envoyer votre commande ?");
             }
             Adresse a;

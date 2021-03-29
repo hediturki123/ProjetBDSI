@@ -39,8 +39,16 @@ public class PageDAO extends DAO<Page>{
 			int reussi = requeteCreate.executeUpdate();
 			requeteCreate.close();
 			return reussi==1;
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				if (e.getClass().getSimpleName().equals("SQLIntegrityConstraintViolationException")) {
+					System.err.println("La page existe déjà!");
+				} else {
+					System.err.println("Quelque chose s'est mal passé avec la création de la page.");
+				}
+			}
 		}
 		return false;
 	}
@@ -74,8 +82,12 @@ public class PageDAO extends DAO<Page>{
 			}
 			requeteRead.close();
 			return p;
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé pendant la lecture de la page.");
+			}
 		}
 		return null;
 	}
@@ -98,8 +110,12 @@ public class PageDAO extends DAO<Page>{
 			int reussi=requeteUpdate.executeUpdate();
 			requeteUpdate.close();
 			return reussi==1;
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé pendant la mise à jour de la page.");
+			}
 		}
 		return false;
 	}
@@ -120,8 +136,12 @@ public class PageDAO extends DAO<Page>{
 			int reussi=requetDelete.executeUpdate();
 			requetDelete.close();
 			return reussi==1;
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé pendant la suppression de la page.");
+			}
 		}
 		return false;
 	}
@@ -148,8 +168,12 @@ public class PageDAO extends DAO<Page>{
 			}
 			requeteAll.close();
 			return tab;
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé pendant la lecture de toutes les pages.");
+			}
 		}
 		return null;
 	}
@@ -172,8 +196,12 @@ public class PageDAO extends DAO<Page>{
 			}
 			requeteAll.close();
 			return tab;
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé pendant la lecture de toutes les pages de l'impression: "+impression.getTitre());
+			}
 		}
 		return null;
 	}
@@ -189,7 +217,11 @@ public class PageDAO extends DAO<Page>{
 				return res.getInt(1);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé pendant la création de l'id de la page.");
+			}
 		}
 		return 0;
 	}

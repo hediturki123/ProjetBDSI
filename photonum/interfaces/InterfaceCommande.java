@@ -95,8 +95,8 @@ public class InterfaceCommande {
         }
         if (LectureClavier.lireOuiNon("Valider la commande ? (o/n)")) {
             if (!modif) {
-                cmd.ajouterArticles(articles);
                 if(cmd.nouvelleCommande()){
+                    cmd.ajouterArticles(articles);
                      System.out.println(
                         "Votre commande (n°"+cmd.getIdCommande()+") a bien été enregistrée. Il ne vous reste plus qu'à payer !"
                     );
@@ -112,7 +112,7 @@ public class InterfaceCommande {
             int choix = -1;
             while (!(choix > 0 && choix <= 4)) {
                 choix = LectureClavier.lireEntier(
-                    "Voulez vous revenir a une etape ou quitter ? (Attention, revenir à une etape vous oblige à faire les suivantes.)\n"+
+                    "Voulez vous revenir à une étape ou quitter ? (Attention, revenir à une étape vous oblige à faire les suivantes.)\n"+
                     "\t1. Choisir les impressions\n" +
                     "\t2. Appliquer un code promo\n" +
                     "\t3. Changer l'adresse de livraison\n" +
@@ -125,7 +125,7 @@ public class InterfaceCommande {
                 case 2: InterfaceCodePromo.utilisationCodePromo(c, cmd, articles,true); break;
                 case 3: livraison(c, cmd, articles,true); break;
                 case 4:break;
-                default: 
+                default: System.err.println("Veuillez indiquer un nombre entre 1 et 4."); break;
             }
         }
     }

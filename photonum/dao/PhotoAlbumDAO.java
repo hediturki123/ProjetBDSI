@@ -46,7 +46,15 @@ public class PhotoAlbumDAO extends DAO<PhotoAlbum>{
 			requete_imp2.close();
 			return resultat1==1 && result2==1;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				if (e.getClass().getSimpleName().equals("SQLIntegrityConstraintViolationException")) {
+					System.err.println("L'impression' existe déjà !");
+				} else {
+					System.err.println("Quelque chose s'est mal passé avec photo album...");
+				}
+			}
 		}
 		return false;
 	}
@@ -79,7 +87,11 @@ public class PhotoAlbumDAO extends DAO<PhotoAlbum>{
 			requete_select.close();
 			return res;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec photo album...");
+			}
 		}
 		return null;
 	}
@@ -115,7 +127,11 @@ public class PhotoAlbumDAO extends DAO<PhotoAlbum>{
 			requete_update2.close();
 			return b1 && b2;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec photo album...");
+			}
 		}
 		return false;
 	}
@@ -142,7 +158,11 @@ public class PhotoAlbumDAO extends DAO<PhotoAlbum>{
 
 			return b1 && b2;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec photo album...");
+			}
 		}
 		return false;
 	}
@@ -171,7 +191,11 @@ public class PhotoAlbumDAO extends DAO<PhotoAlbum>{
 			requete_select.close();
 			return tab;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec photo album...");
+			}
 		}
 		return null;
 	}
@@ -199,7 +223,11 @@ public class PhotoAlbumDAO extends DAO<PhotoAlbum>{
 			requete_select.close();
 			return tab;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec photo album...");
+			}
 		}
 		return null;
 	}
@@ -216,7 +244,11 @@ public class PhotoAlbumDAO extends DAO<PhotoAlbum>{
 				id = res.getInt(1);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Il y a un problème avec la lecture du dernier id...");
+			}
 		}
 		return id;
 	}

@@ -46,7 +46,15 @@ public class FichierImageDAO extends DAO<FichierImage> {
 			obj.setAll(obj.getChemin(), obj.getMailProprio(), obj.getInfoPVD(), obj.getResolution(), obj.isEstPartage(), obj.getDateUpload());
 			return reussi;
 		}catch(SQLException e){
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				if (e.getClass().getSimpleName().equals("SQLIntegrityConstraintViolationException")) {
+					System.err.println("Le fichier image existe déjà!");
+				} else {
+					System.err.println("Quelque chose s'est mal passé avec le fichier image.");
+				}
+			}
 		}
 		return false;
 	}
@@ -81,10 +89,15 @@ public class FichierImageDAO extends DAO<FichierImage> {
 			requete_read.close();
 			return img;
 		} catch(SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé à la lecture du fichier Image.");
+			}
 		}
 		return null;
 	}
+
 	/**
 	 * @param obj un {@link FichierImage} à update dans la BD
 	 * @return <b>boolean</b> l'action c'est bien passée
@@ -115,8 +128,12 @@ public class FichierImageDAO extends DAO<FichierImage> {
 			requeteUpdate.close();
 			return reussi==1;
 
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé à pendant la modification du fichier Image.");
+			}
 		}
 		return false;
 	}
@@ -137,8 +154,12 @@ public class FichierImageDAO extends DAO<FichierImage> {
 			requeteSuppr.close();
 			return reussi==1;
 
-		} catch (Exception e) {
-			System.out.println("Impossible de delete la car le fichier images  depend d'une phot ou est partagé");
+		} catch (SQLException e) {
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé à la suppression du fichier Image.");
+			}
 		}
 		return false;
 	}
@@ -167,8 +188,12 @@ public class FichierImageDAO extends DAO<FichierImage> {
 			requeteAll.close();
 			return tab;
 
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé pendant lecture de tous les fichiers Image.");
+			}
 		}
 		return null;
 	}
@@ -199,7 +224,11 @@ public class FichierImageDAO extends DAO<FichierImage> {
 			}
 			requeteAll.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé pendant la lecture de tous les fichiers Image du client:\n"+c.toString());
+			}
 		}
 		return tabImg;
 	}
@@ -234,7 +263,11 @@ public class FichierImageDAO extends DAO<FichierImage> {
 			}
 			requeteAll.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé pendant la lecture des fichiers Image que le client:\n"+c.toString()+"\npartage.");
+			}
 		}
 		return tabImg;
 	}
@@ -250,7 +283,11 @@ public class FichierImageDAO extends DAO<FichierImage> {
 			cstmt.execute();
 			success = true;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé pendant la suppression d'un fichier image expiré.");
+			}
 		}
 		return success;
 	}

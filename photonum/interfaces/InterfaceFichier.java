@@ -118,15 +118,15 @@ public class InterfaceFichier {
         int choix;
         List<FichierImage> imageClient = c.getImages(false);
         if (imageClient.size() > 0) {
-            System.out.println("Vos fichiers d'image : ");
+            System.out.println("Vos images : ");
             for (int i = 1; i <= imageClient.size(); i++) {
-                System.out.println(i + ". " + imageClient.get(i - 1).getChemin());
+                System.out.println("\t" + i + ". " + imageClient.get(i - 1).getChemin());
             }
             choix = LectureClavier.lireEntier("\nchoissisez quel photos vous voulez supprimez ? ");
 
             while (!(choix > 0 && choix <= imageClient.size())) {
                 System.out.println("\nVous n'avez pas choissi un image existantes, veuillez recommencer");
-                System.out.println("Vos fichiers d'image : ");
+                System.out.println("Vos images : ");
                 for (int i = 1; i <= imageClient.size(); i++) {
                     System.out.println("\t" + i + ". " + imageClient.get(i - 1).toString());
                 }
@@ -159,7 +159,7 @@ public class InterfaceFichier {
     public static void afficherImagesPartage(Client c){
         List<FichierImage> imagePartageClient = c.getImages(true);
         if (imagePartageClient.size() > 0) {
-            System.out.println("\nVos images partagées sont : ");
+            System.out.println("\nVos images partagées : ");
             for (int i = 1; i <= imagePartageClient.size(); i++) {
                 System.out.println("\t" + i + ". " + imagePartageClient.get(i - 1).toString());
             }

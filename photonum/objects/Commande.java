@@ -3,6 +3,7 @@ package photonum.objects;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import photonum.PhotoNum;
 import photonum.dao.ArticleDAO;
@@ -204,7 +205,7 @@ public class Commande {
 			f += "\t"+a.factureString()+"\n";
 		}
 		f += "-".repeat(10)+"\n";
-		f += "PRIX HT : "+(PRIX_TOTAL*0.8)+"€ / PRIX TTC : "+PRIX_TOTAL+"€\n";
+		f += "PRIX HT : "+String.format(Locale.FRANCE,"%,.2f",PRIX_TOTAL*0.8)+"€ / PRIX TTC : "+String.format(Locale.FRANCE,"%,.2f",PRIX_TOTAL)+"€\n";
 
 		return f;
 	}

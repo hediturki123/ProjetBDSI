@@ -249,13 +249,9 @@ public class Client {
 	 * permet de regarder si l'adresse du client est deja dans la base de donnée pour eviter la redondances de sont adresse
 	 * @param a une {@link Adresse} qui sera l'adresse des client
 	 */
-	public void checkAdresseExist(Adresse a){
-		Adresse addrexist =AD_DAO.read(mail);
-		if(addrexist!=null){
-			if(!addrexist.equals(a)){
-				ajouterAdresseLivraison(a);
-			}
-		}else{
+	public void checkAdresseExist(Adresse a) {
+		List<Adresse> addr = this.getAdressesLivraison();
+		if (!addr.contains(a)) {
 			ajouterAdresseLivraison(a);
 		}
 	}

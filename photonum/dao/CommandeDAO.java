@@ -51,7 +51,15 @@ public class CommandeDAO extends DAO<Commande>{
 			reussi = pstmt.executeUpdate() != 0;
 			pstmt.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				if (e.getClass().getSimpleName().equals("SQLIntegrityConstraintViolationException")) {
+					System.err.println("La commande existe déjà !");
+				} else {
+					System.err.println("Quelque chose s'est mal passé avec la commande...");
+				}
+			}
 		}
 		return reussi;
 	}
@@ -90,7 +98,11 @@ public class CommandeDAO extends DAO<Commande>{
 			}
 			requete.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			}else{
+					System.err.println("Quelque chose s'est mal passé avec la lecture des commandes...");
+			}
 		}
 
 		return c;
@@ -129,7 +141,11 @@ public class CommandeDAO extends DAO<Commande>{
 
 			requete.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			}else{
+				System.err.println("Quelque chose s'est mal passé avec la lecture des commandes  ...");
+			}
 		}
 		return commandes;
 	}
@@ -144,14 +160,19 @@ public class CommandeDAO extends DAO<Commande>{
 		boolean reussi = false;
 		try {
 			PreparedStatement requete = this.connect.prepareStatement(
-				"UPDATE LesCommandes SET status = ? WHERE idCommande = ?"
+				"UPDATE LesCommandes SET status = ? ,codePromo=? WHERE idCommande = ?"
 			);
 			requete.setString(1, obj.getStatus().getString());
-			requete.setInt(2, obj.getIdCommande());
+			requete.setString(2, obj.getCodePromo());
+			requete.setInt(3, obj.getIdCommande());
 			reussi = requete.executeUpdate() != 0;
 			requete.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec commande...");
+			}
 		}
 		return reussi;
 	}
@@ -172,7 +193,12 @@ public class CommandeDAO extends DAO<Commande>{
 			reussi = requete.executeUpdate() != 0;
 			requete.close();
 		 } catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+					System.err.println("Quelque chose s'est mal passé à la suppression de la commande ...");
+			}
+	
 		}
 		return reussi;
 	}
@@ -213,7 +239,11 @@ public class CommandeDAO extends DAO<Commande>{
 			return commande;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec la lecture des commandes  ...");
+			}
 		}
 
 		return null;
@@ -255,9 +285,12 @@ public class CommandeDAO extends DAO<Commande>{
 			return commande;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec la lecture des commandes  ...");
+			}
 		}
-
 		return null;
 	}
 
@@ -274,7 +307,11 @@ public class CommandeDAO extends DAO<Commande>{
 				id = res.getInt(1);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec la lecture du dernier ID ...");
+			}
 		}
 		return id;
 	}
@@ -292,7 +329,11 @@ public class CommandeDAO extends DAO<Commande>{
 			ResultSet res = pstmt.executeQuery();
 			if (res.next()) prix = res.getDouble("prixTotal");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec la lecture du prix ...");
+			}
 		}
 		return prix;
 	}
@@ -310,7 +351,11 @@ public class CommandeDAO extends DAO<Commande>{
 			ResultSet res = pstmt.executeQuery();
 			if (res.next()) prix = res.getDouble("prixTotal");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec la lecture du prix ...");
+			}
 		}
 		return prix;
 	}
@@ -324,7 +369,11 @@ public class CommandeDAO extends DAO<Commande>{
 			cstmt.execute();
 			success = true;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec l'ajout d'un code promo ...");
+			}
 		}
 		return success;
 	}

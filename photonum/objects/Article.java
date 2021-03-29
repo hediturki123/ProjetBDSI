@@ -1,5 +1,7 @@
 package photonum.objects;
 
+import java.util.Locale;
+
 import photonum.PhotoNum;
 import photonum.dao.CommandeDAO;
 import photonum.dao.ImpressionDAO;
@@ -69,9 +71,9 @@ public class Article {
         Produit p = getImpression().getProduit();
         String fs = String.join(" | ",
             p.getReference(),
-            p.getPrix()+"€",
+            String.format(Locale.FRANCE,"%,.2f",p.getPrix())+"€",
             quantite+"",
-            p.getPrix()*quantite+"€"
+            String.format(Locale.FRANCE,"%,.2f",p.getPrix()*quantite)+"€"
         );
         return fs;
     }

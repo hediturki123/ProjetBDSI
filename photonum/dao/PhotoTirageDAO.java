@@ -51,7 +51,15 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 			
 			return reussi1==1 && reussi2==1;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				if (e.getClass().getSimpleName().equals("SQLIntegrityConstraintViolationException")) {
+					System.err.println("Photo tirage existe déjà !");
+				} else {
+					System.err.println("Quelque chose s'est mal passé avec photo tirage...");
+				}
+			}
 		}
 		return false;
 	}
@@ -79,7 +87,11 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 				return res;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec photo tirage...");
+			}
 		}
 		return null;
 	}
@@ -107,7 +119,11 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 			}
 			return tab;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec photo tirage...");
+			}
 		}
 		return null;
 	}
@@ -131,7 +147,11 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 			requete_select.close();
 			return tab;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec photo tirage...");
+			}
 		}
 		return null;
 	}
@@ -169,7 +189,11 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 			
 			return b1==1 && b2==1;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec photo tirage...");
+			}
 		}
 		return false;
 	}
@@ -197,7 +221,11 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 			
 			return b1 && b2;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec photo tirage...");
+			}
 		}
 		return false;
 	}
@@ -222,7 +250,11 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 			requete_select.close();
 			return tab;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec photo tirage...");
+			}
 		}
 		return null;
 	}
@@ -245,7 +277,11 @@ public class PhotoTirageDAO extends DAO<PhotoTirage>{
 				return res.getInt(1);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec le last id...");
+			}
 		}
 		return 0;
 	}

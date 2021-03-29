@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import photonum.PhotoNum;
 import photonum.objects.Client;
 import photonum.objects.Impression;
 import photonum.objects.TypeImpression;
@@ -41,7 +42,15 @@ public class ImpressionDAO extends DAO<Impression> {
 			requete_imp.close();
 			return b == 1;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				if (e.getClass().getSimpleName().equals("SQLIntegrityConstraintViolationException")) {
+					System.err.println("L'impression' existe déjà !");
+				} else {
+					System.err.println("Quelque chose s'est mal passé avec l'impression...");
+				}
+			}
 		}
 		return false;
 	}
@@ -71,7 +80,11 @@ public class ImpressionDAO extends DAO<Impression> {
 			requete_select.close();
 			return res;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec l'impression...");
+			}
 		}
 		return null;
 	}
@@ -102,7 +115,11 @@ public class ImpressionDAO extends DAO<Impression> {
 			requete_update.close();
 			return resultat == 1;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec l'impression...");
+			}
 		}
 		return false;
 	}
@@ -121,7 +138,11 @@ public class ImpressionDAO extends DAO<Impression> {
 			requete_delete.close();
 			return b == 1;
 		} catch (SQLException e) {
-			System.out.println("Impossible de supprimer une impression");
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec l'impression...");
+			}
 		}
 		return false;
 	}
@@ -152,7 +173,11 @@ public class ImpressionDAO extends DAO<Impression> {
 			requete_select.close();
 			return impressions;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec l'impression...");
+			}
 		}
 		return null;
 	}
@@ -189,7 +214,11 @@ public class ImpressionDAO extends DAO<Impression> {
 			return impressions;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec l'impression...");
+			}
 		}
 		return null;
 	}
@@ -208,7 +237,11 @@ public class ImpressionDAO extends DAO<Impression> {
 				return res.getInt(1);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec l'impression...");
+			}
 		}
 		return 0;
 	}

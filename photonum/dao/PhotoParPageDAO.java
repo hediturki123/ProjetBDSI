@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import photonum.PhotoNum;
 import photonum.objects.PhotoParPage;
 
 public class PhotoParPageDAO extends DAO<PhotoParPage> {
@@ -35,7 +36,15 @@ public class PhotoParPageDAO extends DAO<PhotoParPage> {
 			requeteCreate.close();
 			return reussi==1;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				if (e.getClass().getSimpleName().equals("SQLIntegrityConstraintViolationException")) {
+					System.err.println("La photo par page page existe déjà!");
+				} else {
+					System.err.println("Quelque chose s'est mal passé avec la création de la photo par page.");
+				}
+			}
 		}
 		return false;
 	}
@@ -63,7 +72,11 @@ public class PhotoParPageDAO extends DAO<PhotoParPage> {
 				return res;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé pendant la lecture de la photo par page.");
+			}
 		}
 		return null;
 	}
@@ -88,7 +101,11 @@ public class PhotoParPageDAO extends DAO<PhotoParPage> {
 			}
 			return tab;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé pendant la lecture de toutes les photos par page.");
+			}
 		}
 		return null;
 	}
@@ -110,7 +127,11 @@ public class PhotoParPageDAO extends DAO<PhotoParPage> {
 			requete_update.close();
 			return b;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé pendant la modification de la photo par page.");
+			}
 		}
 		return false;
 	}
@@ -131,7 +152,11 @@ public class PhotoParPageDAO extends DAO<PhotoParPage> {
 			requete_delete.close();
 			return b;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé pendant la suppression de la photo par page.");
+			}
 		}
 		return false;
 	}

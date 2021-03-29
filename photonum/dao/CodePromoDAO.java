@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
 
+import photonum.utils.AB64H;
+import photonum.PhotoNum;
 import photonum.objects.CodePromo;
 
 public class CodePromoDAO extends DAO<CodePromo>{
@@ -31,12 +33,20 @@ public class CodePromoDAO extends DAO<CodePromo>{
 				"INSERT INTO LesCodesPromo VALUES (?,?,?)"
 			);
 			pstmt.setString(1, cp.getMailClient());
-			pstmt.setString(2, System.currentTimeMillis()+"");
+			pstmt.setString(2, AB64H.encode(System.currentTimeMillis()));
 			pstmt.setBoolean(3, cp.estUtilise());
 			success = pstmt.execute();
 			pstmt.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				if (e.getClass().getSimpleName().equals("SQLIntegrityConstraintViolationException")) {
+					System.err.println("Le code promo existe déjà !");
+				} else {
+					System.err.println("Quelque chose s'est mal passé avec le code promo...");
+				}
+			}
 		}
 		return success;
 	}
@@ -65,7 +75,11 @@ public class CodePromoDAO extends DAO<CodePromo>{
 			}
 			pstmt.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec le code promo...");
+			}
 		}
 		return cp;
 	}
@@ -92,7 +106,11 @@ public class CodePromoDAO extends DAO<CodePromo>{
 			}
 			pstmt.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec le code promo...");
+			}
 		}
 		return lcp;
 	}
@@ -114,7 +132,7 @@ public class CodePromoDAO extends DAO<CodePromo>{
 			pstmt.setString(3, cp.getCode());
 			success = (pstmt.executeUpdate() == 1);
 			pstmt.close();
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return success;
@@ -135,7 +153,11 @@ public class CodePromoDAO extends DAO<CodePromo>{
 			success = (pstmt.executeUpdate() == 1);
 			pstmt.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec le code promo...");
+			}
 		}
 		return success;
 	}
@@ -164,7 +186,11 @@ public class CodePromoDAO extends DAO<CodePromo>{
 			}
 			pstmt.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec le code promo...");
+			}
 		}
 		return lcp;
 	}
@@ -194,7 +220,11 @@ public class CodePromoDAO extends DAO<CodePromo>{
 			}
 			pstmt.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé avec le code promo...");
+			}
 		}
 		return lcp;
 	}

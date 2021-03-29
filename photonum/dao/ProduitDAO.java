@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import photonum.PhotoNum;
 import photonum.objects.Produit;
 
 public class ProduitDAO extends DAO<Produit>{
@@ -38,7 +39,15 @@ public class ProduitDAO extends DAO<Produit>{
 			return reussi == 1;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				if (e.getClass().getSimpleName().equals("SQLIntegrityConstraintViolationException")) {
+					System.err.println("Le produit existe déjà!");
+				} else {
+					System.err.println("Quelque chose s'est mal passé avec la création du produit.");
+				}
+			}
 		}
 		return false;
 	}
@@ -70,7 +79,11 @@ public class ProduitDAO extends DAO<Produit>{
 			return p;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé pendant la lecture du produit.");
+			}
 		}
 		return null;
 	}
@@ -101,7 +114,11 @@ public class ProduitDAO extends DAO<Produit>{
 			return produits;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé pendant la lecture de tous les produits.");
+			}
 		}
 		return null;
 	}
@@ -120,7 +137,11 @@ public class ProduitDAO extends DAO<Produit>{
 			return reussi == 1;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé pendant la modification du produit.");
+			}
 		}
 		return false;
 	}
@@ -141,7 +162,11 @@ public class ProduitDAO extends DAO<Produit>{
 			return reussi == 1;
 
 		 } catch (SQLException e) {
-			e.printStackTrace();
+			if (PhotoNum.DEBUG) {
+				e.printStackTrace();
+			} else {
+				System.err.println("Quelque chose s'est mal passé pendant la suppression du produit.");
+			}
 		}
 		return false;
 	}
